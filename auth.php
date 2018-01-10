@@ -1,0 +1,13 @@
+<?php
+@session_start();
+	if(!empty($_SESSION['id']))
+	{
+		$_SESSION['id'];
+		$_SESSION['username'];
+		$_SESSION['category'];
+		$_SESSION['loggedin_time'];
+	} 
+	else
+	{header("Location:logout.php");
+	}
+?>
