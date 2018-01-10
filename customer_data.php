@@ -38,3 +38,10 @@ $Aadhaar_no=$fet['Aadhaar_no'];
 		    <td ><input class="form-control form-control-inline input-large date-picker" placeholder="yyyy-mm-dd" required data-date-format="yyyy-mm-dd" size="16" autocomplete="off" type="text" name="date"> </td>
 			</tr>
 </table>
+<script>
+ 			$('.date-picker').datepicker();
+			$('.date-picker').datepicker().on('changeDate', function(){
+			$(this).blur();
+			$(this).datepicker('hide');
+			}); 
+</script>
