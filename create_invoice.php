@@ -112,7 +112,7 @@ include("database.php");
 		<tr style="border:1px;border-style:solid;">
 		<td style="border:1px;border-style:solid;text-align:right;" colspan="4">Discount</td>
 		<td colspan="" style="border:1px;border-style:solid;">
-		<input class="form-control dis_rupee " placeholder="Discount Amount" required name="dis_rupee" autocomplete="off" type="text" value="">
+		<input class="form-control dis_rupee " placeholder="Enter Amount" required name="dis_rupee" autocomplete="off" type="text" value="">
 		</td>
 		<td><input class="form-control dis_per " placeholder="Enter %" required name="dis_per" autocomplete="off" type="text" value=""></td>
 		<td colspan="2" style="border:1px;border-style:solid;"><input class="form-control taxable_value" placeholder="Total Amount" required name="total_amount" autocomplete="off" type="text" value=""></td>
