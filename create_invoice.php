@@ -214,6 +214,17 @@ include("database.php");
 			
 		 
 	 });
+	 
+	  $(".dis_rupee").on('focus', function () {
+		  $(".dis_rupee").removeAttr( "readonly" )
+		 $(".dis_per").attr( 'readonly', 'readonly' );
+	 });
+	 
+	 $(".dis_per").on('focus', function () {
+		 $(".dis_per").removeAttr( "readonly" )
+		 $(".dis_rupee").attr( 'readonly', 'readonly' );
+	 });
+	 
 	add_row();
 	$('body').on('click','.addrow',function(){
 		add_row(); rename_rows();
