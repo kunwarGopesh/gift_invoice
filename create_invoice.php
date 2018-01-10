@@ -41,8 +41,8 @@ include("database.php");
 				</tr> 
 
 			<tr>
-		    <td>Select Customer</td><td>:</td>
-		    <td colspan="4" >
+		    <td>Select Customer</td><td >:</td>
+		    <td>
 			<select name="customer_id" id="customer_id" class="select2me form-control input-large select_customer">
 								<option value="">----------Choose Customer ----------</option>
 									<?php
@@ -52,7 +52,8 @@ include("database.php");
 									{?>		
 											<option value="<?php echo $row['id'] ;?>"><?php echo $row['customer_name']; ?></option>
 										<?php }?>
-										</select> </td>
+										</select> 
+			</td>
 			</tr>
 </table>
 <div id="newtable">	
@@ -120,10 +121,13 @@ include("database.php");
 		<tr style="border:1px;border-style:solid;">
 		<td style="border:1px;border-style:solid;text-align:right;" colspan="4">SGST</td>
 		<td style="border:1px;border-style:solid;text-align:right;">
-		<select class="select form-control input-small" name="cgst">
+		<select class="select form-control input-small sgst_option" name="cgst">
 			<option>%</option>
-			<option>9</option>
-			<option>14</option>
+			<?php $customer_data=mysql_query("select percentage from taxation_rates where taxation_name='SGST'");				
+									while($row=mysql_fetch_array($customer_data))
+									{?>		
+											<option class="sgst_option"value="<?php echo $row['id'] ;?>"><?php echo $row['percentage']; ?></option>
+										<?php }?>
 		</select>
 		</td>
 		<td style="border:1px;border-style:solid;">
@@ -134,10 +138,14 @@ include("database.php");
 		<tr style="border:1px;border-style:solid;">
 		<td style="border:1px;border-style:solid;text-align:right;" colspan="4">CGST</td>
 		<td style="border:1px;border-style:solid;text-align:right;">	
-		<select class="select form-control input-small" name="cgst">
+		<select class="select form-control input-small cgst_option" name="cgst">
 			<option>%</option>
-			<option>9</option>
-			<option>14</option>
+			<?php $customer_data=mysql_query("select percentage from taxation_rates where taxation_name='CGST'");				
+									while($row=mysql_fetch_array($customer_data))
+									{?>		
+											<option value="<?php echo $row['id'] ;?>"><?php echo $row['percentage']; ?></option>
+										<?php }?>
+			
 		</select>
 		</td>
 		<td style="border:1px;border-style:solid;">
@@ -279,13 +287,20 @@ include("database.php");
 			var dis_value=(total_amount*dis_per)/100;
 			total_amount=total_amount-dis_value;
 			table.find("tfoot tr input.taxable_value").val(total_amount.toFixed(2));
+			/* var sgst_per=parseFloat(table.find("tfoot tr input.sgst_option").text();
+			alert(sgst_per); */
 			
         };
 		$(document).on('keyup','.qty,.rate,.dis_rupee,.dis_per',function(){
 		var table=$(this).closest('table');
 		calculate_total(table);
 
-    });
+		});
+		$(document).on('change','.sgst_option,.cgst_option',function(){
+		var table=$(this).closest('table');
+		calculate_total(table);
+
+		});
 		});
     </script>
 <?php scripts();?>
