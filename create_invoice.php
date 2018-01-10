@@ -133,14 +133,15 @@ include("database.php");
 		</tr>
 		<tr style="border:1px;border-style:solid;">
 		<td style="border:1px;border-style:solid;text-align:right;" colspan="4">CGST</td>
-		<td style="border:1px;border-style:solid;text-align:right;" colspan="2">
-		
+		<td style="border:1px;border-style:solid;text-align:right;">	
 		<select class="select form-control input-small" name="cgst">
 			<option>%</option>
 			<option>9</option>
 			<option>14</option>
 		</select>
 		</td>
+		<td style="border:1px;border-style:solid;">
+		<input class="form-control cgst_amount " placeholder="CGST Amount" required name="cgst_amount" autocomplete="off" type="text"></td>
 		<td colspan="2" style="border:1px;border-style:solid;"><input class="form-control " placeholder="Total Amount" required name="total_amount" autocomplete="off" type="text" value=""></td>
 		</tr>
 		<tr style="border:1px;border-style:solid;">
