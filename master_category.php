@@ -130,7 +130,14 @@ if(isset($_POST['sub_edit']))
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                            <div class="portlet-body form">
 							<form class="form-horizontal" role="form" id="noticeform" method="post" enctype="multipart/form-data">
-							
+							<div class="portlet box blue">
+								<div class="portlet-title ">
+									<div class="caption">
+										<i class="fa fa-gift"></i>Edit Category
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>	
+									</div>
+								</div>
+						</div>
 							
                                 <input type="hidden" name='edit_id' class="form-control" value="<?php echo $id;?>" >	
 							
@@ -169,7 +176,14 @@ if(isset($_POST['sub_edit']))
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                            <span class="modal-title" style="font-size:14px; text-align:left">Are you sure, you want to delete this  category?</span>
+                             <div class="portlet box yellow">
+								<div class="portlet-title ">
+									<div class="caption">
+										<i class="fa fa-trash "></i>Are you sure, you want to delete this  category?
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>	
+									</div>
+								</div>
+						</div>
                         </div>
                         <div class="modal-footer">
                         <form method="post" name="delete<?php echo $id ;?>">

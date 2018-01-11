@@ -42,7 +42,7 @@ if(isset($_POST['sub_edit']))
 <head>
 <?php css();?>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Master Category</title>
+<title>Master Company</title>
 </head>
 <?php contant_start(); menu();  ?>
 <body>
@@ -198,6 +198,14 @@ if(isset($_POST['sub_edit']))
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
+						<div class="portlet box blue">
+								<div class="portlet-title ">
+									<div class="caption">
+										<i class="fa fa-gift"></i>Edit Company
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>	
+									</div>
+								</div>
+						</div>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
 							
                            <div class="portlet-body form">
@@ -287,17 +295,21 @@ if(isset($_POST['sub_edit']))
 		</div>
 		</div>
 </div>                                      
-                                        
-                                        
-                                        
-                                        <!---- update----->
+                                                        <!---- update----->
        <a class="btn blue-madison red btn-sm"  rel="tooltip" title="Delete"  data-toggle="modal" href="#delete<?php echo $id ;?>"><i class="fa fa-trash"></i></a>
             <div class="modal fade" id="delete<?php echo $id ;?>" tabindex="-1" aria-hidden="true" style="padding-top:35px">
                 <div class="modal-dialog modal-md">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                            <span class="modal-title" style="font-size:14px; text-align:left">Are you sure, you want to delete this  category?</span>
+                             <div class="portlet box yellow">
+								<div class="portlet-title ">
+									<div class="caption">
+										<i class="fa fa-trash "></i>Are you sure, you want to delete this  Company?
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>	
+									</div>
+								</div>
+						</div>
                         </div>
                         <div class="modal-footer">
                         <form method="post" name="delete<?php echo $id ;?>">

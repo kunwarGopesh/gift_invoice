@@ -65,9 +65,7 @@ include("database.php");
 									<?php echo $date;?>
 									</td> 
 									<td>
-										<a class="btn blue-madison blue-stripe btn-sm" rel="tooltip" title="View" data-toggle="modal" href="#view<?php echo $id;?>"><i class="fa fa-list"></i></a>
-                                        <a class="btn blue-madison green btn-sm" rel="tooltip" title="Edit" data-toggle="modal" href="#edit<?php echo $id;?>"><i class="fa fa-edit"></i></a>
-										&nbsp;
+										<a class="btn blue-madison blue-stripe btn-sm" rel="tooltip" title="View" data-toggle="modal" href="view_invoice.php"><i class="fa fa-list"></i></a>
 										<a class="btn blue-madison red btn-sm" rel="tooltip" title="delete" data-toggle="modal" href="#delete<?php echo $id;?>"><i class="fa fa-remove"></i></a>
 									</td>
 									</tr>

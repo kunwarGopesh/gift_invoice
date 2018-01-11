@@ -54,6 +54,8 @@ include("database.php");
 										<?php }?>
 										</select> 
 			</td>
+			<td>Invoice date</td><td>:</td>
+		    <td><input class="form-control form-control-inline input-large date-picker" placeholder="yyyy-mm-dd" required data-date-format="yyyy-mm-dd" size="16" autocomplete="off" type="text" name="date"> </td>
 			</tr>
 </table>
 <div id="newtable">	
@@ -79,8 +81,8 @@ include("database.php");
 			<tr>
 			 <td>Address</td><td>:</td>
 		    <td><input class="form-control input-large customer_address" placeholder="Enter Address" required name="address" autocomplete="off" type="text" value=""> </td>
-		    <td>Invoice date</td><td>:</td>
-		    <td><input class="form-control form-control-inline input-large date-picker" placeholder="yyyy-mm-dd" required data-date-format="yyyy-mm-dd" size="16" autocomplete="off" type="text" name="date"> </td>
+			<td>Mobile No</td><td>:</td>
+		    <td><input class="form-control input-large customer_mobile" placeholder="Enter Contact No" required name="contact_no" autocomplete="off" type="text" value=""></td>
 			</tr>
 </table>
 </div>
@@ -133,7 +135,7 @@ include("database.php");
 		<td style="border:1px;border-style:solid;">
 		<input class="form-control sgst_amount " placeholder="SGST Amount" required name="sgst_amount" autocomplete="off" type="text"></td>
 		<td colspan="2" style="border:1px;border-style:solid;">
-		<input class="form-control " placeholder="Total Amount" required name="total_amount" autocomplete="off" type="text"></td>
+		<input class="form-control amount_after_sgst " placeholder="Total Amount" required name="total_amount" autocomplete="off" type="text"></td>
 		</tr>
 		<tr style="border:1px;border-style:solid;">
 		<td style="border:1px;border-style:solid;text-align:right;" colspan="4">CGST</td>
@@ -150,12 +152,12 @@ include("database.php");
 		</td>
 		<td style="border:1px;border-style:solid;">
 		<input class="form-control cgst_amount " placeholder="CGST Amount" required name="cgst_amount" autocomplete="off" type="text"></td>
-		<td colspan="2" style="border:1px;border-style:solid;"><input class="form-control " placeholder="Total Amount" required name="total_amount" autocomplete="off" type="text" value=""></td>
+		<td colspan="2" style="border:1px;border-style:solid;"><input class="form-control amount_after_cgst" placeholder="Total Amount" required name="total_amount" autocomplete="off" type="text" value=""></td>
 		</tr>
 		<tr style="border:1px;border-style:solid;">
 		<td style="border:1px;border-style:solid;text-align:right;" colspan="4">Grand Total</td>
 		<td style="border:1px;border-style:solid;text-align:right;" colspan="4">
-		<input class="form-control " placeholder="Grand Total" required name="total_qty" autocomplete="off" type="text" value=""></td>
+		<input class="form-control grand_total" placeholder="Grand Total" required name="total_qty" autocomplete="off" type="text" value=""></td>
 		</tr>
 		<tr>
 		<td colspan="8">
@@ -197,7 +199,13 @@ include("database.php");
 <?php footer(); ?>
 <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 <script>
-        $(document).ready(function() {        
+        $(document).ready(function() {    
+
+			/* $('.date-picker').datepicker();
+			$('.date-picker').datepicker().on('changeDate', function(){
+			$(this).blur();
+			$(this).datepicker('hide');
+			}); 		 */
         
          $("#customer_id").live('change', function () {
 		 var customer_id=$(this, 'option:selected').val();
@@ -262,7 +270,7 @@ include("database.php");
 	};
 
 	function calculate_total(table)
-	{
+	{ 
 	var i=0;
 	var total_qty=0;
 	var total_rate=0;
@@ -292,21 +300,66 @@ include("database.php");
 			table.find("tfoot tr input.total_rate").val(total_rate.toFixed(2));
 			table.find("tfoot tr input.total_amount").val(total_amount.toFixed(2));
 			var dis_rupee=parseFloat(table.find("tfoot tr input.dis_rupee").val());
-			total_amount=total_amount-dis_rupee;
+			if(dis_rupee){
+				var dis_value=(dis_rupee/total_amount)*100;
+				total_amount=total_amount-dis_rupee;
+				table.find("tfoot tr input.taxable_value").val(total_amount.toFixed(2));
+				//var dis_value=(dis_rupee/total_amount)*100;
+				table.find("tfoot tr input.dis_per").val(dis_value.toFixed(2));
+			}
+			var taxable_value=parseFloat(table.find("tfoot tr input.taxable_value").val());
+			var sgst=0;
+			 sgst=$( ".sgst_option option:selected" ).text();
+			if(isNaN(sgst)){ 
+				table.find("tfoot tr input.sgst_amount").val(0);
+				table.find("tfoot tr input.amount_after_sgst").val(taxable_value.toFixed(2));
+			}else{
+				var sgst_value=(sgst*taxable_value)/100;
+				var amount_after_sgst=sgst_value+taxable_value;
+				table.find("tfoot tr input.sgst_amount").val(sgst_value.toFixed(2));
+				table.find("tfoot tr input.amount_after_sgst").val(amount_after_sgst.toFixed(2));
+				
+			} 
+			var taxable_value_after_sgst=parseFloat(table.find("tfoot tr input.amount_after_sgst").val());
+			var cgst=0;
+			 cgst=$( ".cgst_option option:selected" ).text();
+			if(isNaN(cgst)){ 
+				table.find("tfoot tr input.cgst_amount").val(0);
+				table.find("tfoot tr input.amount_after_cgst").val(taxable_value_after_sgst.toFixed(2));
+			}else{
+				var cgst_value=(cgst*taxable_value)/100;
+				var amount_after_cgst=cgst_value+taxable_value_after_sgst;
+				table.find("tfoot tr input.cgst_amount").val(cgst_value.toFixed(2));
+				table.find("tfoot tr input.amount_after_cgst").val(amount_after_cgst.toFixed(2));
+				
+			}
 			table.find("tfoot tr input.taxable_value").val(total_amount.toFixed(2));
-			var dis_per=parseFloat(table.find("tfoot tr input.dis_per").val());
-			var dis_value=(total_amount*dis_per)/100;
-			total_amount=total_amount-dis_value;
-			table.find("tfoot tr input.taxable_value").val(total_amount.toFixed(2));
+			table.find("tfoot tr input.grand_total").val(amount_after_cgst.toFixed(2));
+			
 			/* var sgst_per=parseFloat(table.find("tfoot tr input.sgst_option").text();
 			alert(sgst_per); */
 			
         };
-		$(document).on('keyup','.qty,.rate,.dis_rupee,.dis_per',function(){
+		$(document).on('keyup','.qty,.rate,.dis_rupee',function(){
 		var table=$(this).closest('table');
 		calculate_total(table);
 
 		});
+		$(document).on('blur','.dis_per',function(){
+		var table=$(this).closest('table');
+		calculate_total1(table);
+
+		});
+		function calculate_total1(table)
+		{ 
+			var total_amount=parseFloat(table.find("tfoot tr input.total_amount").val());
+			var dis_per=parseFloat(table.find("tfoot tr input.dis_per").val());
+			if(dis_per){
+				var dis_value=(dis_per*total_amount)/100;
+				table.find("tfoot tr input.dis_rupee").val(dis_value.toFixed(2));
+				calculate_total(table);
+			}
+		}
 		$(document).on('change','.sgst_option,.cgst_option',function(){
 		var table=$(this).closest('table');
 		calculate_total(table);
@@ -345,3 +398,23 @@ include("database.php");
 		   </tr>
 		   </table>
 </div>	  
+<?php 
+include("database.php");
+if(isset($_POST['submit']))
+{
+	$customer_id=$_POST['customer_id'];
+	$name=$_POST['name'];
+	$city=$_POST['city'];
+	$state=$_POST['state'];
+	$gst_no=$_POST['gst_no'];
+	$pan_no=$_POST['pan_no'];
+	$mobile=$_POST['contact_no'];
+	$Aadhaar_no=$_POST['Aadhaar_no'];
+	$address=$_POST['address'];
+	mysql_query("insert into `master_items` SET `item_name`='$name',`item_code`='$code',
+		`description`='$des',`item_price`='$price',`qty`='$qty',`category_id`='$catid'");
+		
+	echo '<script>window.location="item.php"</script>';
+}
+
+?>
