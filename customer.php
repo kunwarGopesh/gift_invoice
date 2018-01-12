@@ -70,12 +70,21 @@ if(isset($_POST['sub_edit']))
 										<tr>
 										<td>Customer Name</td><td>:</td>
 										<td><input class="form-control input-large customer_name" placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text" value=""> </td>
-										<td>City</td><td>:</td>
-										<td><input class="form-control input-large customer_city" placeholder="Enter City" required name="city" autocomplete="off" type="text" value=""> </td>
+										<td>State</td><td>:</td>
+										<td><select name="state" class="select2me form-control input-large">
+										 <option value="">--------Select State-------</option>
+										 <option value="raj">Rajasthan</option>
+										 <option value="mp">Madhya Pradesh</option>
+										</select>
+										</td>
 										</tr>
 										<tr>
-										<td>State</td><td>:</td>
-										<td><input class="form-control input-large customer_state" placeholder="Enter state" required name="state" autocomplete="off" type="text" value=""> </td>
+										<td>City</td><td>:</td>
+										<td><select name="city" class="select2me form-control input-large">
+										 <option value="">--------Select City--------</option>
+										 <option value="ch">Chittorgarh</option>
+										 <option value="up">Udaipur</option>
+										</select> </td>				
 										<td>GST No</td><td>:</td>
 										<td><input class="form-control input-large customer_gst" placeholder="Enter GST No" required name="gst_no" autocomplete="off" type="text" value=""> </td>
 										</tr>

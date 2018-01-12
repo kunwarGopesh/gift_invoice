@@ -11,7 +11,10 @@ $mobile=$fet['contact_no'];
 $gst_no=$fet['gst_no'];
 $pan_no=$fet['pan_no'];
 $Aadhaar_no=$fet['Aadhaar_no'];
+$date=$fet['created_on'];
+$today=date('d-m-Y');
 ?>
+			
 <table class="table">		
 			<tr>
 		    <td> Name</td><td>:</td>
@@ -34,8 +37,8 @@ $Aadhaar_no=$fet['Aadhaar_no'];
 			<tr>
 			 <td>Address</td><td>:</td>
 		    <td><input class="form-control input-large customer_address" placeholder="Enter Address" required name="address" autocomplete="off" type="text" value="<?php echo $address; ?>"> </td>
-			 <td>Invoice date</td><td>:</td>
-		    <td ><input class="form-control form-control-inline input-large date-picker" placeholder="yyyy-mm-dd" required data-date-format="yyyy-mm-dd" size="16" autocomplete="off" type="text" name="date"> </td>
+			<td>Mobile No</td><td>:</td>
+		    <td><input class="form-control input-large customer_mobile" placeholder="Enter Mobile No" required name="contact_no" autocomplete="off" type="text" value="<?php echo $mobile; ?>"></td>
 			</tr>
 </table>
 <script>
@@ -44,4 +47,13 @@ $Aadhaar_no=$fet['Aadhaar_no'];
 			$(this).blur();
 			$(this).datepicker('hide');
 			}); 
+			$(".customer_name").attr( 'readonly', 'readonly' );
+			$(".customer_city").attr( 'readonly', 'readonly' );
+			$(".customer_state").attr( 'readonly', 'readonly' );
+			$(".customer_mobile").attr( 'readonly', 'readonly' );
+			$(".customer_aadhaar").attr( 'readonly', 'readonly' );
+			$(".customer_address").attr( 'readonly', 'readonly' );
+			$(".customer_pan").attr( 'readonly', 'readonly' );
+			$(".customer_gst").attr( 'readonly', 'readonly' );
+	
 </script>
