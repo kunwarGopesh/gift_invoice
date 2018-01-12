@@ -42,6 +42,7 @@ include("database.php");
 				<h4 class="box-title">Place of Supply:</h4><br>
 				<?php echo $row['address'];?><br>
 				 <p>Phone No1 :<?php echo $phone_no_show;?></p>
+				 <p>Phone No1 :<?php echo $phone_no_show;?></p>
 				 <p>GST Number :<?php echo $row['gst_no'];?></p>
 				 </span></td>
 				</tr> 
