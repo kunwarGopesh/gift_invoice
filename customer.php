@@ -3,23 +3,27 @@ include("index_layout.php");
 include("database.php");
 ?>
 <?php 
-if(isset($_POST['sub']))
+if(isset($_POST['submit']))
 {
-	$name=$_POST['name'];
+	$company_name=$_POST['company_name'];
+	$company_gst=$_POST['company_gst'];
+	$company_phone=$_POST['company_phone'];
+	$company_address=$_POST['company_address'];
+	$customer_name=$_POST['name'];
 	$city=$_POST['city'];
 	$state=$_POST['state'];
-	$gst_no=$_POST['gst_no'];
 	$pan_no=$_POST['pan_no'];
 	$Aadhaar_no=$_POST['Aadhaar_no'];
 	$address=$_POST['address'];
 	$mobile=$_POST['contact_no'];
-	
-	mysql_query("insert into `customer` SET `customer_name`='$name',`address`='$address',
-		`city`='$city',`state`='$state',`contact_no`='$mobile',`gst_no`='$gst_no',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no'");
+	mysql_query("insert into `customer` SET `customer_name`='$customer_name',`address`='$address',
+		`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no'");
+		$customer_id=mysql_insert_id();
+	mysql_query("insert into `companies` SET `customer_id`='$customer_id',`name`='$company_name',`address`='$company_address',
+		`phone_no`='$company_phone',`gst_no`='$company_gst'");
 	echo '<script>window.location="customer.php"</script>';
 }
- 
-if(isset($_POST['sub_del']))
+/* if(isset($_POST['sub_del']))
 {
 	$delet_class=$_POST['delet_class'];
 	mysql_query("DELETE FROM customer WHERE id='$delet_class'" );
@@ -28,23 +32,27 @@ if(isset($_POST['sub_del']))
 if(isset($_POST['sub_edit']))
 {
 	$edit=$_REQUEST['edit_id'];  
-	$name=mysql_real_escape_string($_REQUEST['name']);
-	$city=mysql_real_escape_string($_REQUEST['city']);
-	$state=mysql_real_escape_string($_REQUEST['state']);
-	$gst_no=mysql_real_escape_string($_REQUEST['gst_no']);
-	$pan_no=mysql_real_escape_string($_REQUEST['pan_no']);
-	$Aadhaar_no=mysql_real_escape_string($_REQUEST['Aadhaar_no']);
-	$address=mysql_real_escape_string($_REQUEST['address']);
-	$mobile=mysql_real_escape_string($_REQUEST['contact_no']);
-	$r=mysql_query("update `customer` SET `customer_name`='$name',`address`='$address',
-		`city`='$city',`state`='$state',`contact_no`='$mobile',`gst_no`='$gst_no',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no'	where id='$edit'" );
+	$company_name=mysql_real_escape_string($_POST['company_name']);
+	$company_gst=mysql_real_escape_string($_POST['company_gst']);
+	$company_phone=mysql_real_escape_string($_POST['company_phone']);
+	$company_address=mysql_real_escape_string($_POST['company_address']);
+	$customer_name=mysql_real_escape_string($_POST['customer_name']);
+	$city=mysql_real_escape_string($_POST['city']);
+	$state=mysql_real_escape_string($_POST['state']);
+	$pan_no=mysql_real_escape_string($_POST['pan_no']);
+	$Aadhaar_no=mysql_real_escape_string($_POST['Aadhaar_no']);
+	$address=mysql_real_escape_string($_POST['address']);
+	$mobile=mysql_real_escape_string($_POST['contact_no']); */
+	/* $r =mysql_query("update `customer` SET `customer_name`='$customer_name',`address`='$address',
+		`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no' where id='$edit'");
 	$r=mysql_query($r);
-	echo '<script text="javascript">alert(Class Added Successfully")</script>';	
-}
-
-
-
-
+	$p=mysql_query("update `companies` SET `name`='$company_name',`address`='$company_address',
+		`phone_no`='$company_phone',`gst_no`='$company_gst' where id='$$edit'"); */
+		
+		/* $p=mysql_query($p);
+		echo '<script text="javascript">alert(Class Added Successfully")</script>';	 */
+	
+//}
   ?> 
 <html>
 <head>
@@ -66,53 +74,63 @@ if(isset($_POST['sub_edit']))
 						<div class="portlet-body form">
 									<!-- BEGIN FORM-->
 							<form  class="form-horizontal" id="form_sample_2"  role="form" method="post"> 
-									<table class="table">
+										
+										<div id="company_table">
+										<table class="table">
 										<tr>
-										<td>Customer Name</td><td>:</td>
-										<td><input class="form-control input-large customer_name" placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text" value=""> </td>
-										<td>State</td><td>:</td>
-										<td><select name="state" class="select2me form-control input-large">
-										 <option value="">--------Select State-------</option>
-										 <option value="raj">Rajasthan</option>
-										 <option value="mp">Madhya Pradesh</option>
-										</select>
-										</td>
-										</tr>
-										<tr>
-										<td>City</td><td>:</td>
-										<td><select name="city" class="select2me form-control input-large">
-										 <option value="">--------Select City--------</option>
-										 <option value="ch">Chittorgarh</option>
-										 <option value="up">Udaipur</option>
-										</select> </td>				
+										<td>Company Name</td><td>:</td>
+										<td><input class="form-control input-large company_name" placeholder="Enter Company Name" required name="company_name" autocomplete="off" type="text" value=""> </td>
 										<td>GST No</td><td>:</td>
-										<td><input class="form-control input-large customer_gst" placeholder="Enter GST No" required name="gst_no" autocomplete="off" type="text" value=""> </td>
-										</tr>
-										<tr>
-										<td>Pan No</td><td>:</td>
-										<td><input class="form-control input-large customer_pan" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" value=""> </td>
-										<td>Aadhaar No</td><td>:</td>
-										<td><input class="form-control input-large customer_aadhaar" placeholder="Enter Aadhaar No" required name="Aadhaar_no" autocomplete="off" type="text" value=""></td>
-										</tr>
-										<tr>
-										 <td>Address</td><td>:</td>
-										<td><textarea class="form-control input-large customer_address" placeholder="Enter Address" required name="address" autocomplete="off" type="text" value=""></textarea> </td>
-										<td>Mobile No</td><td>:</td>
-										<td><input class="form-control input-large customer_mobile" placeholder="Enter Contact No" required name="contact_no" autocomplete="off" type="text" value=""></td>
-										</tr>
-										<span class="help-block"> </span>
-										<tr>
-										<td colspan="6">
-										<center><button type="submit" name="sub" class="btn btn-primary">Submit</button></center>
+										<td>
+										<input class="form-control company_gst" placeholder="Enter GST No" required name="company_gst" autocomplete="off" type="text">
 										</td>
 										</tr>
-								</table>
+										<tr>
+										<td>Company Phone</td><td>:</td>
+										<td><input class="form-control input-large company_mobile" placeholder="Enter Phone No" required name="company_phone" autocomplete="off" type="text" value=""> </td>
+										<td>Address</td><td>:</td>
+										<td>
+										<input class="form-control company_address" placeholder="Enter Address" required name="company_address" autocomplete="off" type="text">
+										</td>
+										</tr>
+									<tr>
+									<td> Name</td><td>:</td>
+									<td><input class="form-control input-large customer_name" placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text"  </td>
+									<td>Mobile No</td><td>:</td>
+									<td><input class="form-control input-large customer_mobile" placeholder="Enter Mobile No" required name="contact_no" autocomplete="off" type="text" ></td>
+									</tr>
+									<tr>
+									<td>State</td><td>:</td>
+									<td><input class="form-control input-large customer_state" placeholder="Enter state" required name="state" autocomplete="off" type="text" > </td>
+									<td>City</td><td>:</td>
+									<td><input class="form-control input-large customer_city" placeholder="Enter City" required name="city" autocomplete="off" type="text" > </td>
+									
+								   </tr>
+									<tr>
+									<td>Pan No</td><td>:</td>
+									<td><input class="form-control input-large customer_pan" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" > </td>
+									<td>Aadhaar No</td><td>:</td>
+									<td><input class="form-control input-large customer_aadhaar" placeholder="Enter Aadhaar No" required name="Aadhaar_no" autocomplete="off" type="text" ></td>
+									</tr>
+									<tr>
+									 <td>Address</td><td>:</td>
+									<td colspan="4"><textarea class="form-control input-large customer_address" placeholder="Enter Address" required name="address" autocomplete="off" type="text" > </textarea></td>
+									
+									</tr>
+								<tr>
+								<td colspan="8">
+								<center>
+								<input class="btn btn-primary"type="submit" name="submit" value="Submit">
+								</center>
+								</td>
+								</tr>
+						</table>
 					</form>
 				</div>
 			</div>
           </div>
-            <!-------------------------- View------------>
-           <div class="row">
+	</div>		
+		<div class="row">
 				<div class="col-md-12">
 			<div class="portlet box blue">
 			<div class="portlet-title ">
@@ -130,12 +148,9 @@ if(isset($_POST['sub_edit']))
 										 #
 									</th>
 									<th>Customer Name</th>
+									<th>Company Name</th>
+									<th>Company GST</th>
 									<th>Address</th>
-									<th>City</th>
-									<th>State</th>
-									<th>GST No</th>
-									<th>PAN No</th>
-									<th>Aadhaar No</th>
 									<th>Contact No</th>
 									<th>  Action
 									</th>
@@ -143,9 +158,11 @@ if(isset($_POST['sub_edit']))
 								</thead>
 							 <?php
 						  $r1=mysql_query("select * from customer");		
+						  $r2=mysql_query("select * from companies");			
 								$i=0;
 								while($row1=mysql_fetch_array($r1))
 								{
+
 								$i++;
 								$id=$row1['id'];
 								$name=$row1['customer_name'];
@@ -153,9 +170,18 @@ if(isset($_POST['sub_edit']))
 								$city=$row1['city'];
 								$state=$row1['state'];
 								$mobile=$row1['contact_no'];
-								$gst_no=$row1['gst_no'];
 								$pan_no=$row1['pan_no'];
 								$Aadhaar_no=$row1['Aadhaar_no'];
+								while($row2=mysql_fetch_array($r2))
+								{
+									$com_id=$row2['id'];
+									$customer_id=$row2['customer_id'];
+									$gst=$row2['gst_no'];
+									$company_mobile=$row2['phone_no'];
+									$company_address=$row2['address'];
+									
+								
+								
 								
  					?>
                     <tbody>
@@ -167,25 +193,16 @@ if(isset($_POST['sub_edit']))
 									<?php echo $name;?>
 									</td>
 									<td class="search">
-									<?php echo $address;?>
+									<?php echo fetchcompanyname($com_id);?>
 									</td>
 									<td class="search">
-									<?php echo $city;?>
+									<?php echo $gst;?>
 									</td>
                                     <td class="search">
-									<?php echo $state;?>
+									<?php echo $company_address;?>
 									</td> 
 									<td class="search">
-									<?php echo $gst_no;?>
-									</td>
-									<td class="search">
-									<?php echo $pan_no;?>
-									</td>
-									<td class="search">
-									<?php echo $Aadhaar_no;?>
-									</td>
-									<td class="search">
-									<?php echo $mobile;?>
+									<?php echo $company_mobile;?>
 									</td>
 									
 									<td>
@@ -208,37 +225,52 @@ if(isset($_POST['sub_edit']))
 								<input type="hidden" name='edit_id' class="form-control" value="<?php echo $id;?>" >	
 									<table class="table">
 										<tr>
-										<td>Customer Name</td><td>:</td>
-										<td><input class="form-control input-large customer_name" placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text" value="<?php echo $name;?>"> </td>
-										<td>City</td><td>:</td>
-										<td><input class="form-control input-large customer_city" placeholder="Enter City" required name="city" autocomplete="off" type="text" value="<?php echo $city;?>"> </td>
-										</tr>
-										<tr>
-										<td>State</td><td>:</td>
-										<td><input class="form-control input-large customer_state" placeholder="Enter state" required name="state" autocomplete="off" type="text" value="<?php echo $state;?>"> </td>
+										<td>Company Name</td><td>:</td>
+										<td><input class="form-control input-large company_name" placeholder="Enter Company Name" required name="company_name" autocomplete="off" type="text" value="<?php echo fetchcompanyname($com_id);?>"> </td>
 										<td>GST No</td><td>:</td>
-										<td><input class="form-control input-large customer_gst" placeholder="Enter GST No" required name="gst_no" autocomplete="off" type="text" value="<?php echo $gst_no;?>"> </td>
-										</tr>
-										<tr>
-										<td>Pan No</td><td>:</td>
-										<td><input class="form-control input-large customer_pan" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" value="<?php echo $pan_no;?>"> </td>
-										<td>Aadhaar No</td><td>:</td>
-										<td><input class="form-control input-large customer_aadhaar" placeholder="Enter Aadhaar No" required name="Aadhaar_no" autocomplete="off" type="text" value="<?php echo $Aadhaar_no;?>"></td>
-										</tr>
-										<tr>
-										 <td>Address</td><td>:</td>
-										<td><input class="form-control input-large customer_address" placeholder="Enter Address" required name="address" autocomplete="off" type="text" value="<?php echo $address;?>"></td>
-										<td>Mobile No</td><td>:</td>
-										<td><input class="form-control input-large customer_mobile" placeholder="Enter Contact No" required name="contact_no" autocomplete="off" type="text" value="<?php echo $mobile;?>"></td>
-										</tr>
-										<span class="help-block"> </span>
-										<tr>
-										<td colspan="6">
-										<center><button type="submit" name="sub_edit" class="btn green">Update</button></center>
+										<td>
+										<input class="form-control company_gst" p required name="company_gst" autocomplete="off" type="text" value="<?php echo $gst;?>">
 										</td>
 										</tr>
-								</table>
-							
+										<tr>
+										<td>Company Phone</td><td>:</td>
+										<td><input class="form-control input-large company_mobile" placeholder="Enter Phone No" required name="company_phone" autocomplete="off" type="text" value="<?php echo $company_mobile;?>"> </td>
+										<td>Company Address</td><td>:</td>
+										<td>
+										<input class="form-control company_address" placeholder="Enter Address" required name="company_address" autocomplete="off" type="text" value="<?php echo $company_address;?>">
+										</td>
+										</tr>
+									<tr>
+									<td> Name</td><td>:</td>
+									<td><input class="form-control input-large customer_name"  Name="name" required name="name" autocomplete="off" type="text" value="<?php echo $name;?>"> </td>
+									<td>Mobile No</td><td>:</td>
+									<td><input class="form-control input-large customer_mobile" placeholder="Enter Mobile No" required name="contact_no" autocomplete="off" type="text" value="<?php echo $mobile;?>"></td>
+									</tr>
+									<tr>
+									<td>State</td><td>:</td>
+									<td><input class="form-control input-large customer_state" placeholder="Enter state" required name="state" autocomplete="off" type="text" value="<?php echo $state;?>"> </td>
+									<td>City</td><td>:</td>
+									<td><input class="form-control input-large customer_city" placeholder="Enter City" required name="city" autocomplete="off" type="text" value="<?php echo $city;?>"> </td>
+									
+								   </tr>
+									<tr>
+									<td>Pan No</td><td>:</td>
+									<td><input class="form-control input-large customer_pan" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" value="<?php echo $pan_no;?>"> </td>
+									<td>Aadhaar No</td><td>:</td>
+									<td><input class="form-control input-large customer_aadhaar" placeholder="Enter Aadhaar No" required name="Aadhar_no" autocomplete="off" type="text" value="<?php echo $Aadhaar_no;?>"></td>
+									</tr>
+									<tr>
+									 <td>Address</td><td>:</td>
+									<td colspan="4"><input class="form-control input-large customer_address" placeholder="Enter Address" required name="address" autocomplete="off" type="text" value="<?php echo $address;?>"></td>
+									
+									</tr>
+								<tr>
+								<td colspan="8">
+								<center><button type="submit" name="sub_edit" class="btn green">Update</button></center>
+								</td>
+								</tr>
+						</table>
+			
 							</form>
 					</div>
 				</div>
@@ -284,24 +316,12 @@ if(isset($_POST['sub_edit']))
 					</td>
 				</tr>
 				</tbody>
-	<?php } ?>
+								<?php }} ?>
 				</table>
 			</div>
-				
-			</div>
-				 
-				   
-			</div>
-            </div>
-            
-            
-            
-            
-            </div>
-	</div>
-
-	
-	</div>
+		</div>
+	</div>	
+</div>
 </body>
 <?php footer(); ?>
 
@@ -309,4 +329,3 @@ if(isset($_POST['sub_edit']))
 
 </html>
  
-

@@ -326,5 +326,11 @@ $row=mysql_fetch_array($result);
 $name = $row['item_name'];
 return($name);
 }
-
+function fetchcompanyname($id)
+{
+$result=mysql_query("select `name` from `companies` where `id`='".$id."'");
+$row=mysql_fetch_array($result);
+$name = $row['name'];
+return($name);
+}
 ?>

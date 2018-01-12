@@ -29,6 +29,7 @@ include("database.php");
 										 #
 									</th>
 									<th> Invoice No</th>
+									<th>Company Name</th>
 									<th>Customer Name</th>
 									<th>Item Name</th>
 									<th>Invoice Date</th>
@@ -43,6 +44,7 @@ include("database.php");
 										{
 										$i++;
 										$invoice_no=$row1['id'];
+										$company=$row1['company_id'];
 										$name=$row1['customer_id'];
 										$item=$row1['item_id'];
 										$date=$row1['invoice_date'];
@@ -54,6 +56,9 @@ include("database.php");
 									</td>
 									<td class="search">
 									<?php echo $invoice_no;?>
+									</td>
+									<td class="search">
+									<?php echo fetchcompanyname($company);?>
 									</td>
 									<td class="search">
 									<?php echo fetchcustomername($name);?>
