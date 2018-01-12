@@ -26,16 +26,22 @@ include("database.php");
 			 <table class="table">
 			  <?php 
 			  $company=mysql_query("select * from companies");
+			  $company_no=mysql_query("select phone_no from company_contacts where company_id=1");
+			 while($fet=mysql_fetch_array($company_no))
+			 {
+				$phone_nos[]=$fet['phone_no'];
+			 }
+			 $phone_no_show=implode(',', $phone_nos);
 			  $customer=mysql_query("select * from customer");
 				$row1=mysql_fetch_array($customer);
-				$row=mysql_fetch_array($company);
+				$row=mysql_fetch_array($company)
 				?>
 				<tr>
 				<td colspan="4">
 				<span style="height:30px;width:350px;">
 				<h4 class="box-title">Place of Supply:</h4><br>
 				<?php echo $row['address'];?><br>
-				 <p><?php echo $row['phone_no'];?></p>
+				 <p>Phone No1 :<?php echo $phone_no_show;?></p>
 				 <p>GST Number :<?php echo $row['gst_no'];?></p>
 				 </span></td>
 				</tr> 
