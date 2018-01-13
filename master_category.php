@@ -41,7 +41,7 @@ if(isset($_POST['sub_edit']))
     <div class="col-md-6">
 			<div class="portlet box blue">
 			<div class="portlet-title">
-				<div class="caption">
+	n			<div class="caption">
 					<i class="fa fa-gift"></i>Master Category
 				</div>
 			</div>
