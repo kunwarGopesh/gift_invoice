@@ -27,10 +27,11 @@ include("database.php");
 			  <?php 
 			  $company=mysql_query("select * from companies");
 			  $company_no=mysql_query("select phone_no from company_contacts where company_id=1");
-			  $i=1;
+			 
 			 while($fet=mysql_fetch_array($company_no))
 			 {
 				$phone_nos[]=$fet['phone_no'];
+				
 			 }
 			 $phone_no_show=implode(',', $phone_nos);
 			  $customer=mysql_query("select * from customer");
@@ -42,8 +43,7 @@ include("database.php");
 				<span style="height:30px;width:350px;">
 				<h4 class="box-title">Place of Supply:</h4><br>
 				<?php echo $row['address'];?><br>
-				 <p><?php echo"phone No".$i++. $phone_no_show;?></p>
-				 <?php $i++;?>
+				 <p><?php echo"phone No".":".$phone_no_show;?></p>
 				 </span></td>
 				</tr> 
 
@@ -60,12 +60,11 @@ include("database.php");
 											<option value="<?php echo $row['id'] ;?>"><?php echo $row['customer_name']; ?></option>
 										<?php }?>
 										</select> 
-			</td>
-			
-			</tr>
-</table>
-<div id="newtable">	
-<table class="table">	
+										</td>
+										</tr>
+										</table>
+										<div id="newtable">	
+										<table class="table">	
 										<tr>
 										<td>Company Name</td><td>:</td>
 										<td><input class="form-control input-large company_name" placeholder="Enter Company Name" required name="company_name" autocomplete="off" type="text" value="" </td>

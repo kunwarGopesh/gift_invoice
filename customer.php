@@ -28,27 +28,28 @@ if(isset($_POST['submit']))
 {
 	$delet_class=$_POST['delet_class'];
 	mysql_query("DELETE FROM customer WHERE id='$delet_class'" );
+	mysql_query("DELETE FROM companies` WHERE customer_id='$delet_class'" );
 }
 
 if(isset($_POST['sub_edit']))
 {
 	$edit=$_REQUEST['edit_id'];  
-	$company_name=mysql_real_escape_string($_POST['company_name']);
-	$company_gst=mysql_real_escape_string($_POST['company_gst']);
-	$company_phone=mysql_real_escape_string($_POST['company_phone']);
-	$company_address=mysql_real_escape_string($_POST['company_address']);
-	$customer_name=mysql_real_escape_string($_POST['customer_name']);
-	$city=mysql_real_escape_string($_POST['city']);
-	$state=mysql_real_escape_string($_POST['state']);
-	$pan_no=mysql_real_escape_string($_POST['pan_no']);
-	$Aadhaar_no=mysql_real_escape_string($_POST['Aadhaar_no']);
-	$address=mysql_real_escape_string($_POST['address']);
-	$mobile=mysql_real_escape_string($_POST['contact_no']); 
+	$company_name=mysql_real_escape_string($_REQUEST['company_name']);
+	$company_gst=mysql_real_escape_string($_REQUEST['company_gst']);
+	$company_phone=mysql_real_escape_string($_REQUEST['company_phone']);
+	$company_address=mysql_real_escape_string($_REQUEST['company_address']);
+	$customer_name=mysql_real_escape_string($_REQUEST['name']);
+	$city=mysql_real_escape_string($_REQUEST['city']);
+	$state=mysql_real_escape_string($_REQUEST['state']);
+	$pan_no=mysql_real_escape_string($_REQUEST['pan_no']);
+	$Aadhaar_no=mysql_real_escape_string($_REQUEST['Aadhaar_no']);
+	$address=mysql_real_escape_string($_REQUEST['address']);
+	$mobile=mysql_real_escape_string($_REQUEST['contact_no']); 
 	 $r =mysql_query("update `customer` SET `customer_name`='$customer_name',`address`='$address',
-		`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no' where id='$edit'");
+		`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no' where `id`='$edit'");
 	$r=mysql_query($r);
 	$p=mysql_query("update `companies` SET `name`='$company_name',`address`='$company_address',
-		`phone_no`='$company_phone',`gst_no`='$company_gst' where id='$$edit'");
+		`phone_no`='$company_phone',`gst_no`='$company_gst',`customer_id`='$edit' where `customer_id`='$edit'");
 		
 		 $p=mysql_query($p);
 		echo '<script text="javascript">alert(Class Added Successfully")</script>';	
@@ -83,7 +84,7 @@ if(isset($_POST['sub_edit']))
 										<td><input class="form-control input-large company_name" placeholder="Enter Company Name" required name="company_name" autocomplete="off" type="text" value=""> </td>
 										<td>GST No</td><td>:</td>
 										<td>
-										<input class="form-control company_gst" placeholder="Enter GST No" required name="company_gst" autocomplete="off" type="text">
+										<input class="form-control input-large company_gst" placeholder="Enter GST No" required name="company_gst" autocomplete="off" type="text">
 										</td>
 										</tr>
 										<tr>
@@ -91,7 +92,7 @@ if(isset($_POST['sub_edit']))
 										<td><input class="form-control input-large company_mobile" placeholder="Enter Phone No" required name="company_phone" autocomplete="off" type="text" value=""> </td>
 										<td>Address</td><td>:</td>
 										<td>
-										<textarea class="form-control company_address" placeholder="Enter Address" required name="company_address" autocomplete="off" type="text"></textarea>
+										<textarea class="form-control input-large company_address" placeholder="Enter Address" required name="company_address" autocomplete="off" type="text"></textarea>
 										</td>
 										</tr>
 									<tr>
@@ -102,10 +103,25 @@ if(isset($_POST['sub_edit']))
 									</tr>
 									<tr>
 									<td>State</td><td>:</td>
-									<td><input class="form-control input-large customer_state" placeholder="Enter state" required name="state" autocomplete="off" type="text" > </td>
-									<td>City</td><td>:</td>
-									<td><input class="form-control input-large customer_city" placeholder="Enter City" required name="city" autocomplete="off" type="text" > </td>
+									<td>
+									<select name="state_id" id="state_id" class="select2me form-control input-large select_state">
+									<option value="">----------Choose State ----------</option>
+									<?php
+									$customer_data=mysql_query("SELECT DISTINCT state FROM city_states ");
 									
+									while($row=mysql_fetch_array($customer_data))
+									{?>		
+											<option value="<?php echo $row['state'] ;?>"><?php echo $row['state']; ?></option>
+										<?php }?>
+										</select> 
+									</td>									
+									<td>City</td><td>:</td>
+									<td id="newtable">
+									<select name="city_id" id="city_id" class="select2me form-control input-large select_city">
+									<option value="">----------Choose City ----------</option>
+									</select>
+									</td>	
+																	
 								   </tr>
 									<tr>
 									<td>Pan No</td><td>:</td>
@@ -151,21 +167,22 @@ if(isset($_POST['sub_edit']))
 									<th>Customer Name</th>
 									<th>Company Name</th>
 									<th>Company GST</th>
-									<th>Address</th>
-									<th>Contact No</th>
+									<th>Company Address</th>
+									<th>Company Mobile</th>
 									<th>  Action
 									</th>
 								</tr>
 								</thead>
 							 <?php
 						  $r1=mysql_query("select * from customer");		
-						  $r2=mysql_query("select * from companies");			
+						  		
 								$i=0;
 								while($row1=mysql_fetch_array($r1))
 								{
 
 								$i++;
 								$id=$row1['id'];
+								$customer_id=$row1['id'];
 								$name=$row1['customer_name'];
 								$address=$row1['address'];
 								$city=$row1['city'];
@@ -173,17 +190,15 @@ if(isset($_POST['sub_edit']))
 								$mobile=$row1['contact_no'];
 								$pan_no=$row1['pan_no'];
 								$Aadhaar_no=$row1['Aadhaar_no'];
+								
+								$r2=mysql_query("select * from `companies` where `customer_id`='$customer_id'");	
 								while($row2=mysql_fetch_array($r2))
 								{
 									$com_id=$row2['id'];
 									$customer_id=$row2['customer_id'];
 									$gst=$row2['gst_no'];
 									$company_mobile=$row2['phone_no'];
-									$company_address=$row2['address'];
-									
-								
-								
-								
+									$company_address=$row2['address'];		
  					?>
                     <tbody>
 								<tr>
@@ -210,7 +225,7 @@ if(isset($_POST['sub_edit']))
                                         <a class="btn blue-madison green btn-sm" rel="tooltip" title="Edit" data-toggle="modal" href="#edit<?php echo $id;?>"><i class="fa fa-edit"></i></a>
                                         &nbsp;
                                         <!--------editon-->
- <div class="modal fade" id="edit<?php echo $id ;?>" tabindex="-1" aria-hidden="true" style="padding-top:35px">
+	<div class="modal fade" id="edit<?php echo $id ;?>" tabindex="-1" aria-hidden="true" style="padding-top:35px">
              <div class="modal-dialog modal-lg">
                   <div class="modal-content">    
 						<div class="portlet box blue">
@@ -258,7 +273,7 @@ if(isset($_POST['sub_edit']))
 									<td>Pan No</td><td>:</td>
 									<td><input class="form-control input-large customer_pan" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" value="<?php echo $pan_no;?>"> </td>
 									<td>Aadhaar No</td><td>:</td>
-									<td><input class="form-control input-large customer_aadhaar" placeholder="Enter Aadhaar No" required name="Aadhar_no" autocomplete="off" type="text" value="<?php echo $Aadhaar_no;?>"></td>
+									<td><input class="form-control input-large customer_aadhaar" placeholder="Enter Aadhaar No" required name="Aadhaar_no" autocomplete="off" type="text" value="<?php echo $Aadhaar_no;?>"></td>
 									</tr>
 									<tr>
 									 <td>Address</td><td>:</td>
@@ -279,10 +294,7 @@ if(isset($_POST['sub_edit']))
 		</div>
 	</div>
 	</div>
-                                        
-                                        
-                                        
-                                        
+                                
                                         <!---- update----->
        <a class="btn blue-madison red btn-sm"  rel="tooltip" title="Delete"  data-toggle="modal" href="#delete<?php echo $id ;?>"><i class="fa fa-trash"></i></a>
             <div class="modal fade" id="delete<?php echo $id ;?>" tabindex="-1" aria-hidden="true" style="padding-top:35px">
@@ -311,9 +323,50 @@ if(isset($_POST['sub_edit']))
                 </div>
         <!-- /.modal-dialog -->
             </div>
+				  <a class="btn blue-madison blue btn-sm" rel="tooltip" title="View" data-toggle="modal" href="#view<?php echo $id;?>"><i class="fa fa-list"></i></a>					   
 									   
-									   
-									   
+						<!----------/. Modal -View------->
+	<div class="modal fade" id="view<?php echo $id ;?>" tabindex="-1" aria-hidden="true" style="padding-top:35px">
+             <div class="modal-dialog modal-lg">
+                  <div class="modal-content">    
+						<div class="portlet box blue">
+								<div class="portlet-title ">
+									<div class="caption">
+										<i class="fa fa-gift"></i>View Customers
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>	
+									</div>
+								</div>
+						</div>
+                        <div class="modal-body">
+						<form class="form-horizontal" role="form" id="noticeform" method="post" enctype="multipart/form-data">
+								<input type="hidden" name='edit_id' class="form-control" value="<?php echo $id;?>" >	
+									<table class="table">
+									<tr>
+									<td>Customer Address</td><td>:</td>
+									<td><?php echo $address;?></td>
+									<td>Mobile No</td><td>:</td>
+									<td><?php echo $mobile;?></td>
+									</tr>
+									<tr>
+									<td>City</td><td>:</td>
+									<td><?php echo $city;?></td>
+									<td>State</td><td>:</td>
+									<td><?php echo $state;?></td>
+									</tr>
+									<tr>
+									<td>Pan No</td><td>:</td>
+									<td><?php echo $pan_no;?></td>
+									<td>Aadhaar No</td><td>:</td>
+									<td><?php echo $Aadhaar_no;?></td>
+									</tr>
+									
+						</table>
+			
+							</form>
+					</div>
+				</div>
+			</div>
+		</div>						
 					</td>
 				</tr>
 				</tbody>
@@ -325,8 +378,29 @@ if(isset($_POST['sub_edit']))
 </div>
 </body>
 <?php footer(); ?>
-
+<script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script>
+        $(document).ready(function() {     
+         $("#state_id").live('change', function () {
+		 var state=$(this, 'option:selected').val();
+		 var old=$("#old").html();
+			if(state.length>0){
+			$.ajax({
+				url: "state_city.php?reg_no="+state,
+				}).done(function(response) {
+					$("#newtable").html(response);
+				});
+			}else	{
+				$("#newtable").html(old);
+			} 
+	 });
+	 });
+</script>
 <?php scripts();?>
 
 </html>
- 
+<td id="old" style="display:none;">
+<select name="city_id" id="city_id" class="select2me form-control input-large select_city">
+<option value="">----------Choose City ----------</option>
+</select>
+</td>

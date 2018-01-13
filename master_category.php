@@ -22,7 +22,8 @@ if(isset($_POST['sub_edit']))
 {
 	$edit=$_REQUEST['edit_id'];  
 	$class_name=mysql_real_escape_string($_REQUEST["class_name"]);
-	$r=mysql_query("update `master_category` SET `category_name`='$class_name' where id='$edit'" );
+	$cat_id=mysql_real_escape_string($_REQUEST["category_id"]);
+	$r=mysql_query("update `master_category` SET `category_name`='$class_name',`parent_id`='$cat_id' where id='$edit'" );
 	$r=mysql_query($r);
 	echo '<script text="javascript">alert(Class Added Successfully")</script>';	
 }
@@ -41,7 +42,7 @@ if(isset($_POST['sub_edit']))
     <div class="col-md-6">
 			<div class="portlet box blue">
 			<div class="portlet-title">
-	n			<div class="caption">
+			<div class="caption">
 					<i class="fa fa-gift"></i>Master Category
 				</div>
 			</div>
@@ -55,7 +56,7 @@ if(isset($_POST['sub_edit']))
 								<div class="input-icon right">
 								<i class="fa"></i>
 								<select name="category_id" class="select2me form-control input-large " >
-										<option >------------Select Item Category------------</option>
+										<option >-------Select Item Category-------</option>
 											<?php
 												$sql=mysql_query("select id,category_name from master_category where flag='0'");
 												
@@ -73,7 +74,7 @@ if(isset($_POST['sub_edit']))
 							<div class="col-md-6">
 								<div class="input-icon right">
 								<i class="fa"></i>
-								<input class="form-control " placeholder="Please Enter Category Name" required name="class_name" autocomplete="off" type="text">
+								<input class="form-control input-large " placeholder="Please Enter Category Name" required name="class_name" autocomplete="off" type="text">
 								</div>
 								
 							</div>
@@ -112,10 +113,11 @@ if(isset($_POST['sub_edit']))
 										 #
 									</th>
 									<th>
-									
                                     Category Name
 									</th>
-									 
+									 <th>
+                                    Parent Category
+									</th>
                                     <th>
                                         Action
 									</th>
@@ -129,6 +131,7 @@ if(isset($_POST['sub_edit']))
 					$i++;
 					$id=$row1['id'];
 					$class_name=$row1['category_name'];
+					$cat_id=$row1['parent_id'];
  					?>
                     <tbody>
 								<tr>
@@ -137,6 +140,17 @@ if(isset($_POST['sub_edit']))
 									</td>
 									<td class="search">
 									<?php echo $class_name;?>
+									</td>
+									<td class="search">
+									<?php if($cat_id==0)
+									{
+										echo $class_name;
+									}
+									else
+									{
+											echo fetchcategoryname($cat_id);
+									}
+									?>
 									</td>
                                      
 									<td>
@@ -162,17 +176,33 @@ if(isset($_POST['sub_edit']))
                                 <input type="hidden" name='edit_id' class="form-control" value="<?php echo $id;?>" >	
 							
 								<div class="form-body">
-						 
-						<div class="form-group">
-							<label class="control-label col-md-3">Category Name</label>
-							<div class="col-md-6">
-								<div class="input-icon right">
-								<i class="fa"></i>
-								<input class="form-control" placeholder="Please Enter Class Name" required name="class_name" autocomplete="off" type="text" value="<?php echo $class_name;?>">
+								<div class="form-group">
+									<label class="control-label col-md-3">Choose Category</label>
+									<div class="col-md-6">
+										<div class="input-icon right">
+										<i class="fa"></i>
+										<select name="category_id" class="select2me form-control input-large " >
+												<option value="<?php echo $cat_id;?>"><?php echo fetchcategoryname($cat_id);?></option>
+													<?php
+														$sql=mysql_query("select id,category_name from master_category where flag='0'");
+														
+														while($row=mysql_fetch_array($sql))
+														{?>		
+																<option  value="<?php echo $row['id'] ;?>"><?php echo $row['category_name']; ?></option>
+															<?php }?>
+										</select>
+										</div>
+									</div>
 								</div>
-								
-							</div>
-						</div>
+								<div class="form-group">
+									<label class="control-label col-md-3">Category Name</label>
+									<div class="col-md-6">
+										<div class="input-icon right">
+											<i class="fa"></i>
+											<input class="form-control" placeholder="Please Enter Class Name" required name="class_name" autocomplete="off" type="text" value="<?php echo $class_name;?>">
+										</div>
+									</div>
+								</div>
                         
 						<div class=" right1" align="right" style="margin-right:10px">
 							<button type="submit" class="btn green" name="sub_edit">Update</button>
@@ -232,10 +262,6 @@ if(isset($_POST['sub_edit']))
 				   
 			</div>
             </div>
-            
-            
-            
-            
             </div>
 	</div>
 

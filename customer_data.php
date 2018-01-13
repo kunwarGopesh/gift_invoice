@@ -23,7 +23,7 @@ $company_phone=$fet1['phone_no'];
 <table class="table">
 										<tr>
 										<td>Company Name</td><td>:</td>
-										<td><input class="form-control input-large company_name" placeholder="Enter Company Name" required name="company_name" autocomplete="off" type="text" value="<?php echo $company_name; ?>" </td>
+										<td><input class="form-control input-large company_name" placeholder="Enter Company Name" required name="company_name" autocomplete="off" type="text" value="<?php echo $company_name;?>"> </td>
 										<td>GST No</td><td>:</td>
 										<td>
 										<input class="form-control company_gst" placeholder="Enter GST No" required name="company_gst" autocomplete="off" type="text" value="<?php echo $gst_no; ?>">

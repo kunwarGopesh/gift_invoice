@@ -9,7 +9,7 @@ if(isset($_POST['sub']))
 	$code=$_POST['code'];
 	$price=$_POST['price'];
 	$catid=$_POST['category'];
-	mysql_query("insert into `master_items` SET `item_name`='$name',`item_code`='$code',`price`='$price',`category_id`='$catid'");
+	mysql_query("insert into `master_items` SET `item_name`='$name',`item_code`='$code',`item_price`='$price',`category_id`='$catid'");
 		
 	echo '<script>window.location="item.php"</script>';
 }
@@ -20,8 +20,9 @@ if(isset($_POST['sub_edit']))
 	$code=mysql_real_escape_string($_REQUEST["code"]);
 	$price=mysql_real_escape_string($_REQUEST["price"]);
 	$catid=mysql_real_escape_string($_REQUEST["category"]);
+	//print_r($catid);exit;
 	$r=mysql_query("update `master_items` SET `item_name`='$name',`item_code`='$code',
-		`price`='$price',`category_id`='$catid' where `id`='$edit'" );
+		`item_price`='$price',`category_id`='$catid' where `id`='$edit'" );
 	$r=mysql_query($r);
 	echo '<script text="javascript">alert(Class Added Successfully")</script>';	
 }
@@ -110,7 +111,7 @@ if(isset($_POST['sub_del']))
 									<th>Category Name</th>
 									<th> Item Name</th>
 									<th>Item code</th>
-									<th>Price</th>
+									<th>Price   (&#8377;)</th>
 									<th>  Action
 									</th>
 								</tr>
@@ -125,11 +126,9 @@ if(isset($_POST['sub_del']))
 					$id=$row1['id'];
 					$name=$row1['item_name'];
 					$icode=$row1['item_code'];
-					$price=$row1['price'];
+					$price=$row1['item_price'];
 					$catid=$row1['category_id'];
-					/* $st=mysql_query("select `category_name` from `master_category` where `id`='$catid'");
-					$ft=mysql_fetch_array($st);
-					$category_name=$ft['category_name']; */
+					
 					
  					?>
                     <tbody>
@@ -172,7 +171,7 @@ if(isset($_POST['sub_del']))
 												<tr>
 												<td>Choose Category</td><td>:</td>
 												<td><select name="category" class="select2me form-control input-large " >
-												<option ><?php echo fetchcategoryname($catid);?></option>
+												<option value="<?php echo $catid;?>"><?php echo fetchcategoryname($catid);?></option>
 													<?php
 														$sql=mysql_query("select id,category_name from master_category where flag='0'");
 														
