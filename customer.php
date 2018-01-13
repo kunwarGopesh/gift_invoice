@@ -159,13 +159,14 @@ if(isset($_POST['sub_edit']))
 								</thead>
 							 <?php
 						  $r1=mysql_query("select * from customer");		
-						  $r2=mysql_query("select * from companies");			
+						  		
 								$i=0;
 								while($row1=mysql_fetch_array($r1))
 								{
 
 								$i++;
 								$id=$row1['id'];
+								$customer_id=$row1['id'];
 								$name=$row1['customer_name'];
 								$address=$row1['address'];
 								$city=$row1['city'];
@@ -173,6 +174,8 @@ if(isset($_POST['sub_edit']))
 								$mobile=$row1['contact_no'];
 								$pan_no=$row1['pan_no'];
 								$Aadhaar_no=$row1['Aadhaar_no'];
+								
+								$r2=mysql_query("select * from `companies` where `customer_id`='$customer_id'");	
 								while($row2=mysql_fetch_array($r2))
 								{
 									$com_id=$row2['id'];
@@ -180,10 +183,7 @@ if(isset($_POST['sub_edit']))
 									$gst=$row2['gst_no'];
 									$company_mobile=$row2['phone_no'];
 									$company_address=$row2['address'];
-									
-								
-								
-								
+									 
  					?>
                     <tbody>
 								<tr>
