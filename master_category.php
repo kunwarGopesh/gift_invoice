@@ -5,8 +5,10 @@
 if(isset($_POST['sub']))
 {
 	$class_name=$_POST['class_name'];
+	$cat_id=$_POST['category_id'];
 	
-	mysql_query("insert into `master_category` SET `category_name`='$class_name'");	
+	mysql_query("insert into `master_category` SET `category_name`='$class_name',`parent_id`='$cat_id'");	
+	echo '<script >window.location="master_category.php"</script>';	
 }
  
 if(isset($_POST['sub_del']))
@@ -47,13 +49,31 @@ if(isset($_POST['sub_edit']))
 			<!-- BEGIN FORM-->
 				<form  class="form-horizontal" id="form_sample_2"  role="form" method="post"> 
 					<div class="form-body">
-						 
+						 <div class="form-group">
+							<label class="control-label col-md-3">Select Category</label>
+							<div class="col-md-6">
+								<div class="input-icon right">
+								<i class="fa"></i>
+								<select name="category_id" class="select2me form-control input-large " >
+										<option >------------Select Item Category------------</option>
+											<?php
+												$sql=mysql_query("select id,category_name from master_category where parent_id='0'");
+												
+												while($row=mysql_fetch_array($sql))
+												{?>		
+														<option  value="<?php echo $row['id'] ;?>"><?php echo $row['category_name']; ?></option>
+													<?php }?>
+													</select>
+								</div>
+								
+							</div>
+						</div>
 						<div class="form-group">
 							<label class="control-label col-md-3">Category Name</label>
 							<div class="col-md-6">
 								<div class="input-icon right">
 								<i class="fa"></i>
-								<input class="form-control" placeholder="Please Enter Category Name" required name="class_name" autocomplete="off" type="text">
+								<input class="form-control " placeholder="Please Enter Category Name" required name="class_name" autocomplete="off" type="text">
 								</div>
 								
 							</div>
