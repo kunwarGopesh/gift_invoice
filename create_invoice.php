@@ -27,6 +27,7 @@ include("database.php");
 			  <?php 
 			  $company=mysql_query("select * from companies");
 			  $company_no=mysql_query("select phone_no from company_contacts where company_id=1");
+			  $i=1;
 			 while($fet=mysql_fetch_array($company_no))
 			 {
 				$phone_nos[]=$fet['phone_no'];
@@ -41,7 +42,8 @@ include("database.php");
 				<span style="height:30px;width:350px;">
 				<h4 class="box-title">Place of Supply:</h4><br>
 				<?php echo $row['address'];?><br>
-				 <p>Phone No1 :<?php echo $phone_no_show;?></p>
+				 <p><?php echo"phone No".$i++. $phone_no_show;?></p>
+				 <?php $i++;?>
 				 </span></td>
 				</tr> 
 

@@ -57,7 +57,7 @@ if(isset($_POST['sub_edit']))
 								<select name="category_id" class="select2me form-control input-large " >
 										<option >------------Select Item Category------------</option>
 											<?php
-												$sql=mysql_query("select id,category_name from master_category where parent_id='0'");
+												$sql=mysql_query("select id,category_name from master_category where flag='0'");
 												
 												while($row=mysql_fetch_array($sql))
 												{?>		
