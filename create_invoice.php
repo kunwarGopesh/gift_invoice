@@ -42,8 +42,6 @@ include("database.php");
 				<h4 class="box-title">Place of Supply:</h4><br>
 				<?php echo $row['address'];?><br>
 				 <p>Phone No1 :<?php echo $phone_no_show;?></p>
-				 <p>Phone No1 :<?php echo $phone_no_show;?></p>
-				 <p>GST Number :<?php echo $row['gst_no'];?></p>
 				 </span></td>
 				</tr> 
 
@@ -61,13 +59,29 @@ include("database.php");
 										<?php }?>
 										</select> 
 			</td>
-			<td>Invoice date</td><td>:</td>
-		    <td><input class="form-control form-control-inline input-large date-picker date" placeholder="yyyy-mm-dd" required data-date-format="yyyy-mm-dd" size="16" autocomplete="off" type="text" name="date"> </td>
+			
 			</tr>
 </table>
 <div id="newtable">	
 <table class="table">	
-		<tr>
+										<tr>
+										<td>Company Name</td><td>:</td>
+										<td><input class="form-control input-large company_name" placeholder="Enter Company Name" required name="company_name" autocomplete="off" type="text" value="" </td>
+										<td>GST No</td><td>:</td>
+										<td>
+										<input class="form-control company_gst" placeholder="Enter GST No" required name="company_gst" autocomplete="off" type="text" value="">
+										</td>
+										</tr>
+										<tr>
+										<td>Company Phone</td><td>:</td>
+										<td><input class="form-control input-large company_mobile" placeholder="Enter Phone No" required name="company_phone" autocomplete="off" type="text" value=""> </td>
+										<td>Address</td><td>:</td>
+										<td>
+										<input class="form-control company_address" placeholder="Enter Address" required name="company_address" autocomplete="off" type="text" value="">
+										</td>
+										</tr>		
+										<tr>
+			<tr>
 		    <td>Customer Name</td><td>:</td>
 		    <td><input class="form-control input-large customer_name" placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text" value=""> </td>
 			<td>State</td><td>:</td>
@@ -77,8 +91,8 @@ include("database.php");
 		    
 			<td>City</td><td>:</td>
 		    <td><input class="form-control input-large customer_city" placeholder="Enter City" required name="city" autocomplete="off" type="text" value=""> </td>
-		    <td>GST No</td><td>:</td>
-		    <td><input class="form-control input-large customer_gst" placeholder="Enter GST No" required name="gst_no" autocomplete="off" type="text" value=""> </td>
+		  <td>Mobile No</td><td>:</td>
+		    <td><input class="form-control input-large customer_mobile" placeholder="Enter Contact No" required name="contact_no" autocomplete="off" type="text" value=""></td>
 			</tr>
 			<tr>
 		    <td>Pan No</td><td>:</td>
@@ -89,8 +103,9 @@ include("database.php");
 			<tr>
 			 <td>Address</td><td>:</td>
 		    <td><input class="form-control input-large customer_address" placeholder="Enter Address" required name="address" autocomplete="off" type="text" value=""> </td>
-			<td>Mobile No</td><td>:</td>
-		    <td><input class="form-control input-large customer_mobile" placeholder="Enter Contact No" required name="contact_no" autocomplete="off" type="text" value=""></td>
+			 <td>Invoice date</td><td>:</td>
+		    <td><input class="form-control form-control-inline input-large date-picker date" placeholder="yyyy-mm-dd" required data-date-format="yyyy-mm-dd" size="16" autocomplete="off" type="text" name="date"> </td>
+			
 
 			</tr>
 </table>
@@ -386,32 +401,52 @@ include("database.php");
 
 </html>	
 <div id="old" style="display:none;">
-<table class="table">
+<table class="table">	
+										<tr>
+										<td>Company Name</td><td>:</td>
+										<td><input class="form-control input-large " placeholder="Enter Company Name" required name="company_name" autocomplete="off" type="text" value="" </td>
+										<td>GST No</td><td>:</td>
+										<td>
+										<input class="form-control " placeholder="Enter GST No" required name="company_gst" autocomplete="off" type="text" value="">
+										</td>
+										</tr>
+										<tr>
+										<td>Company Phone</td><td>:</td>
+										<td><input class="form-control input-large " placeholder="Enter Phone No" required name="company_phone" autocomplete="off" type="text" value=""> </td>
+										<td>Address</td><td>:</td>
+										<td>
+										<input class="form-control " placeholder="Enter Address" required name="company_address" autocomplete="off" type="text" value="">
+										</td>
+										</tr>		
+										<tr>
 			<tr>
 		    <td>Customer Name</td><td>:</td>
 		    <td><input class="form-control input-large " placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text" value=""> </td>
-			<td>City</td><td>:</td>
-		    <td><input class="form-control input-large " placeholder="Enter City" required name="city" autocomplete="off" type="text" value=""> </td>
+			<td>State</td><td>:</td>
+		    <td><input class="form-control input-large " placeholder="Enter state" required name="state" autocomplete="off" type="text" value=""> </td>
 			</tr>
 			<tr>
-		    <td>State</td><td>:</td>
-		    <td><input class="form-control input-large " placeholder="Enter state" required name="state" autocomplete="off" type="text" value=""> </td>
-		    <td>GST No</td><td>:</td>
-		    <td><input class="form-control input-large " placeholder="Enter GST No" required name="gst_no" autocomplete="off" type="text" value=""> </td>
+		    
+			<td>City</td><td>:</td>
+		    <td><input class="form-control input-large " placeholder="Enter City" required name="city" autocomplete="off" type="text" value=""> </td>
+		  <td>Mobile No</td><td>:</td>
+		    <td><input class="form-control input-large " placeholder="Enter Contact No" required name="contact_no" autocomplete="off" type="text" value=""></td>
 			</tr>
 			<tr>
 		    <td>Pan No</td><td>:</td>
-		    <td><input class="form-control input-large " placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" value=""> </td>
+		    <td><input class="form-control input-large" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" value=""> </td>
 		    <td>Aadhaar No</td><td>:</td>
 		    <td><input class="form-control input-large " placeholder="Enter Aadhaar No" required name="Aadhar_no" autocomplete="off" type="text" value=""></td>
 			</tr>
 			<tr>
 			 <td>Address</td><td>:</td>
 		    <td><input class="form-control input-large " placeholder="Enter Address" required name="address" autocomplete="off" type="text" value=""> </td>
-			<td>Mobile No</td><td>:</td>
-		    <td><input class="form-control input-large " placeholder="Enter Contact No" required name="contact_no" autocomplete="off" type="text" value=""></td>
-		   </tr>
-		   </table>
+			 <td>Invoice date</td><td>:</td>
+		    <td><input class="form-control form-control-inline input-large date-picker " placeholder="yyyy-mm-dd" required data-date-format="yyyy-mm-dd" size="16" autocomplete="off" type="text" name="date"> </td>
+			
+
+			</tr>
+</table>
 </div>	  
 <?php 
 include("database.php");

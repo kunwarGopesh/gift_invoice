@@ -16,6 +16,7 @@ if(isset($_POST['submit']))
 	$Aadhaar_no=$_POST['Aadhaar_no'];
 	$address=$_POST['address'];
 	$mobile=$_POST['contact_no'];
+	//$date=$_POST['date'];
 	mysql_query("insert into `customer` SET `customer_name`='$customer_name',`address`='$address',
 		`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no'");
 		$customer_id=mysql_insert_id();
@@ -23,7 +24,7 @@ if(isset($_POST['submit']))
 		`phone_no`='$company_phone',`gst_no`='$company_gst'");
 	echo '<script>window.location="customer.php"</script>';
 }
-/* if(isset($_POST['sub_del']))
+ if(isset($_POST['sub_del']))
 {
 	$delet_class=$_POST['delet_class'];
 	mysql_query("DELETE FROM customer WHERE id='$delet_class'" );
@@ -42,17 +43,17 @@ if(isset($_POST['sub_edit']))
 	$pan_no=mysql_real_escape_string($_POST['pan_no']);
 	$Aadhaar_no=mysql_real_escape_string($_POST['Aadhaar_no']);
 	$address=mysql_real_escape_string($_POST['address']);
-	$mobile=mysql_real_escape_string($_POST['contact_no']); */
-	/* $r =mysql_query("update `customer` SET `customer_name`='$customer_name',`address`='$address',
+	$mobile=mysql_real_escape_string($_POST['contact_no']); 
+	 $r =mysql_query("update `customer` SET `customer_name`='$customer_name',`address`='$address',
 		`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no' where id='$edit'");
 	$r=mysql_query($r);
 	$p=mysql_query("update `companies` SET `name`='$company_name',`address`='$company_address',
-		`phone_no`='$company_phone',`gst_no`='$company_gst' where id='$$edit'"); */
+		`phone_no`='$company_phone',`gst_no`='$company_gst' where id='$$edit'");
 		
-		/* $p=mysql_query($p);
-		echo '<script text="javascript">alert(Class Added Successfully")</script>';	 */
+		 $p=mysql_query($p);
+		echo '<script text="javascript">alert(Class Added Successfully")</script>';	
 	
-//}
+}
   ?> 
 <html>
 <head>
@@ -90,7 +91,7 @@ if(isset($_POST['sub_edit']))
 										<td><input class="form-control input-large company_mobile" placeholder="Enter Phone No" required name="company_phone" autocomplete="off" type="text" value=""> </td>
 										<td>Address</td><td>:</td>
 										<td>
-										<input class="form-control company_address" placeholder="Enter Address" required name="company_address" autocomplete="off" type="text">
+										<textarea class="form-control company_address" placeholder="Enter Address" required name="company_address" autocomplete="off" type="text"></textarea>
 										</td>
 										</tr>
 									<tr>
@@ -114,7 +115,7 @@ if(isset($_POST['sub_edit']))
 									</tr>
 									<tr>
 									 <td>Address</td><td>:</td>
-									<td colspan="4"><textarea class="form-control input-large customer_address" placeholder="Enter Address" required name="address" autocomplete="off" type="text" > </textarea></td>
+									<td colspan="4"><textarea class="form-control customer_address" placeholder="Enter Address" required name="customer_address" autocomplete="off" type="text"></textarea> </textarea></td>
 									
 									</tr>
 								<tr>
