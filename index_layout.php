@@ -305,6 +305,13 @@ function abc()
 </script>
 <?php } ?>
 <?php
+function fetchrolename($id)
+{
+$result=mysql_query("select `role_name` from `master_role` where `id`='".$id."'");
+$row=mysql_fetch_array($result);
+$name = $row['role_name'];
+return($name);
+}
 function fetchcategoryname($id)
 {
 $result=mysql_query("select `category_name` from `master_category` where `id`='".$id."'");

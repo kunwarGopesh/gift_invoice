@@ -67,7 +67,7 @@ include("database.php");
 										<table class="table">	
 										<tr>
 										<td>Company Name</td><td>:</td>
-										<td><input class="form-control input-large company_name" placeholder="Enter Company Name" required name="company_name" autocomplete="off" type="text" value="" </td>
+										<td><input class="form-control input-large company_name" placeholder="Enter Company Name"  name="company_name" autocomplete="off" type="text" value="" </td>
 										<td>GST No</td><td>:</td>
 										<td>
 										<input class="form-control company_gst" placeholder="Enter GST No" required name="company_gst" autocomplete="off" type="text" value="">
@@ -82,48 +82,46 @@ include("database.php");
 										</td>
 										</tr>		
 										<tr>
-			<tr>
-		    <td>Customer Name</td><td>:</td>
-		    <td><input class="form-control input-large customer_name" placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text" value=""> </td>
-			<td>State</td><td>:</td>
-		    <td>
-			<select name="state_id" id="state_id" class="select2me form-control input-large select_state">
-									<option value="">----------Choose State ----------</option>
-									<?php
-									$customer_data=mysql_query("SELECT DISTINCT state FROM city_states ");
-									
-									while($row=mysql_fetch_array($customer_data))
-									{?>		
-											<option value="<?php echo $row['state'] ;?>"><?php echo $row['state']; ?></option>
-										<?php }?>
-			</select> 
-			</td>
-			</tr>
-			<tr>
-		    
-			<td>City</td><td>:</td>
-		    <td id="newcity">
-			<select name="city_id" id="city_id" class="select2me form-control input-large select_city">
-			<option value="">----------Choose City ----------</option>
-			</select>
-			</td>
-			<td>Mobile No</td><td>:</td>
-		    <td><input class="form-control input-large customer_mobile" placeholder="Enter Contact No" required name="contact_no" autocomplete="off" type="text" value=""></td>
-			</tr>
-			<tr>
-		    <td>Pan No</td><td>:</td>
-		    <td><input class="form-control input-large customer_pan" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" value=""> </td>
-		    <td>Aadhaar No</td><td>:</td>
-		    <td><input class="form-control input-large customer_aadhaar" placeholder="Enter Aadhaar No" required name="Aadhar_no" autocomplete="off" type="text" value=""></td>
-			</tr>
-			<tr>
-			 <td>Address</td><td>:</td>
-		    <td><input class="form-control input-large customer_address" placeholder="Enter Address" required name="address" autocomplete="off" type="text" value=""> </td>
-			 <td>Invoice date</td><td>:</td>
-		    <td><input class="form-control form-control-inline input-large date-picker date" placeholder="yyyy-mm-dd" required data-date-format="yyyy-mm-dd" size="16" autocomplete="off" type="text" name="date"> </td>
-			
-
-			</tr>
+							<tr>
+							<td>Customer Name</td><td>:</td>
+							<td><input class="form-control input-large customer_name" placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text" value=""> </td>
+							<td>State</td><td>:</td>
+							<td>
+							<select name="state_id" id="state_id" class="select2me form-control input-large select_state">
+													<option value="">----------Choose State ----------</option>
+													<?php
+													$customer_data=mysql_query("SELECT DISTINCT state FROM city_states ");
+													
+													while($row=mysql_fetch_array($customer_data))
+													{?>		
+															<option value="<?php echo $row['state'] ;?>"><?php echo $row['state']; ?></option>
+														<?php }?>
+							</select> 
+							</td>
+							</tr>
+							<tr>
+							
+							<td>City</td><td>:</td>
+							<td id="newcity">
+							<select name="city_id" id="city_id" class="select2me form-control input-large select_city">
+							<option value="">----------Choose City ----------</option>
+							</select>
+							</td>
+							<td>Mobile No</td><td>:</td>
+							<td><input class="form-control input-large customer_mobile" placeholder="Enter Contact No" required name="contact_no" autocomplete="off" type="text" value=""></td>
+							</tr>
+							<tr>
+							<td>Pan No</td><td>:</td>
+							<td><input class="form-control input-large customer_pan" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" value=""> </td>
+							<td>Aadhaar No</td><td>:</td>
+							<td><input class="form-control input-large customer_aadhaar" placeholder="Enter Aadhaar No" required name="Aadhar_no" autocomplete="off" type="text" value=""></td>
+							</tr>
+							<tr>
+							 <td>Address</td><td>:</td>
+							<td><input class="form-control input-large customer_address" placeholder="Enter Address" required name="address" autocomplete="off" type="text" value=""> </td>
+							 <td>Invoice date</td><td>:</td>
+							<td><input class="form-control form-control-inline input-large date-picker date" placeholder="yyyy-mm-dd" required data-date-format="yyyy-mm-dd" size="16" autocomplete="off" type="text" name="date"> </td>
+							</tr>
 </table>
 </div>
 
@@ -157,47 +155,47 @@ include("database.php");
 		<input class="form-control dis_rupee " placeholder="Enter Amount" required name="dis_rupee" autocomplete="off" type="text" value="">
 		</td>
 		<td><input class="form-control dis_per " placeholder="Enter %" required name="dis_per" autocomplete="off" type="text" value=""></td>
-		<td colspan="2" style="border:1px;border-style:solid;"><input class="form-control taxable_value" placeholder="Total Amount" required name="total_amount" autocomplete="off" type="text" value=""></td>
+		<td colspan="2" style="border:1px;border-style:solid;"><input class="form-control taxable_value" placeholder="Total Amount" required name="total_after_discount" autocomplete="off" type="text" value=""></td>
 		</tr>
 		
 		<tr style="border:1px;border-style:solid;">
 		<td style="border:1px;border-style:solid;text-align:right;" colspan="4">SGST</td>
 		<td style="border:1px;border-style:solid;text-align:right;">
-		<select class="select form-control input-small sgst_option" name="cgst">
+		<select class="select form-control input-small sgst_option" name="sgst_per">
 			<option>%</option>
-			<?php $customer_data=mysql_query("select percentage from taxation_rates where taxation_name='SGST'");				
-									while($row=mysql_fetch_array($customer_data))
+			<?php $cgst_data=mysql_query("select percentage from taxation_rates where taxation_name='SGST'");				
+									while($row=mysql_fetch_array($cgst_data))
 									{?>		
-											<option class="sgst_option"value="<?php echo $row['id'] ;?>"><?php echo $row['percentage']; ?></option>
+											<option class="sgst_option"value="<?php echo $row['percentage'] ;?>"><?php echo $row['percentage']; ?></option>
 										<?php }?>
 		</select>
 		</td>
 		<td style="border:1px;border-style:solid;">
 		<input class="form-control sgst_amount " placeholder="SGST Amount" required name="sgst_amount" autocomplete="off" type="text"></td>
 		<td colspan="2" style="border:1px;border-style:solid;">
-		<input class="form-control amount_after_sgst " placeholder="Total Amount" required name="total_amount" autocomplete="off" type="text"></td>
+		<input class="form-control amount_after_sgst " placeholder="Total Amount" required name="amount_after_sgst" autocomplete="off" type="text"></td>
 		</tr>
 		<tr style="border:1px;border-style:solid;">
 		<td style="border:1px;border-style:solid;text-align:right;" colspan="4">CGST</td>
 		<td style="border:1px;border-style:solid;text-align:right;">	
-		<select class="select form-control input-small cgst_option" name="cgst">
+		<select class="select form-control input-small cgst_option" name="cgst_per">
 			<option>%</option>
-			<?php $customer_data=mysql_query("select percentage from taxation_rates where taxation_name='CGST'");				
-									while($row=mysql_fetch_array($customer_data))
+			<?php $sgst_data=mysql_query("select percentage from taxation_rates where taxation_name='CGST'");				
+									while($row=mysql_fetch_array($sgst_data))
 									{?>		
-											<option value="<?php echo $row['id'] ;?>"><?php echo $row['percentage']; ?></option>
+											<option value="<?php echo $row['percentage'] ;?>"><?php echo $row['percentage']; ?></option>
 										<?php }?>
 			
 		</select>
 		</td>
 		<td style="border:1px;border-style:solid;">
 		<input class="form-control cgst_amount " placeholder="CGST Amount" required name="cgst_amount" autocomplete="off" type="text"></td>
-		<td colspan="2" style="border:1px;border-style:solid;"><input class="form-control amount_after_cgst" placeholder="Total Amount" required name="total_amount" autocomplete="off" type="text" value=""></td>
+		<td colspan="2" style="border:1px;border-style:solid;"><input class="form-control amount_after_cgst" placeholder="Total Amount" required name="amount_after_cgst" autocomplete="off" type="text" value=""></td>
 		</tr>
 		<tr style="border:1px;border-style:solid;">
 		<td style="border:1px;border-style:solid;text-align:right;" colspan="4">Grand Total</td>
 		<td style="border:1px;border-style:solid;text-align:right;" colspan="4">
-		<input class="form-control grand_total" placeholder="Grand Total" required name="total_qty" autocomplete="off" type="text" value=""></td>
+		<input class="form-control grand_total" placeholder="Grand Total" required name="grand_total" autocomplete="off" type="text" value=""></td>
 		</tr>
 		<tr>
 		<td colspan="8">
@@ -211,21 +209,23 @@ include("database.php");
 		<tbody>
 		<tr class="main_tr1" style="border:1px;border-style:solid;">
 		<td style="border:1px;border-style:solid;">1 </td>
-		<td style="border:1px;border-style:solid;"><select name="category" class="select2me form-control input-medium ">
-								<option  >--select Item Category--</option>
+		<td style="border:1px;border-style:solid;">
+				<select name="category_id" class="select2me form-control input-medium ">
+						<option  >--select Item Category--</option>
 									<?php
 									$sql=mysql_query("select id,category_name from master_category where flag='0'");
 									
 									while($row=mysql_fetch_array($sql))
 									{?>		
-											<option  value="<?php echo $row['id'] ;?>"><?php echo $row['category_name']; ?></option>
-										<?php }?>
-			</td>
+										<option  value="<?php echo $row['id'] ;?>"><?php echo $row['category_name']; ?></option>
+						<?php		}?>
+				</select>
+		</td>
 			<td style="border:1px;border-style:solid;width:20%;"><input class="form-control " placeholder="Item Name" required name="item_name" autocomplete="off" type="text" value=""></td>
 			<td style="border:1px;border-style:solid;"><input class="form-control " placeholder="Item Code" required name="item_code" autocomplete="off" type="text" value=""></td>
 			<td style="border:1px;border-style:solid;"><input class="form-control qty " placeholder="Item Qty" required name="qty" autocomplete="off" type="text" value=""></td>
 			<td style="border:1px;border-style:solid;"><input class="form-control rate" placeholder="Item Rate" required name="price" autocomplete="off" type="text" value=""></td>
-			<td colspan="" style="border:1px;border-style:solid;width:50%;"><input class="form-control row_amount" placeholder="Amount" required name="tatal Amount" autocomplete="off" type="text" value=""></td>
+			<td colspan="" style="border:1px;border-style:solid;width:50%;"><input class="form-control row_amount" placeholder="Amount" required name="row_amount" autocomplete="off" type="text" value=""></td>
 			<td style="border:1px;border-style:solid;width:30%;"><button type="button" class="btn btn-xs btn-default addrow"  href="#" role='button'><i class="fa fa-plus"></i></button><button type="button" class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-minus"></i></button></td>
 			</tr>
 			</table>
@@ -239,6 +239,7 @@ include("database.php");
 <?php footer(); ?>
 <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 <script>
+
         $(document).ready(function() {    
 		 $("#state_id").live('change', function () {
 		 var state=$(this, 'option:selected').val();	
@@ -248,7 +249,6 @@ include("database.php");
 					$("#newcity").html(response);
 				});
 	 });
-
          $("#customer_id").live('change', function () {
 		 var customer_id=$(this, 'option:selected').val();
 		 var old=$("#old").html();
@@ -485,19 +485,58 @@ include("database.php");
 include("database.php");
 if(isset($_POST['submit']))
 {
-	$customer_id=$_POST['customer_id'];
-	$name=$_POST['name'];
-	$city=$_POST['city'];
-	$state=$_POST['state'];
-	$gst_no=$_POST['gst_no'];
-	$pan_no=$_POST['pan_no'];
-	$mobile=$_POST['contact_no'];
-	$Aadhaar_no=$_POST['Aadhaar_no'];
-	$address=$_POST['address'];
-	mysql_query("insert into `master_items` SET `item_name`='$name',`item_code`='$code',
-		`description`='$des',`item_price`='$price',`qty`='$qty',`category_id`='$catid'");
-		
-	echo '<script>window.location="item.php"</script>';
+
+		if($customer_id>0)
+		{
+			$customer_id=$_POST['customer_id'];
+			$date=$_POST['date'];
+			$category_id=$_POST['category_id'];
+			$item_name=$_POST['item_name'];
+			$item_code=$_POST['item_code'];
+			$item_qty=$_POST['qty'];
+			$item_price=$_POST['price'];
+			$row_amount=$_POST['row_amount'];
+			$tatal_qty=$_POST['tatal_qty'];
+			$tatal_price=$_POST['tatal_price'];
+			$total_amount=$_POST['total_amount'];
+			$dis_per=$_POST['dis_per'];
+			$dis_rupee=$_POST['dis_rupee'];
+			$total_after_discount=$_POST['total_after_discount'];
+			$sgst_per=$_POST['sgst_per'];
+			$sgst_amount=$_POST['sgst_amount'];
+			$amount_after_sgst=$_POST['amount_after_sgst'];	
+			$cgst_per=$_POST['cgst_per'];
+			$cgst_amount=$_POST['cgst_amount'];
+			$amount_after_cgst=$_POST['amount_after_cgst'];
+			$grand_total=$_POST['grand_total'];
+			mysql_query("insert into `invoices` SET `customer_id`='$customer_id',`invoice_date`='$date',
+				`discount_per`='$dis_per',`discount_rupees`='$dis_rupee',`total_tax`='1000',`amount_after_discount`='$total_after_discount',`grand_total`='$grand_total'");
+			mysql_query("insert into `invoices` SET `customer_id`='$customer_id',`invoice_date`='$date',
+				`discount_per`='$dis_per',`discount_rupees`='$dis_rupee',`total_tax`='1000',`amount_after_discount`='$total_after_discount',`grand_total`='$grand_total'");
+			
+		}
+		else
+		{
+			$customer_id=$_POST['customer_id'];
+			$company_name=$_POST['company_name'];
+			$company_gst=$_POST['company_gst'];
+			$company_phone=$_POST['company_phone'];
+			$company_address=$_POST['company_address'];
+			$customer_name=$_POST['name'];
+			$city=$_POST['city_id'];
+			$state=$_POST['state_id'];
+			$pan_no=$_POST['pan_no'];
+			$Aadhaar_no=$_POST['Aadhaar_no'];
+			$address=$_POST['address'];
+			$mobile=$_POST['contact_no'];
+			$date=$_POST['date'];
+			mysql_query("insert into `customer` SET `customer_name`='$customer_name',`address`='$address',
+				`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no'");
+				$customer_id=mysql_insert_id();
+			mysql_query("insert into `companies` SET `customer_id`='$customer_id',`name`='$company_name',`address`='$company_address',
+				`phone_no`='$company_phone',`gst_no`='$company_gst'");
+			echo '<script>window.location="create_invoice.php"</script>';
+		}
 }
 
 ?>

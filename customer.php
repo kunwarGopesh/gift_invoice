@@ -10,8 +10,8 @@ if(isset($_POST['submit']))
 	$company_phone=$_POST['company_phone'];
 	$company_address=$_POST['company_address'];
 	$customer_name=$_POST['name'];
-	$city=$_POST['city'];
-	$state=$_POST['state'];
+	$city=$_POST['city_id'];
+	$state=$_POST['state_id'];
 	$pan_no=$_POST['pan_no'];
 	$Aadhaar_no=$_POST['Aadhaar_no'];
 	$address=$_POST['address'];
@@ -39,8 +39,8 @@ if(isset($_POST['sub_edit']))
 	$company_phone=mysql_real_escape_string($_REQUEST['company_phone']);
 	$company_address=mysql_real_escape_string($_REQUEST['company_address']);
 	$customer_name=mysql_real_escape_string($_REQUEST['name']);
-	$city=mysql_real_escape_string($_REQUEST['city']);
-	$state=mysql_real_escape_string($_REQUEST['state']);
+	$city=mysql_real_escape_string($_REQUEST['city_id']);
+	$state=mysql_real_escape_string($_REQUEST['state_id']);
 	$pan_no=mysql_real_escape_string($_REQUEST['pan_no']);
 	$Aadhaar_no=mysql_real_escape_string($_REQUEST['Aadhaar_no']);
 	$address=mysql_real_escape_string($_REQUEST['address']);
@@ -266,7 +266,7 @@ if(isset($_POST['sub_edit']))
 									<td>State</td><td>:</td>
 									<td>
 									<select name="state_id" id="state_id" class="select2me form-control input-large select_state">
-									<option value="">----------Choose State ----------</option>
+									<option value="<?php echo $state;?>"><?php echo $state;?></option>
 									<?php
 									$customer_data=mysql_query("SELECT DISTINCT state FROM city_states ");
 									
@@ -279,7 +279,19 @@ if(isset($_POST['sub_edit']))
 									<td>City</td><td>:</td>
 									<td id="newtable">
 									<select name="city_id" id="city_id" class="select2me form-control input-large select_city">
-									<option value="">----------Choose City ----------</option>
+									<?php 
+									$st=mysql_query("select `city` from `city_states` where `state`='$state'");
+									while($ft=mysql_fetch_array($st)){
+										
+										$city_name=$ft['city'];
+										
+										?>
+										<option value="<?php echo $city_name;?>" <?php if($city_name==$city){ echo "selected"; }?>><?php echo $city_name;?></option>
+										
+										<?php
+									}
+									?>
+									
 									</select>
 									</td>										
 								   </tr>
@@ -390,22 +402,23 @@ if(isset($_POST['sub_edit']))
 		</div>
 	</div>	
 </div>
+
+										
 </body>
 <?php footer(); ?>
-<script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-<script>
-        $(document).ready(function() {     
-         $("#state_id").live('change', function () {
-		 var state=$(this, 'option:selected').val();
-		 var old=$("#old").html();
-			$.ajax({
-				url: "state_city.php?reg_no="+state,
-				}).done(function(response) {
-					$("#newtable").html(response);
-				});
-	 });
-	 });
-</script>
+	<script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+	<script>
+			$(document).ready(function() {     
+			 $("#state_id").live('change', function () {
+			 var state=$(this, 'option:selected').val();
+			 var old=$("#old").html();
+				$.ajax({
+					url: "state_city.php?reg_no="+state,
+					}).done(function(response) {
+						$("#newtable").html(response);
+					});
+		 });
+	</script>
 <?php scripts();?>
 
 </html>
