@@ -264,10 +264,24 @@ if(isset($_POST['sub_edit']))
 									</tr>
 									<tr>
 									<td>State</td><td>:</td>
-									<td><input class="form-control input-large customer_state" placeholder="Enter state" required name="state" autocomplete="off" type="text" value="<?php echo $state;?>"> </td>
-									<td>City</td><td>:</td>
-									<td><input class="form-control input-large customer_city" placeholder="Enter City" required name="city" autocomplete="off" type="text" value="<?php echo $city;?>"> </td>
+									<td>
+									<select name="state_id" id="state_id" class="select2me form-control input-large select_state">
+									<option value="">----------Choose State ----------</option>
+									<?php
+									$customer_data=mysql_query("SELECT DISTINCT state FROM city_states ");
 									
+									while($row=mysql_fetch_array($customer_data))
+									{?>		
+											<option value="<?php echo $row['state'] ;?>"><?php echo $row['state']; ?></option>
+										<?php }?>
+										</select> 
+									</td>
+									<td>City</td><td>:</td>
+									<td id="newtable">
+									<select name="city_id" id="city_id" class="select2me form-control input-large select_city">
+									<option value="">----------Choose City ----------</option>
+									</select>
+									</td>										
 								   </tr>
 									<tr>
 									<td>Pan No</td><td>:</td>
@@ -384,23 +398,15 @@ if(isset($_POST['sub_edit']))
          $("#state_id").live('change', function () {
 		 var state=$(this, 'option:selected').val();
 		 var old=$("#old").html();
-			if(state.length>0){
 			$.ajax({
 				url: "state_city.php?reg_no="+state,
 				}).done(function(response) {
 					$("#newtable").html(response);
 				});
-			}else	{
-				$("#newtable").html(old);
-			} 
 	 });
 	 });
 </script>
 <?php scripts();?>
 
 </html>
-<td id="old" style="display:none;">
-<select name="city_id" id="city_id" class="select2me form-control input-large select_city">
-<option value="">----------Choose City ----------</option>
-</select>
-</td>
+

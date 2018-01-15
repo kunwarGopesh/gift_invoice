@@ -86,13 +86,28 @@ include("database.php");
 		    <td>Customer Name</td><td>:</td>
 		    <td><input class="form-control input-large customer_name" placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text" value=""> </td>
 			<td>State</td><td>:</td>
-		    <td><input class="form-control input-large customer_state" placeholder="Enter state" required name="state" autocomplete="off" type="text" value=""> </td>
+		    <td>
+			<select name="state_id" id="state_id" class="select2me form-control input-large select_state">
+									<option value="">----------Choose State ----------</option>
+									<?php
+									$customer_data=mysql_query("SELECT DISTINCT state FROM city_states ");
+									
+									while($row=mysql_fetch_array($customer_data))
+									{?>		
+											<option value="<?php echo $row['state'] ;?>"><?php echo $row['state']; ?></option>
+										<?php }?>
+			</select> 
+			</td>
 			</tr>
 			<tr>
 		    
 			<td>City</td><td>:</td>
-		    <td><input class="form-control input-large customer_city" placeholder="Enter City" required name="city" autocomplete="off" type="text" value=""> </td>
-		  <td>Mobile No</td><td>:</td>
+		    <td id="newcity">
+			<select name="city_id" id="city_id" class="select2me form-control input-large select_city">
+			<option value="">----------Choose City ----------</option>
+			</select>
+			</td>
+			<td>Mobile No</td><td>:</td>
 		    <td><input class="form-control input-large customer_mobile" placeholder="Enter Contact No" required name="contact_no" autocomplete="off" type="text" value=""></td>
 			</tr>
 			<tr>
@@ -225,13 +240,15 @@ include("database.php");
 <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 <script>
         $(document).ready(function() {    
+		 $("#state_id").live('change', function () {
+		 var state=$(this, 'option:selected').val();	
+			$.ajax({
+				url: "state_city.php?reg_no="+state,
+				}).done(function(response) {
+					$("#newcity").html(response);
+				});
+	 });
 
-			/* $('.date-picker').datepicker();
-			$('.date-picker').datepicker().on('changeDate', function(){
-			$(this).blur();
-			$(this).datepicker('hide');
-			}); 		 */
-        
          $("#customer_id").live('change', function () {
 		 var customer_id=$(this, 'option:selected').val();
 		 var old=$("#old").html();
@@ -424,12 +441,27 @@ include("database.php");
 		    <td>Customer Name</td><td>:</td>
 		    <td><input class="form-control input-large " placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text" value=""> </td>
 			<td>State</td><td>:</td>
-		    <td><input class="form-control input-large " placeholder="Enter state" required name="state" autocomplete="off" type="text" value=""> </td>
+		    <td>
+			<select name="state_id" id="state_id" class="select2me form-control input-large ">
+									<option value="">----------Choose State ----------</option>
+									<?php
+									$customer_data=mysql_query("SELECT DISTINCT state FROM city_states ");
+									
+									while($row=mysql_fetch_array($customer_data))
+									{?>		
+											<option value="<?php echo $row['state'] ;?>"><?php echo $row['state']; ?></option>
+										<?php }?>
+			</select> 
+			</td>
 			</tr>
 			<tr>
 		    
 			<td>City</td><td>:</td>
-		    <td><input class="form-control input-large " placeholder="Enter City" required name="city" autocomplete="off" type="text" value=""> </td>
+		     <td id="newcity">
+			<select name="city_id" id="city_id" class="select2me form-control input-large select_city">
+			<option value="">----------Choose City ----------</option>
+			</select>
+			</td>
 		  <td>Mobile No</td><td>:</td>
 		    <td><input class="form-control input-large " placeholder="Enter Contact No" required name="contact_no" autocomplete="off" type="text" value=""></td>
 			</tr>
