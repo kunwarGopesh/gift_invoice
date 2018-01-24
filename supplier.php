@@ -9,26 +9,26 @@ if(isset($_POST['submit']))
 	$company_gst=$_POST['company_gst'];
 	$company_phone=$_POST['company_phone'];
 	$company_address=$_POST['company_address'];
-	$customer_name=$_POST['name'];
+	$supplier_name=$_POST['name'];
 	$city=$_POST['city_id'];
 	$state=$_POST['state_id'];
 	$pan_no=$_POST['pan_no'];
 	$Aadhaar_no=$_POST['Aadhaar_no'];
-	$address=$_POST['customer_address'];
+	$address=$_POST['Supplier_address'];
 	$mobile=$_POST['contact_no'];
 	//$date=$_POST['date'];
-	mysql_query("insert into `customer` SET `customer_name`='$customer_name',`address`='$address',
+	mysql_query("insert into `supplier` SET `supplier_name`='$supplier_name',`address`='$address',
 		`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no'");
-		$customer_id=mysql_insert_id();
-	mysql_query("insert into `companies` SET `customer_id`='$customer_id',`name`='$company_name',`address`='$company_address',
+		$supplier_id=mysql_insert_id();
+	mysql_query("insert into `companies` SET `supplier_id`='$supplier_id',`name`='$company_name',`address`='$company_address',
 		`phone_no`='$company_phone',`gst_no`='$company_gst'");
-	echo '<script>window.location="customer.php"</script>';
+	echo '<script>window.location="supplier.php"</script>';
 }
  if(isset($_POST['sub_del']))
 {
 	$delet_class=$_POST['delet_class'];
-	mysql_query("DELETE FROM customer WHERE id='$delet_class'" );
-	mysql_query("DELETE FROM companies` WHERE customer_id='$delet_class'" );
+	mysql_query("DELETE FROM `supplier` WHERE `id`='$delet_class'" );
+	mysql_query("DELETE FROM `companies` WHERE `supplier_id`='$delet_class'" );
 }
 
 if(isset($_POST['sub_edit']))
@@ -38,18 +38,18 @@ if(isset($_POST['sub_edit']))
 	$company_gst=mysql_real_escape_string($_REQUEST['company_gst']);
 	$company_phone=mysql_real_escape_string($_REQUEST['company_phone']);
 	$company_address=mysql_real_escape_string($_REQUEST['company_address']);
-	$customer_name=mysql_real_escape_string($_REQUEST['name']);
+	$supplier_name=mysql_real_escape_string($_REQUEST['name']);
 	$city=mysql_real_escape_string($_REQUEST['city_id']);
 	$state=mysql_real_escape_string($_REQUEST['state_id']);
 	$pan_no=mysql_real_escape_string($_REQUEST['pan_no']);
 	$Aadhaar_no=mysql_real_escape_string($_REQUEST['Aadhaar_no']);
-	$address=mysql_real_escape_string($_REQUEST['customer_address']);
+	$address=mysql_real_escape_string($_REQUEST['Supplier_address']);
 	$mobile=mysql_real_escape_string($_REQUEST['contact_no']); 
-	 $r =mysql_query("update `customer` SET `customer_name`='$customer_name',`address`='$address',
+	 $r =mysql_query("update `supplier` SET `supplier_name`='$supplier_name',`address`='$address',
 		`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no' where `id`='$edit'");
 	$r=mysql_query($r);
 	$p=mysql_query("update `companies` SET `name`='$company_name',`address`='$company_address',
-		`phone_no`='$company_phone',`gst_no`='$company_gst',`customer_id`='$edit' where `customer_id`='$edit'");
+		`phone_no`='$company_phone',`gst_no`='$company_gst',`supplier_id`='$edit' where `supplier_id`='$edit'");
 		
 		 $p=mysql_query($p);
 		echo '<script text="javascript">alert(Class Added Successfully")</script>';	
@@ -60,7 +60,7 @@ if(isset($_POST['sub_edit']))
 <head>
 <?php css();?>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Master Customer</title>
+<title>Master Supplier</title>
 </head>
 <?php contant_start(); menu();  ?>
 <body>
@@ -70,7 +70,7 @@ if(isset($_POST['sub_edit']))
 				<div class="portlet box blue">
 					<div class="portlet-title">
 						<div class="caption">
-							<i class="fa fa-gift"></i>Master Customer
+							<i class="fa fa-gift"></i>Master Supplier
 						</div>
 					</div>
 						<div class="portlet-body form">
@@ -97,9 +97,9 @@ if(isset($_POST['sub_edit']))
 										</tr>
 									<tr>
 									<td> Name</td><td>:</td>
-									<td><input class="form-control input-large customer_name" placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text"  </td>
+									<td><input class="form-control input-large Supplier_name" placeholder="Enter Supplier Name" required name="name" autocomplete="off" type="text"  </td>
 									<td>Mobile No</td><td>:</td>
-									<td><input class="form-control input-large customer_mobile" placeholder="Enter Mobile No" required name="contact_no" autocomplete="off" type="text" ></td>
+									<td><input class="form-control input-large Supplier_mobile" placeholder="Enter Mobile No" required name="contact_no" autocomplete="off" type="text" ></td>
 									</tr>
 									<tr>
 									<td>State</td><td>:</td>
@@ -107,9 +107,9 @@ if(isset($_POST['sub_edit']))
 									<select name="state_id" id="state_id" class="select2me form-control input-large select_state" placeholder="-----------------Choose State------------------">
 									<option value="" ></option>
 									<?php
-									$customer_data=mysql_query("SELECT DISTINCT state FROM city_states ");
+									$Supplier_data=mysql_query("SELECT DISTINCT state FROM city_states ");
 									
-									while($row=mysql_fetch_array($customer_data))
+									while($row=mysql_fetch_array($Supplier_data))
 									{?>		
 											<option value="<?php echo $row['state'] ;?>"><?php echo $row['state']; ?></option>
 										<?php }?>
@@ -125,13 +125,13 @@ if(isset($_POST['sub_edit']))
 								   </tr>
 									<tr>
 									<td>Pan No</td><td>:</td>
-									<td><input class="form-control input-large customer_pan" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" > </td>
+									<td><input class="form-control input-large Supplier_pan" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" > </td>
 									<td>Aadhaar No</td><td>:</td>
-									<td><input class="form-control input-large customer_aadhaar" placeholder="Enter Aadhaar No" required name="Aadhaar_no" autocomplete="off" type="text" ></td>
+									<td><input class="form-control input-large Supplier_aadhaar" placeholder="Enter Aadhaar No" required name="Aadhaar_no" autocomplete="off" type="text" ></td>
 									</tr>
 									<tr>
 									 <td>Address</td><td>:</td>
-									<td colspan="4"><textarea class="form-control customer_address" placeholder="Enter Address" required name="customer_address" autocomplete="off" type="text"></textarea> </textarea></td>
+									<td colspan="4"><textarea class="form-control Supplier_address" placeholder="Enter Address" required name="Supplier_address" autocomplete="off" type="text"></textarea> </textarea></td>
 									
 									</tr>
 								<tr>
@@ -152,7 +152,7 @@ if(isset($_POST['sub_edit']))
 			<div class="portlet box blue">
 			<div class="portlet-title ">
 				<div class="caption">
-					<i class="fa fa-gift"></i>View Customers
+					<i class="fa fa-gift"></i>View Suppliers
 				</div>
 			</div>
 			<div class="portlet-body form">
@@ -164,7 +164,7 @@ if(isset($_POST['sub_edit']))
 									<th>
 										 #
 									</th>
-									<th>Customer Name</th>
+									<th>Supplier Name</th>
 									<th>Company Name</th>
 									<th>Company GST</th>
 									<th>Company Address</th>
@@ -174,7 +174,7 @@ if(isset($_POST['sub_edit']))
 								</tr>
 								</thead>
 							 <?php
-						  $r1=mysql_query("select * from customer");		
+						  $r1=mysql_query("select * from supplier");		
 						  		
 								$i=0;
 								while($row1=mysql_fetch_array($r1))
@@ -182,8 +182,8 @@ if(isset($_POST['sub_edit']))
 
 								$i++;
 								$id=$row1['id'];
-								$customer_id=$row1['id'];
-								$name=$row1['customer_name'];
+								$supplier_id=$row1['id'];
+								$name=$row1['supplier_name'];
 								$address=$row1['address'];
 								$city=$row1['city'];
 								$state=$row1['state'];
@@ -191,11 +191,11 @@ if(isset($_POST['sub_edit']))
 								$pan_no=$row1['pan_no'];
 								$Aadhaar_no=$row1['Aadhaar_no'];
 								
-								$r2=mysql_query("select * from `companies` where `customer_id`='$customer_id'");	
+								$r2=mysql_query("select * from `companies` where `supplier_id`='$supplier_id'");	
 								while($row2=mysql_fetch_array($r2))
 								{
 									$com_id=$row2['id'];
-									$customer_id=$row2['customer_id'];
+									$supplier_id=$row2['supplier_id'];
 									$gst=$row2['gst_no'];
 									$company_mobile=$row2['phone_no'];
 									$company_address=$row2['address'];		
@@ -231,7 +231,7 @@ if(isset($_POST['sub_edit']))
 						<div class="portlet box green">
 								<div class="portlet-title ">
 									<div class="caption">
-										<i class="fa fa-gift"></i>Edit Customers
+										<i class="fa fa-gift"></i>Edit Suppliers
 											<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>	
 									</div>
 								</div>
@@ -258,9 +258,9 @@ if(isset($_POST['sub_edit']))
 										</tr>
 									<tr>
 									<td> Name</td><td>:</td>
-									<td><input class="form-control input-large customer_name"  Name="name" required name="name" autocomplete="off" type="text" value="<?php echo $name;?>"> </td>
+									<td><input class="form-control input-large Supplier_name"  Name="name" required name="name" autocomplete="off" type="text" value="<?php echo $name;?>"> </td>
 									<td>Mobile No</td><td>:</td>
-									<td><input class="form-control input-large customer_mobile" placeholder="Enter Mobile No" required name="contact_no" autocomplete="off" type="text" value="<?php echo $mobile;?>"></td>
+									<td><input class="form-control input-large Supplier_mobile" placeholder="Enter Mobile No" required name="contact_no" autocomplete="off" type="text" value="<?php echo $mobile;?>"></td>
 									</tr>
 									<tr>
 									<td>State</td><td>:</td>
@@ -268,9 +268,9 @@ if(isset($_POST['sub_edit']))
 									<select name="state_id"  class="select2me form-control input-large edit_state">
 									
 									<?php
-									$customer_data=mysql_query("SELECT DISTINCT state FROM city_states ");
+									$Supplier_data=mysql_query("SELECT DISTINCT state FROM city_states ");
 									
-									while($row=mysql_fetch_array($customer_data))
+									while($row=mysql_fetch_array($Supplier_data))
 									{?>		
 											<option value="<?php echo $row['state'] ;?>" <?php if ($state==$row['state']) {echo "selected"; }?> ><?php echo $row['state']; ?></option>
 										<?php }?>
@@ -297,13 +297,13 @@ if(isset($_POST['sub_edit']))
 								   </tr>
 									<tr>
 									<td>Pan No</td><td>:</td>
-									<td><input class="form-control input-large customer_pan" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" value="<?php echo $pan_no;?>"> </td>
+									<td><input class="form-control input-large Supplier_pan" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" value="<?php echo $pan_no;?>"> </td>
 									<td>Aadhaar No</td><td>:</td>
-									<td><input class="form-control input-large customer_aadhaar" placeholder="Enter Aadhaar No" required name="Aadhaar_no" autocomplete="off" type="text" value="<?php echo $Aadhaar_no;?>"></td>
+									<td><input class="form-control input-large Supplier_aadhaar" placeholder="Enter Aadhaar No" required name="Aadhaar_no" autocomplete="off" type="text" value="<?php echo $Aadhaar_no;?>"></td>
 									</tr>
 									<tr>
 									 <td>Address</td><td>:</td>
-									<td colspan="4"><input class="form-control input-large customer_address" placeholder="Enter Address" required name="customer_address" autocomplete="off" type="text" value="<?php echo $address;?>"></td>
+									<td colspan="4"><input class="form-control input-large Supplier_address" placeholder="Enter Address" required name="Supplier_address" autocomplete="off" type="text" value="<?php echo $address;?>"></td>
 									
 									</tr>
 								<tr>
@@ -331,7 +331,7 @@ if(isset($_POST['sub_edit']))
                             <div class="portlet box red-sunglo">
 								<div class="portlet-title ">
 									<div class="caption">
-										<i class="fa fa-trash "></i>Are you sure, you want to delete this  Customer?
+										<i class="fa fa-trash "></i>Are you sure, you want to delete this  Supplier?
 											<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>	
 									</div>
 								</div>
@@ -358,7 +358,7 @@ if(isset($_POST['sub_edit']))
 						<div class="portlet box blue-madison">
 								<div class="portlet-title ">
 									<div class="caption">
-										<i class="fa fa-gift"></i>View Customers
+										<i class="fa fa-gift"></i>View Suppliers
 											<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>	
 									</div>
 								</div>
@@ -368,7 +368,7 @@ if(isset($_POST['sub_edit']))
 								<input type="hidden" name='edit_id' class="form-control" value="<?php echo $id;?>" >	
 									<table class="table">
 									<tr>
-									<td>Customer Address</td><td>:</td>
+									<td>Supplier Address</td><td>:</td>
 									<td><?php echo $address;?></td>
 									<td>Mobile No</td><td>:</td>
 									<td><?php echo $mobile;?></td>

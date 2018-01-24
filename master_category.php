@@ -182,13 +182,14 @@ if(isset($_POST['sub_edit']))
 										<div class="input-icon right">
 										<i class="fa"></i>
 										<select name="category_id" class="select2me form-control input-large " >
+										
 												<option value="<?php echo $cat_id;?>"><?php echo fetchcategoryname($cat_id);?></option>
 													<?php
 														$sql=mysql_query("select id,category_name from master_category where flag='0'");
 														
 														while($row=mysql_fetch_array($sql))
 														{?>		
-																<option  value="<?php echo $row['id'] ;?>"><?php echo $row['category_name']; ?></option>
+																<option  value="<?php echo $row['id'] ;?>" ><?php echo $row['category_name']; ?></option>
 															<?php }?>
 										</select>
 										</div>

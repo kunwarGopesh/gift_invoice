@@ -1,14 +1,6 @@
-<?php require_once('config.php') ;?>
-<?php 
-$idd=$_GET['id'];
-$result=$mysqli->query("SELECT * FROM member_transuction where id='".$idd."'");
-$row=mysqli_fetch_row($result);
-
-?>
-
-
 <?php
-$html = '
+include("index_layout.php");
+?>
 <html>
 <head>
   <style>
@@ -16,7 +8,7 @@ $html = '
 	.table_rows, .table_rows td {
 	    border: 1px solid  #000; 
 		border-collapse: collapse;
-		padding:5px; 
+		padding:px; 
 
 	}
 	
@@ -25,102 +17,141 @@ $html = '
 	p.indent{ padding-lef:1.8em}
 	
 	</style>
+<?php css();?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Item Master</title>
 </head>
+<?php contant_start(); menu();  ?>
 <body>
-
+	<div class="page-content-wrapper">
+	<div class="page-content">
+    <div class="row">
+    <div class="col-md-12">
+			<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-gift"></i>Invoice View
+				</div>
+			</div><br>
+			<div class="portlet-body form">
 			<table width="100%" class="table_rows">
-				<tr>
-					<td valign="top">
-						<table width="100%">
-							<tr style="background-color:gray;">
-								<td style="border:none;">
-								<center><b style="color:white;">TAX INVOICE</b></center></td>					
-							</tr>
+				<tr width="100%" >
+					<td width="50%" style="">
+						<table width="100%" style="">
+								<tr>
+								<td width="100%" style="background-color:gray;">
+								<center><p style="">Tax Invoice</p></center>
+								</td>
+								</tr>
+							
+							
+							
 							<tr>
 								<td style="border:none;">
-									<p>	
-								'.$row[3].'<br>
-							'.$row[4].'<br>
-								
-								GSTIN :	</p><br><br><br>
+									<p style="padding:5px;">	To,<br>
+								PHP POETS IT SOLUTIONS PVT. LTD.<br>
+								'Shrikul', 91, Patho ki Magri, Near Sewashram<br>
+								Udaipur - 313002 - RAJASTHAN<br><br>
+								GST No :	123123</p>
 								</td>
-							</tr>
-						</table>
+							</tr></table>
+						
 						
 					</td>
 					
-					<td width="50%" colspan="2"  valign="top">
+					<td width="50%" colspan="2"  valign="top" >
+					<table width="100%" style="border-color:white;border-style:solid;">
+					<tr >
+					<td width="20%" style="border-color:white;border-style:solid;"><img src="img/logo.jpg" height="100px" width="100px" /></td >
+					<td width="80%" style="border-color:white;border-style:solid;"><h2 style="padding-left:50px;text-aligh:center;">PHP Poets
+					Udaipur</h2><br>
 					
+						<i style="padding-left:40px;text-aligh:center;">(An ISO 9001:2008 Certified Company)</i>
+						<p style="padding-left:30px;text-aligh:center;">Winner of the "BEST WEB DESIGN & SOFTWARE
+						DEVELOPMENT COMPANY IN RAJASTHAN" Award</p>
 					
-	     			<center><div><img src="img/logo.jpg" height="100px" width="100px" /></div></center><br>
-					
-					
-					<div><b>Address:</b>&nbsp;&nbsp;UDAIPUR BRANCH OF CIRC OF ICAI “ICAI BHAWAN”
-						Near CA Circle, G-Block, 
-						Sec. 14, Hiran Magri,
-						Udaipur (Raj), 313001</div>
+					</td>
+					</tr>
+					</table>
 					</td>
 					
 				</tr>	
 				
 				
 				<tr>
-					<td width="50%" height="50%" align="left"> Transaction No:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$row[8].'<br/><br/>
-				Transaction Date:&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.date("d-m-Y",strtotime($row[10])).'<br/>
-				</td>
-				<td style="padding-top:-30px;" colspan="2">Inv. No:&nbsp;'.$row[11].' &nbsp; &nbsp; &nbsp;&nbsp;
-				<span>&nbsp;&nbsp;Date: &nbsp;&nbsp;&nbsp;'.date("d-m-Y",strtotime($row[10])).'</span></td>
-				</tr>
-				
-				
-				<tr>
-					<td style="border-right-color: #2EFEC8; background-color:#2EFEC8;">Particulars &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HSN NO</td>
-			
-							
-					<td colspan="2" style="background-color:#2EFEC8;"><table cellspacing="0" cellpadding="1"><thead><tr>
-					
-					<th> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<th> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					Rate &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-					<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Amount</th>
+					<td width="50%" height="30%" align="left">
+					<table width="100%" style="border-color:white;border-style:solid;">
+					<tr >
+					<td width="30%" style="border-color:white;border-style:solid;">
+					Customer Name <td style="border-color:white;border-style:solid;">:</td>
+					</td>
+					<td width="70%" style="border-color:white;border-style:solid;">
+					Prakash Menariya
+					</td>
 					</tr>
-							</thead>
-							</table>
-					</td>	
+					<tr >
+					<td width="30%" style="border-color:white;border-style:solid;">
+					Mobile No <td style="border-color:white;border-style:solid;">:</td>
+					</td>
+					<td width="70%" style="border-color:white;border-style:solid;">
+					7821965299
+					</td>
+					</tr>
+					</table>
+					</td>
+					<td width="50%" height="30%" align="right">
+					<table width="100%" style="border-color:white;border-style:solid;">
+					<tr >
+					<td width="25%" style="border-color:white;border-style:solid;">
+					Invoice No <td style="border-color:white;border-style:solid;">:</td>
+					</td>
+					<td width="25%" style="border-color:white;border-style:solid;">
+					12345
+					</td>
+					<td width="25%" style="border-color:white;border-style:solid;">
+					 Invoice Date <td style="border-color:white;border-style:solid;">:</td>
+					</td>
+					<td width="25%" style="border-color:white;border-style:solid;">
+					16/01/2018
+					</td>
+					</tr>
+					</table>
+					</td>
 				
 				</tr>
-				
-				 
 				<tr>
-				<td colspan="3" height="200px" valign="top" >'.$row[12].' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$row[13].'
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				
-				'.$row[14].'
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$row[9].'<br>
-				
-				</td>
-				
+					<td width="100%" height="50%" colspan="4">
+					<table width="100%" style="border-color:white;border-style:solid;">
 					
+					<thead >
+					<tr style="background-color:#DCD9D8;" height="30%">
+					<th width="10%"  style="border:1px;border-style:solid;"> Sr.No </th>
+					<th width="10%"  style="border:1px;border-style:solid;"> Item Category </th>
+					<th width="10%"  style="border:1px;border-style:solid;"> Name </th>
+					<th width="10%"  style="border:1px;border-style:solid;"> Code </th>
+					<th width="10%"  style="border:1px;border-style:solid;">Qty </th>
+					<th width="10%"	 style="border:1px;border-style:solid;">Price </th>
+					<th width="10%"  style="border:1px;border-style:solid;">Amount </th>
+					</tr>
+					</thead>
+					
+					<tbody>
+					<tr>
+					<td width="20%">1</td>
+					<td width="20%">asdasd</td>
+					<td width="20%">asdasd</td>
+					<td width="20%">asdasd</td>
+					<td width="20%">asdasd</td>
+					<td width="20%">asdasd</td>
+					<td width="20%">asdasd</td>
+					</tr>
+					</tbody>
+					</table>
+					</td>
+
+				
 				</tr>
-				
-				
+
 				<tr>
 				<td><b style="font-family: Verdana, Geneva, sans-serif;font-size:13px;">GSTIN No: '.$row[15].'</b><br/><br/>Rupees in words : SIX HUNDRED TWO ONLY</td>
 				<td colspan="2"><b>Total Amount </b> 
@@ -187,16 +218,7 @@ $html = '
 				Phone : +91 294 – 2641616, +91 294 – 2641515, Email :udaipur@icai.org</p></center></td>
 				</tr>	
 		</table>
-
+</div></div></div></div></div></div>
 	</body>
 	</html>
-	$html=';
-//echo $html; exit;
-include("mpdf/mpdf.php");
-$mpdf=new mPDF("c"); 
-//$mpdf->loadHtml($html);
-$mpdf->WriteHTML($html);
-$mpdf->Output();
-exit;
-
-  ?>
+	

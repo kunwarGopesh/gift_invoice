@@ -1,11 +1,11 @@
 <?php 
 include("database.php");
 $c_id=$_GET['reg_no'];
-$set=mysql_query("select * from `customer` where `id`='$c_id'");
-$set1=mysql_query("select * from `companies` where `customer_id`='$c_id'");
+$set=mysql_query("select * from `supplier` where `id`='$c_id'");
+$set1=mysql_query("select * from `companies` where `supplier_id`='$c_id'");
 $fet=mysql_fetch_array($set);
 $fet1=mysql_fetch_array($set1);
-$name=$fet['customer_name'];
+$name=$fet['supplier_name'];
 $address=$fet['address'];
 $city=$fet['city'];
 $state=$fet['state'];
@@ -39,12 +39,13 @@ $company_phone=$fet1['phone_no'];
 										<tr>
 		    <td> Name</td><td>:</td>
 		    <td><input class="form-control input-large customer_name" placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text" value="<?php echo $name; ?>"> </td>
-			<td>City</td><td>:</td>
-		    <td><input class="form-control input-large customer_city" placeholder="Enter City" required name="city" autocomplete="off" type="text" value="<?php echo $city; ?>"> </td>
+			<td>State</td><td>:</td>
+		    <td><input class="form-control input-large customer_state" placeholder="Enter state" required name="state_id" autocomplete="off" type="text" value="<?php echo $state; ?>"> </td>
 			</tr>
 			<tr>
-		    <td>State</td><td>:</td>
-		    <td><input class="form-control input-large customer_state" placeholder="Enter state" required name="state" autocomplete="off" type="text" value="<?php echo $state; ?>"> </td>
+			<td>City</td><td>:</td>
+		    <td><input class="form-control input-large customer_city" placeholder="Enter City" required name="city_id" autocomplete="off" type="text" value="<?php echo $city; ?>"> </td>
+		    
 		    <td>Mobile No</td><td>:</td>
 		    <td><input class="form-control input-large customer_mobile" placeholder="Enter Mobile No" required name="contact_no" autocomplete="off" type="text" value="<?php echo $mobile; ?>"></td>
 			</tr>

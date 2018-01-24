@@ -3,12 +3,13 @@ include("index_layout.php");
 include("database.php");
 if(isset($_POST['sub_data']))
 {	
-$customer_id=$_POST['customer_id'];
+$voucher_source="Purchase Invoice";
+$supplier_id=$_POST['supplier_id'];
 $company_name=$_POST['company_name'];
 $company_gst=$_POST['company_gst'];
 $company_phone=$_POST['company_phone'];
 $company_address=$_POST['company_address'];
-$customer_name=$_POST['name'];
+$supplier_name=$_POST['name'];
 $city=$_POST['city_id'];
 $state=$_POST['state_id'];
 $pan_no=$_POST['pan_no'];
@@ -34,24 +35,24 @@ $tax_amounts=$_POST['Tamount'];
 $total_tax=$_POST['total_tax'];
 $grand_total=$_POST['grand_total'];
 
-/* echo "<pre>";
+/*  echo "<pre>";
 print_r($_POST);
-echo "</pre>"; EXIT;*/ 
-if(empty($customer_id))
+echo "</pre>"; EXIT; */
+if(empty($supplier_id))
 {			
-			mysql_query("insert into `customer` SET `customer_name`='$customer_name',`address`='$address',
+			mysql_query("insert into `supplier` SET `supplier_name`='$supplier_name',`address`='$address',
 				`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no'");
-				$customer_id=mysql_insert_id();
-			mysql_query("insert into `companies` SET `customer_id`='$customer_id',`name`='$company_name',`address`='$company_address',
+				$supplier_id=mysql_insert_id();
+			mysql_query("insert into `companies` SET `supplier_id`='$supplier_id',`name`='$company_name',`address`='$company_address',
 				`phone_no`='$company_phone',`gst_no`='$company_gst'");
 		 
 }
-if(!empty($customer_id))
+if(!empty($supplier_id))
 {
 			
-			mysql_query("insert into `invoices` SET `customer_id`='$customer_id',`invoice_date`='$date',`total_qty`='$total_qty',`total_rate`='$total_rate',`total_amount_dis`='$total_amount_dis',
+			mysql_query("insert into `purchase_invoice` SET `supplier_id`='$supplier_id',`invoice_date`='$date',`total_qty`='$total_qty',`total_rate`='$total_rate',`total_amount_dis`='$total_amount_dis',
 				`discount_type`='$dis_type',`discount_amount`='$dis_amount',`total_tax`='$total_tax',`amount_after_discount`='$total_after_discount',`grand_total`='$grand_total'");
-					$invoice_id=mysql_insert_id();
+					$purchase_invoice_id=mysql_insert_id();
 					
 					$v=0;
 			foreach($item_ids as $item_id)
@@ -59,11 +60,14 @@ if(!empty($customer_id))
 				$item_qty=$item_qtys[$v];
 				$item_price=$item_prices[$v];
 				$row_amount=$row_amounts[$v];
-				/* echo "insert into `invoice_details` SET `invoice_id`='$invoice_id',`item_id`='$item_id',
-				`qty`='$item_qty',`item_price`='$item_price',`row_total_amount`='$row_amount'";
-				echo "<br>"; */
-				mysql_query("insert into `invoice_details` SET `invoice_id`='$invoice_id',`item_id`='$item_id',
+				mysql_query("insert into `purchase_invoice_details` SET `purchase_invoice_id`='$purchase_invoice_id',`item_id`='$item_id',
 				`qty`='$item_qty',`item_price`='$item_price',`row_total_amount`='$row_amount'");
+				
+		/* 		echo "insert into `item_ledgers` SET `item_id`='$item_id',
+				`qty`='$item_qty',`voucher_source`='$voucher_source',`voucher_id`='$purchase_invoice_id',`status`='in'";
+				echo "<br>";exit; */
+				mysql_query("insert into `item_ledgers` SET `item_id`='$item_id',
+				`qty`='$item_qty',`voucher_source`='$voucher_source',`voucher_id`='$purchase_invoice_id',`status`='in',`transaction_date`='$date'");
 				$v++;
 			}
 				$j=0;
@@ -71,15 +75,12 @@ if(!empty($customer_id))
 			{
 				$tax_per=$tax_pers[$j];	
 				$tax_amount=$tax_amounts[$j];
-				/* echo "insert into `invoice_taxations` SET `invoice_id`='$invoice_id',`taxation_id`='$tax_id',
-				`percentage`='$tax_per',`amount`='$tax_amount'";
-				echo "<br>"; */
-				mysql_query("insert into `invoice_taxations` SET `invoice_id`='$invoice_id',`taxation_id`='$tax_id',
+				mysql_query("insert into `invoice_taxations` SET `invoice_id`='$purchase_invoice_id',`taxation_id`='$tax_id',
 				`percentage`='$tax_per',`amount`='$tax_amount'");
 				$j++;
 			}			
 }
-echo'<script>window.location="invoice_list.php"</script>';
+echo'<script>window.location="purchase_invoice_list.php"</script>';
 }
 
 ?>
@@ -100,7 +101,7 @@ echo'<script>window.location="invoice_list.php"</script>';
 						<div class="portlet box blue">
 							<div class="portlet-title ">
 								<div class="caption">
-									<i class="fa fa-gift"></i>Sales Invoice
+									<i class="fa fa-gift"></i>Purchase Invoice
 								</div>
 							</div>
 					<div class="portlet-body form">
@@ -108,40 +109,30 @@ echo'<script>window.location="invoice_list.php"</script>';
 							<table class="table">
 								<?php 
 									  $company=mysql_query("select * from companies");
-									  $company_no=mysql_query("select phone_no from company_contacts where company_id=1");
-									 
-									 while($fet=mysql_fetch_array($company_no))
-									 {
-										$phone_nos[]=$fet['phone_no'];
-										
-									 }
-									 $phone_no_show=implode(',', $phone_nos);
-									  $customer=mysql_query("select * from customer");
-										$row1=mysql_fetch_array($customer);
-										$row=mysql_fetch_array($company)
+										$company=mysql_fetch_array($company)
 								?>
 							<tr>
 								<td colspan="4">
 									<span style="height:30px;width:350px;">
 										<h4 class="box-title bold">Place of Supply:</h4>
-										<p><?php echo $row['address'];?><br>
-										<?php echo"phone No".":".$phone_no_show;?></p>
-										<b><?php echo"GST No".":".$row['gst_no'];?></b>
+										<p><?php echo $company['address'];?><br>
+										<?php echo"phone No".":".$company['phone_no'];?></p>
+										<b><?php echo"GST No".":".$company['gst_no'];?></b>
 										
 									</span>
 								</td>
 							</tr> 
 							<tr>
-								<td>Select Customer</td><td >:</td>
+								<td>Select Supplier</td><td >:</td>
 									<td>
-										<select name="customer_id" id="customer_id" class="select2me form-control input-large select_customer">
-											<option value="">----------Choose Customer ----------</option>
+										<select name="supplier_id" id="supplier_id" class="select2me form-control input-large select_supplier">
+											<option value="">----------Choose Supplier ----------</option>
 												<?php
-														$customer_data=mysql_query("select * from customer ");
+														$customer_data=mysql_query("select * from supplier ");
 																
 														while($row=mysql_fetch_array($customer_data))
 														{?>		
-															<option value="<?php echo $row['id'] ;?>"><?php echo $row['customer_name']; ?>
+															<option value="<?php echo $row['id'] ;?>"><?php echo $row['supplier_name']; ?>
 															</option>
 												<?php 	}?>
 										</select> 
@@ -171,14 +162,14 @@ echo'<script>window.location="invoice_list.php"</script>';
 										</td>
 									</tr>		
 									<tr>
-									<td>Customer Name</td><td>:</td>
+									<td>Supplier Name</td><td>:</td>
 										<td>
-											<input class="form-control input-large customer_name" placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text" value="">
+											<input class="form-control input-large customer_name" placeholder="Enter Supplier Name" required name="name" autocomplete="off" type="text" value="">
 										</td>
 									<td>State</td><td>:</td>
 										<td>
-											<select name="state_id" id="state_id" class="select2me form-control input-large select_state" placeholder="----------Choose State ----------">
-												<option value=""></option>
+											<select name="state_id" id="state_id" class="select2me form-control input-large select_state">
+												<option value="">----------Choose State ----------</option>
 													<?php
 															$customer_data=mysql_query("SELECT DISTINCT state FROM city_states ");
 													
@@ -339,11 +330,11 @@ echo'<script>window.location="invoice_list.php"</script>';
 									<select name="item_id[]" id="item_id" class=" form-control input-large">
 										<option value="">----------Choose Item ----------</option>
 											<?php
-												$item_data=mysql_query("select `id`,`item_name`,`item_code`,`item_price` from master_items ");
+												$item_data=mysql_query("select `id`,`item_name`,`item_code`,`purchase_rate` from master_items ");
 												while($row=mysql_fetch_array($item_data))	
 												{
 													$code=$row['item_code'];
-													$price=$row['item_price'];
+													$price=$row['purchase_rate'];
 													?>		
 														<option value="<?php echo $row['id'] ;?>" price="<?php echo $price; ?>" cd="<?php echo $code; ?>"  ><?php echo $row['item_name']; ?></option>
 													<?php }?>
@@ -396,22 +387,22 @@ echo'<script>window.location="invoice_list.php"</script>';
 					$("#newcity").html(response);
 				});
 		});
-		$("#customer_id").live('change', function () 
+		$("#supplier_id").live('change', function () 
 		{
 		 
-			var customer_id=$(this, 'option:selected').val();
+			var supplier_id=$(this, 'option:selected').val();
 			var old=$("#old").html();
-				if(customer_id>0)
+				if(supplier_id>0)
 					{
 						$.ajax({
-							url: "customer_data.php?reg_no="+customer_id,
+							url: "supplier_data.php?reg_no="+supplier_id,
 							}).done(function(response) 
 							{
 								$("#newtable").html(response);
 								$('.date-picker').datepicker();
 							});
 					}
-				 else if((customer_id==0) || (customer_id==''))
+				 else if((supplier_id==0) || (supplier_id==''))
 					{
 						
 						$("#newtable").html(old);
@@ -607,7 +598,7 @@ echo'<script>window.location="invoice_list.php"</script>';
 				</td>
 		</tr>		
 		<tr>
-		    <td>Customer Name</td><td>:</td>
+		    <td>Supplier Name</td><td>:</td>
 				<td>
 					<input class="form-control input-large " placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text" value=""> 
 				</td>

@@ -14,4 +14,4 @@ include("database.php");
 											<option value="<?php echo $row['city'] ;?>"><?php echo $row['city']; ?></option>
 										<?php }?>
 										</select> 
-										
+	

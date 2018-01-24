@@ -100,7 +100,7 @@ echo'<script>window.location="invoice_list.php"</script>';
 						<div class="portlet box blue">
 							<div class="portlet-title ">
 								<div class="caption">
-									<i class="fa fa-gift"></i>Sales Invoice
+									<i class="fa fa-gift"></i>Create Invoice
 								</div>
 							</div>
 					<div class="portlet-body form">
@@ -177,8 +177,8 @@ echo'<script>window.location="invoice_list.php"</script>';
 										</td>
 									<td>State</td><td>:</td>
 										<td>
-											<select name="state_id" id="state_id" class="select2me form-control input-large select_state" placeholder="----------Choose State ----------">
-												<option value=""></option>
+											<select name="state_id" id="state_id" class="select2me form-control input-large select_state">
+												<option value="">----------Choose State ----------</option>
 													<?php
 															$customer_data=mysql_query("SELECT DISTINCT state FROM city_states ");
 													
@@ -382,11 +382,11 @@ echo'<script>window.location="invoice_list.php"</script>';
 
 	$(document).ready(function()
 	{  
-	/* 	$('.date-picker').datepicker();
+		$('.date-picker').datepicker();
 		$('.date-picker').datepicker().on('changeDate', function(){
 		$(this).blur();
 		$(this).datepicker('hide');
-		});  */
+		}); 
 		$("#state_id").live('change', function ()
 		{
 			var state=$(this, 'option:selected').val();	
@@ -416,10 +416,6 @@ echo'<script>window.location="invoice_list.php"</script>';
 						
 						$("#newtable").html(old);
 						$('.date-picker').datepicker();
-						$('.date-picker').datepicker().on('changeDate', function(){
-						$(this).blur();
-						$(this).datepicker('hide');
-						})
 						$('.state_blank').select2();
 					}  
 		});
@@ -489,7 +485,6 @@ echo'<script>window.location="invoice_list.php"</script>';
 		{
 			calculate_total();
 		});
-
 	function calculate_total()
 	{ 
 		var i=0;
@@ -574,90 +569,11 @@ echo'<script>window.location="invoice_list.php"</script>';
 		var GrandTotal = TotTaxAmount+mainvalue;
  		$("#TotTaxAmount").val(TotTaxAmount.toFixed(2));	
  		$(".grand_total").val(GrandTotal.toFixed(2));	
-		
  		
 	}
-
-
-
 	});
     </script>
 <?php scripts();?>
-</html>	
-<div id="old" style="display:none;">
-	<table class="table">	
-		<tr>
-			<td>Company Name</td><td>:</td>
-				<td>
-					<input class="form-control input-large " placeholder="Enter Company Name" required name="company_name" autocomplete="off" type="text" value="" >
-				</td>
-			<td>GST No</td><td>:</td>
-				<td>
-					<input class="form-control " placeholder="Enter GST No" required name="company_gst" autocomplete="off" type="text" value="">
-				</td>
-		</tr>
-		<tr>
-			<td>Company Phone</td><td>:</td>
-				<td>
-					<input class="form-control input-large " placeholder="Enter Phone No" required name="company_phone" autocomplete="off" type="text" value="">
-				</td>
-			<td>Address</td><td>:</td>
-				<td>
-					<input class="form-control " placeholder="Enter Address" required name="company_address" autocomplete="off" type="text" value="">
-				</td>
-		</tr>		
-		<tr>
-		    <td>Customer Name</td><td>:</td>
-				<td>
-					<input class="form-control input-large " placeholder="Enter Customer Name" required name="name" autocomplete="off" type="text" value=""> 
-				</td>
-			<td>State</td><td>:</td>
-				<td>
-					<select name="state_id" id="state_id" class="form-control input-large state_blank">
-						<option value="">----------Choose State ----------</option>
-							<?php
-									$customer_data=mysql_query("SELECT DISTINCT state FROM city_states ");
-									while($row=mysql_fetch_array($customer_data))
-										{?>		
-										<option value="<?php echo $row['state'] ;?>"><?php echo $row['state'];	?>
-										</option>
-										<?php }?>
-					</select> 
-				</td>
-		</tr>
-			<tr>
-				<td>City</td><td>:</td>
-					<td id="newcity">
-						<select name="city_id" id="city_id" class="select2me form-control input-large city_blank">
-							<option value="">----------Choose City ----------</option>
-						</select>
-					</td>
-				<td>Mobile No</td><td>:</td>
-					<td>
-							<input class="form-control input-large " placeholder="Enter Contact No" required name="contact_no" autocomplete="off" type="text" value="">
-					</td>
-			</tr>
-			<tr>
-				<td>Pan No</td><td>:</td>
-					<td>
-						<input class="form-control input-large" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" value=""> 
-					</td>
-				<td>Aadhaar No</td><td>:</td>
-					<td>
-						<input class="form-control input-large " placeholder="Enter Aadhaar No" required name="Aadhaar_no" autocomplete="off" type="text" value="">
-					</td>
-			</tr>
-			<tr>
-				<td>Address</td><td>:</td>
-					<td>
-						<input class="form-control input-large " placeholder="Enter Address" required name="address" autocomplete="off" type="text" value=""> 
-					</td>
-				<td>Invoice date</td><td>:</td>
-					<td>
-						<input class="form-control form-control-inline input-large date-picker date" placeholder="dd-mm-yyyy" required data-date-format="dd-mm-yyyy" size="16" autocomplete="off" type="text" name="date"> 
-					</td>
-			</tr>
-	</table>
-</div>
+
 	
 

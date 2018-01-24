@@ -177,7 +177,8 @@ if(isset($_POST['sub_del']))
 														
 												while($row=mysql_fetch_array($sql))
 												{?>		
-												<option  value="<?php echo $row['id'] ;?>" <?php if($role==$row['id']){ echo "selected"; }?> ><?php echo $row['role_name']; ?></option>
+												<option  value="<?php echo $row['id'] ;?>" <?php if($role==$row['id']){ echo "selected"; }?> >
+												<?php echo $row['role_name']; ?></option>
 												<?php }?>
 											</select>
 										</td>

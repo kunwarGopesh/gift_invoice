@@ -326,6 +326,13 @@ $row=mysql_fetch_array($result);
 $name = $row['customer_name'];
 return($name);
 }
+function fetchsuppliername($id)
+{
+$result=mysql_query("select `supplier_name` from `supplier` where `id`='".$id."'");
+$row=mysql_fetch_array($result);
+$name = $row['supplier_name'];
+return($name);
+}
 function fetchitemname($id)
 {
 $result=mysql_query("select `item_name` from `master_items` where `id`='".$id."'");

@@ -3,6 +3,7 @@ include("index_layout.php");
 include("database.php");
 if(isset($_POST['sub_data']))
 {	
+$voucher_source="sales Invoice";
 $customer_id=$_POST['customer_id'];
 $company_name=$_POST['company_name'];
 $company_gst=$_POST['company_gst'];
@@ -34,9 +35,6 @@ $tax_amounts=$_POST['Tamount'];
 $total_tax=$_POST['total_tax'];
 $grand_total=$_POST['grand_total'];
 
-/* echo "<pre>";
-print_r($_POST);
-echo "</pre>"; EXIT;*/ 
 if(empty($customer_id))
 {			
 			mysql_query("insert into `customer` SET `customer_name`='$customer_name',`address`='$address',
@@ -49,9 +47,9 @@ if(empty($customer_id))
 if(!empty($customer_id))
 {
 			
-			mysql_query("insert into `invoices` SET `customer_id`='$customer_id',`invoice_date`='$date',`total_qty`='$total_qty',`total_rate`='$total_rate',`total_amount_dis`='$total_amount_dis',
+			mysql_query("insert into `sales_invoice` SET `customer_id`='$customer_id',`invoice_date`='$date',`total_qty`='$total_qty',`total_rate`='$total_rate',`total_amount_dis`='$total_amount_dis',
 				`discount_type`='$dis_type',`discount_amount`='$dis_amount',`total_tax`='$total_tax',`amount_after_discount`='$total_after_discount',`grand_total`='$grand_total'");
-					$invoice_id=mysql_insert_id();
+					$sales_invoice_id=mysql_insert_id();
 					
 					$v=0;
 			foreach($item_ids as $item_id)
@@ -59,14 +57,18 @@ if(!empty($customer_id))
 				$item_qty=$item_qtys[$v];
 				$item_price=$item_prices[$v];
 				$row_amount=$row_amounts[$v];
-				/* echo "insert into `invoice_details` SET `invoice_id`='$invoice_id',`item_id`='$item_id',
-				`qty`='$item_qty',`item_price`='$item_price',`row_total_amount`='$row_amount'";
-				echo "<br>"; */
-				mysql_query("insert into `invoice_details` SET `invoice_id`='$invoice_id',`item_id`='$item_id',
+				mysql_query("insert into `sales_invoice_details` SET `sales_invoice_id`='$sales_invoice_id',`item_id`='$item_id',
 				`qty`='$item_qty',`item_price`='$item_price',`row_total_amount`='$row_amount'");
+				
+				/* echo "insert into `item_ledgers` SET `item_id`='$item_id',
+				`qty`='$item_qty',`voucher_source`='$voucher_source',`voucher_id`='$invoice_id',`status`='in'";
+				echo "<br>"; exit; */
+				mysql_query("insert into `item_ledgers` SET `item_id`='$item_id',
+				`qty`='$item_qty',`voucher_source`='$voucher_source',`voucher_id`='$sales_invoice_id',`status`='out',`transaction_date`='$date'");
+				
 				$v++;
 			}
-				$j=0;
+				$j=0; 
 			foreach($tax_ids as $tax_id)
 			{
 				$tax_per=$tax_pers[$j];	
@@ -74,12 +76,12 @@ if(!empty($customer_id))
 				/* echo "insert into `invoice_taxations` SET `invoice_id`='$invoice_id',`taxation_id`='$tax_id',
 				`percentage`='$tax_per',`amount`='$tax_amount'";
 				echo "<br>"; */
-				mysql_query("insert into `invoice_taxations` SET `invoice_id`='$invoice_id',`taxation_id`='$tax_id',
+				mysql_query("insert into `invoice_taxations` SET `invoice_id`='$sales_invoice_id',`taxation_id`='$tax_id',
 				`percentage`='$tax_per',`amount`='$tax_amount'");
 				$j++;
 			}			
 }
-echo'<script>window.location="invoice_list.php"</script>';
+echo'<script>window.location="sales_invoice_list.php"</script>';
 }
 
 ?>
@@ -120,6 +122,7 @@ echo'<script>window.location="invoice_list.php"</script>';
 										$row1=mysql_fetch_array($customer);
 										$row=mysql_fetch_array($company)
 								?>
+		<input type="hidden" value="sale" name="voucher_source"/>
 							<tr>
 								<td colspan="4">
 									<span style="height:30px;width:350px;">
@@ -339,11 +342,11 @@ echo'<script>window.location="invoice_list.php"</script>';
 									<select name="item_id[]" id="item_id" class=" form-control input-large">
 										<option value="">----------Choose Item ----------</option>
 											<?php
-												$item_data=mysql_query("select `id`,`item_name`,`item_code`,`item_price` from master_items ");
+												$item_data=mysql_query("select `id`,`item_name`,`item_code`,`sale_rate` from master_items ");
 												while($row=mysql_fetch_array($item_data))	
 												{
 													$code=$row['item_code'];
-													$price=$row['item_price'];
+													$price=$row['sale_rate'];
 													?>		
 														<option value="<?php echo $row['id'] ;?>" price="<?php echo $price; ?>" cd="<?php echo $code; ?>"  ><?php echo $row['item_name']; ?></option>
 													<?php }?>
