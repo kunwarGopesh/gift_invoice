@@ -399,6 +399,7 @@ echo'<script>window.location="invoice_list.php"</script>';
 		$("#customer_id").live('change', function () 
 		{
 		 
+<<<<<<< HEAD
 			var customer_id=$(this, 'option:selected').val();
 			var old=$("#old").html();
 				if(customer_id>0)
@@ -428,6 +429,31 @@ echo'<script>window.location="invoice_list.php"</script>';
 		{
 			add_row(); rename_rows();
 		});
+=======
+	 });
+	add_row();
+	$('body').on('click','.addrow',function(){
+		add_row(); rename_rows();
+    });
+	
+	function add_row(){ 
+		var tr1=$("#sample_table1 tbody tr").clone();
+		$("#main_table1 tbody#main_tbody1").append(tr1);
+		rename_rows();
+	}
+	$('body').on('click','.deleterow',function(){
+		var rowCount = $("#main_table1 tbody tr.main_tr1").length;
+		if (rowCount>1){
+			if (confirm("Are you sure to remove row ?") == true) {
+				$(this).closest("tr").remove();
+				rename_rows();
+				
+			} 
+		}
+	});
+	function rename_rows(){
+		var i=0;
+>>>>>>> parent of 5cd1cc1... fdfd
 		
 		function add_row()
 		{ 
