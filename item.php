@@ -10,7 +10,11 @@ if(isset($_POST['sub']))
 	$purchase_rate=$_POST['purchase_rate'];
 	$sale_rate=$_POST['sale_rate'];
 	$catid=$_POST['category'];
-	mysql_query("insert into `master_items` SET `item_name`='$name',`item_code`='$code',`purchase_rate`='$purchase_rate',`sale_rate`='$sale_rate',`category_id`='$catid'");
+	$exp_date=$_POST['exp_date'];
+/*  	echo "<pre>";
+	print_r($_POST);
+	echo "</pre>"; EXIT;  */
+	mysql_query("insert into `master_items` SET `item_name`='$name',`item_code`='$code',`purchase_rate`='$purchase_rate',`sale_rate`='$sale_rate',`category_id`='$catid',`exp_date`='$exp_date'");
 		
 	echo '<script>window.location="item.php"</script>';
 }
@@ -22,8 +26,10 @@ if(isset($_POST['sub_edit']))
 	$purchase_rate=mysql_real_escape_string($_REQUEST["purchase_rate"]);
 	$sale_rate=mysql_real_escape_string($_REQUEST["sale_rate"]);
 	$catid=mysql_real_escape_string($_REQUEST["category"]);
+	$exp_date=mysql_real_escape_string($_REQUEST["exp_date"]);
+
 	$r=mysql_query("update `master_items` SET `item_name`='$name',`item_code`='$code',
-		`purchase_rate`='$purchase_rate',`sale_rate`='$sale_rate',`category_id`='$catid' where `id`='$edit'" );
+		`purchase_rate`='$purchase_rate',`sale_rate`='$sale_rate',`category_id`='$catid',`exp_date`='$exp_date' where `id`='$edit'" );
 	$r=mysql_query($r);
 	echo '<script text="javascript">alert(Class Added Successfully")</script>';	
 }
@@ -83,14 +89,20 @@ if(isset($_POST['sub_del']))
 										<td>Purchase Rate</td><td>:</td>
 										<td colspan="4" >
 										<input  class="form-control input-large " placeholder="Enter Purchase Price" required name="purchase_rate" autocomplete="off" type="text" value="" > 
+										
 										</td>
 									
 										</tr>
 										<span class="help-block"> </span>
 										<tr>
 										<td>Sale Rate</td><td>:</td>
-										<td colspan="4" >
+										<td  >
 										<input  class="form-control input-large " placeholder="Enter Sale Price" required name="sale_rate" autocomplete="off" type="text" value="" > 
+										</td>
+										<td>Expiry date</td><td>:</td>
+										<td>
+										<input class="form-control form-control-inline input-large date-picker date" placeholder="yyyy-mm-dd" required data-date-format="yyyy-mm-dd" size="16" autocomplete="off" type="text" name="exp_date"> 
+										</td>
 										</td>
 						
 										</tr>
@@ -129,6 +141,7 @@ if(isset($_POST['sub_del']))
 									<th>Item code</th>
 									<th>Purchase Rate ( &#8377; )</th>
 									<th>Sale Rate( &#8377; )</th>
+									<th>Expiry Date</th>
 									<th>  Action
 									</th>
 								</tr>
@@ -146,7 +159,8 @@ if(isset($_POST['sub_del']))
 					$purchase_rate=$row1['purchase_rate'];
 					$sale_rate=$row1['sale_rate'];
 					$catid=$row1['category_id'];					
- 					?>
+					$exp_date=$row1['exp_date'];
+										?>
                     <tbody>
 								<tr>
 									<td>
@@ -165,6 +179,9 @@ if(isset($_POST['sub_del']))
 									</td> 
 									<td class="search">
 									<?php echo $sale_rate;?>
+									</td>
+									<td class="search">
+									<?php echo $exp_date;?>
 									</td> 
 									
 									<td>  <a class="btn blue-madison green btn-sm" rel="tooltip" title="Edit" data-toggle="modal" href="#edit<?php echo $id;?>"><i class="fa fa-edit"></i></a>
@@ -212,7 +229,11 @@ if(isset($_POST['sub_del']))
 												<span class="help-block"> </span>	
 												<tr>
 												<td>Sale Rate</td><td>:</td>
-												<td colspan="4" ><input class="form-control input-large " required name="sale_rate" autocomplete="off" type="text" value="<?php echo $sale_rate;?>"> </td>
+												<td ><input class="form-control input-large " required name="sale_rate" autocomplete="off" type="text" value="<?php echo $sale_rate;?>"> </td>
+												<td>Expiry date</td><td>:</td>
+												<td>
+												<input class="form-control form-control-inline input-large date-picker date" placeholder="yyyy-mm-dd" required data-date-format="yyyy-mm-dd" size="16" autocomplete="off" type="text" name="exp_date" value="<?php echo $exp_date;?>"> 
+												</td>
 												</tr>
 												<tr>
 												<td colspan="8">

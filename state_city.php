@@ -4,7 +4,7 @@ include("database.php");
 ?>
 
 										
-									<select name="city_id" id="city_id" class="select2me form-control input-large select_state">
+									<select name="city_id" id="city_id" class="form-control input-large select_city">
 									<option value="">----------Choose City----------</option>
 									<?php
 									$c_id=$_GET['reg_no'];

@@ -278,7 +278,7 @@ if(isset($_POST['sub_edit']))
 									</td>
 									<td>City</td><td>:</td>
 									<td class="newtable">
-									<select name="city_id" id="city_id" class="select2me form-control input-large select_city">
+									<select name="city_id" id="city_id" class="select2me form-control input-large select_city1">
 									<?php 
 									$st=mysql_query("select `city` from `city_states` where `state`='$state'");
 									while($ft=mysql_fetch_array($st)){
@@ -415,6 +415,8 @@ if(isset($_POST['sub_edit']))
 				url: "state_city.php?reg_no="+state,
 				}).done(function(response) {
 					$("#newcity").html(response);
+					$(".select_city").select2();
+					
 				});
 	 });
 	 $(".edit_state").live('change', function () {
@@ -425,7 +427,8 @@ if(isset($_POST['sub_edit']))
 			$.ajax({
 				url: "state_city.php?reg_no="+state,
 				}).done(function(response) {
-					new1.html(response);
+						new1.html(response);
+					$(".select_city1").select2();
 				});
 	 });
 	 });
