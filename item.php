@@ -76,7 +76,7 @@ if(isset($_POST['sub_del']))
 													<?php }?>
 													
 													</select>
-													<span class="help-block"></div>
+													<span class="help-block">
 													<div id="chk_1">
 													</div>
 										</td>
@@ -301,7 +301,6 @@ if(isset($_POST['sub_del']))
 					}).done(function(response) {
 						
 						$("#chk_"+chk).html(response);
-						$(".select_citynew").select2();
 					});
 			}	
 		 });

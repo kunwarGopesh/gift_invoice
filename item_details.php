@@ -1,32 +1,31 @@
 <?php 
 include("database.php");
-$c_id=$_GET['c_id'];
-$set=mysql_query("select `id`,`item_name`,`sale_price`,`item_code`	 from `master_items` where `category_id`='$c_id'");
+$code=$_GET['icode'];
+$purchase_qty=0;
+$sale_qty=0;
+$stock_qty=0;
+$set=mysql_query("select `id`,`item_name`,`sale_rate` from `master_items` where `item_code`='$code'");
 $row=mysql_fetch_array($set);
-$code=$row['item_code'];
-$price=$row['sale_price'];
-//$chk=$_GET['chk'];
-//$next_chk=$chk+1;
+$item_id=$row['id'];
+$item_name=$row['item_name'];
+$price=$row['sale_rate'];
+$set=mysql_query("select `qty`,`status` from `item_ledgers` where `item_id`='$item_id'");
+								while($fet=mysql_fetch_array($set))
+								{
+									$qty=$fet['qty'];
+									$status=$fet['status'];
+									if($status=='in')
+									{
+										$purchase_qty+=$qty;
+									}
+									else
+									{
+										$sale_qty+=$qty;
+									}
+								}
+								$stock_qty=$purchase_qty-$sale_qty;
+	echo $item_id.",".$item_name.",".$price.",".$stock_qty;
 ?>
-
-										
-<select name="item" id="itm_id" class="select2me form-control input-medium">
-<option value="">----Select--Please----</option>
-<?php
-
-$set=mysql_query("select id,item_name from `master_items` where `category_id`='$c_id'");
-while($row=mysql_fetch_array($set))
-{?>		
-	<option value="<?php echo $row['id'] ;?>" price="<?php echo $price; ?>" cd="<?php echo $code; ?>" ><?php echo $row['item_name']; ?></option>
-	<?php }?>
-</select>
-<script>
- 			
-			$(".icode").attr( 'readonly', 'readonly' );
-			$(".rate").attr( 'readonly', 'readonly' );
-			
-	
-</script>
 
 				
 

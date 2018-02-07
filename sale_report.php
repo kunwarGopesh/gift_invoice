@@ -62,18 +62,7 @@ if(isset($_POST['submit']))
 							</div>
 							<div class="portlet-body form">
 								
-									<table class="table">
-										<thead>
-											<tr>
-												<th>Sr.No</th>
-												<th>Item Name</th>
-												<th>Sale Qty</th>
-												<th>Sale Price (&#8377;) </th>
-												<th>Total Amount (&#8377;)</th>
-												<th>Date Of Sale</th>
-												
-											</tr>
-										</thead>
+									
 		<?php
 					
 						$q2="";	 $q3=""; $q4=""; $qry="";
@@ -90,6 +79,7 @@ if(isset($_POST['submit']))
 						if(!empty($_POST['end_date']))
 						{
 						$date_to=date('Y-m-d', strtotime($_POST['end_date']));
+						}
 						if($q2=="")
 						{
 						$q3=" `transaction_date`<='".$date_to."'";
@@ -108,13 +98,30 @@ if(isset($_POST['submit']))
 						}
 						
 						$q4=" group by `item_id`";
-						 $sql=$qry.$q2.$q3.$q4;
-						
+						  $sql=$qry.$q2.$q3.$q4;
 						$ledger=mysql_query($sql);
 		$i=0;
 		$total_quantity=0;
 		$gtotal_sale_price=0;
 		$gtotal_sale_amount=0;
+		$count=mysql_num_rows($ledger);
+			if($count>0){
+				
+				?>
+				<table class="table">
+										<thead>
+											<tr>
+												<th>Sr.No</th>
+												<th>Item Name</th>
+												<th>Sale Qty</th>
+												<th>Sale Price (&#8377;) </th>
+												<th>Total Amount (&#8377;)</th>
+												<th>Profit/Loss (&#8377;)</th>
+												<th>Date Of Sale</th>
+												
+											</tr>
+										</thead>
+											<?php
 		while($row=mysql_fetch_array($ledger))
 		{
 			$i++;
@@ -122,7 +129,7 @@ if(isset($_POST['submit']))
 			$item_id=$row['item_id'];	
 			$tran_date=$row['transaction_date'];
 			$org_date=date('d-M-Y', strtotime($tran_date));
-			$set=mysql_query("select `sale_rate` from `master_items` where `id`='$item_id'");
+			$set=mysql_query("select `sale_rate`,`purchase_rate` from `master_items` where `id`='$item_id'");
 			$price=mysql_fetch_array($set);
 			$sale_quantity=0;
 			$total_amount=0;
@@ -135,10 +142,24 @@ if(isset($_POST['submit']))
 							$sale_quantity+=$qty;
 							}
 							$total_quantity+=$sale_quantity;
-							$total_amount=$sale_quantity*$price['sale_rate'];
+							$sale_amount=$sale_quantity*$price['sale_rate'];
+							$purchase_amount=$sale_quantity*$price['purchase_rate'];
 							$gtotal_sale_price+=$price['sale_rate'];
-							$gtotal_sale_amount+=$total_amount;
+							$gtotal_sale_amount+=$sale_amount;
+							$profil_loss=$sale_amount-$purchase_amount;
+							if($profil_loss>0)
+							{
+							$Total_p_l+=$profil_loss;
+							}
+							else
+							{
+								//$Total_p_l=$Total_p_l-$profil_loss;
+							}	
 							
+							if($purchase_amount>$sale_amount)
+							{
+							$tot_loss+=$profil_loss;
+							}
 		?>
 										<tbody>
 											<tr>
@@ -146,23 +167,57 @@ if(isset($_POST['submit']))
 												<td><?php echo fetchitemname($item_id);?></td>
 												<td><?php echo $sale_quantity;?></td>
 												<td><?php echo $price['sale_rate'];?></td>
-												<td><?php echo $total_amount;?></td>
+												<td><?php echo $sale_amount;?></td>
+												<td><?php 
+												if($purchase_amount<$sale_amount)
+												{
+													echo $profil_loss;
+												}
+												else
+												{
+													echo $profil_loss;
+												}
+												?></td>
 												<td><?php echo $org_date;?></td>
 												
 												
 											</tr>
-			 <?php }}}?>
+			 <?php }
+			 
+			 $final=$Total_p_l-$tot_loss;
+			 
+			 ?>
 										</tbody>
 										<tfoot>
 											<tr style="background-color:#DCD9D8;">
 												<th colspan="2" style="text-align:center">Grand Total</th>
-												<th><?php echo $total_quantity;?></th>
-												<th><?php echo $gtotal_sale_price;?></th>
-												<th colspan="2"><?php echo $gtotal_sale_amount;?></th>
-												
+												<th><?php echo number_format($total_quantity,2);?></th>
+												<th><?php echo number_format($gtotal_sale_price,2);?></th>
+												<th ><?php echo number_format($gtotal_sale_amount,2);?></th>
+												<th colspan="2"><?php echo number_format($Total_p_l+$tot_loss,2);?></th>
+					
 											</tr>
 										</tfoot>
 									</table>
+									 <?php  }else{
+				 
+				
+				 ?><br>
+				 <table>
+					 <tr>
+						<td colspan="100">
+						<P style="text-align:center;padding-left:400px;">
+						No Record Found
+						</p>
+						</td>
+					 </tr>
+				 </table>
+				 <?php
+				 
+			 }
+			 
+			 
+			 } ?>	
 							</div>
 						</div>
 					</div>

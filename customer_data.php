@@ -61,7 +61,6 @@ $company_phone=$fet1['phone_no'];
 		    <td><input class="form-control form-control-inline input-large date-picker date" placeholder="yyyy-mm-dd" required data-date-format="dd-mm-yyyy" size="6" autocomplete="off" type="text" name="date" value="<?php echo $today;?>"> </td>
 			</tr>
 </table>
-<<<<<<< HEAD
 <script>
 			 $('.date-picker').datepicker();
 		 	$('.date-picker').datepicker().on('changeDate', function(){
@@ -83,5 +82,3 @@ $company_phone=$fet1['phone_no'];
 			//$(".date").attr( 'readonly', 'readonly' );
 	
 </script>
-=======
->>>>>>> parent of 5cd1cc1... fdfd

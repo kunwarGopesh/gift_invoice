@@ -8,7 +8,9 @@ if(isset($_POST['sub_del']))
 {
 	$delet_class=$_POST['delet_class'];
 	mysql_query("DELETE FROM `purchase_invoice` WHERE `id`='$delet_class'" );
+	mysql_query("DELETE FROM `invoice_taxations` WHERE `invoice_id`='$delet_class' && `flag`='1'" );
 	mysql_query("DELETE FROM `purchase_invoice_details` WHERE `purchase_invoice_id`='$delet_class'" );
+	mysql_query("DELETE FROM `item_ledgers` WHERE `voucher_id`='$delet_class' && `status`='in'" );
 }
 ?>
 <html>
@@ -81,7 +83,7 @@ if(isset($_POST['sub_del']))
 									</td> 
 									<td>
 										<a class="btn blue-madison blue-stripe btn-sm" rel="tooltip" title="View" data-toggle="modal" href="view_purchase.php?invoice_id=<?php echo $invoice_id;?>"><i class="fa fa-list"></i></a>
-										<a class="btn blue-madison green btn-sm" rel="tooltip" title="View" data-toggle="modal" href="edit_invoice.php?invoice_id=<?php echo $invoice_id;?>"><i class="fa fa-edit"></i></a>
+										<a class="btn blue-madison green btn-sm" rel="tooltip" title="View" data-toggle="modal" href="edit_purchase_invoice.php?invoice_id=<?php echo $invoice_id;?>"><i class="fa fa-edit"></i></a>
 										<a class="btn blue-madison red btn-sm" rel="tooltip" title="delete" data-toggle="modal" href="#delete<?php echo $invoice_id;?>"><i class="fa fa-trash"></i></a>							
 			  <div class="modal fade" id="delete<?php echo $invoice_id;?>" tabindex="-1" aria-hidden="true" style="padding-top:35px">
                 <div class="modal-dialog modal-md">

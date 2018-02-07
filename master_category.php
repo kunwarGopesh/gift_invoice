@@ -258,9 +258,7 @@ if(isset($_POST['sub_edit']))
 				</table>
 			</div>
 				
-			</div>
-				 
-				   
+			</div>   
 			</div>
             </div>
             </div>

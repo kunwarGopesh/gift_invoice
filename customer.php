@@ -421,14 +421,12 @@ if(isset($_POST['sub_edit']))
 	 });
 	 $(".edit_state").live('change', function () {
 		 var state=$(this, 'option:selected').val();
-		 var new1=$(this).closest('tr').find("td.newtable");
-		 
-			//alert(state);		 
+		 var new1=$(this).closest('tr').find("td.newtable"); 
 			$.ajax({
 				url: "state_city.php?reg_no="+state,
 				}).done(function(response) {
 						new1.html(response);
-					$(".select_city1").select2();
+						$(".select_city1").select2();
 				});
 	 });
 	 });

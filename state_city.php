@@ -4,8 +4,8 @@ include("database.php");
 ?>
 
 										
-									<select name="city_id" id="city_id" class="form-control input-large select_city">
-									<option value="">----------Choose City----------</option>
+									<select name="city_id" id="city_id" class="form-control input-large select_city" placeholder="----------Choose City ----------">
+									<option value=""></option>
 									<?php
 									$c_id=$_GET['reg_no'];
 									$set=mysql_query("select city from `city_states` where `state`='$c_id'");

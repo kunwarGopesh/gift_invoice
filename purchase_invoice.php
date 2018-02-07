@@ -4,6 +4,7 @@ include("database.php");
 if(isset($_POST['sub_data']))
 {	
 $voucher_source="Purchase Invoice";
+$flag=1;
 $supplier_id=$_POST['supplier_id'];
 $company_name=$_POST['company_name'];
 $company_gst=$_POST['company_gst'];
@@ -39,7 +40,7 @@ $grand_total=$_POST['grand_total'];
 print_r($_POST);
 echo "</pre>"; EXIT; */
 if(empty($supplier_id))
-{			
+{
 			mysql_query("insert into `supplier` SET `supplier_name`='$supplier_name',`address`='$address',
 				`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no'");
 				$supplier_id=mysql_insert_id();
@@ -76,7 +77,7 @@ if(!empty($supplier_id))
 				$tax_per=$tax_pers[$j];	
 				$tax_amount=$tax_amounts[$j];
 				mysql_query("insert into `invoice_taxations` SET `invoice_id`='$purchase_invoice_id',`taxation_id`='$tax_id',
-				`percentage`='$tax_per',`amount`='$tax_amount'");
+				`percentage`='$tax_per',`amount`='$tax_amount',`flag`='$flag'");
 				$j++;
 			}			
 }
@@ -148,7 +149,7 @@ echo'<script>window.location="purchase_invoice_list.php"</script>';
 										</td>
 										<td>GST No</td><td>:</td>
 										<td>
-											<input class="form-control company_gst" placeholder="Enter GST No" required name="company_gst" autocomplete="off" type="text" value="">
+											<input class="form-control input-large company_gst" placeholder="Enter GST No" required name="company_gst" autocomplete="off" type="text" value="">
 										</td>
 									</tr>
 									<tr>
@@ -158,7 +159,7 @@ echo'<script>window.location="purchase_invoice_list.php"</script>';
 										</td>
 										<td>Address</td><td>:</td>
 										<td>
-											<input class="form-control company_address" placeholder="Enter Address" required name="company_address" autocomplete="off" type="text" value="">
+											<input class="form-control input-large company_address" placeholder="Enter Address" required name="company_address" autocomplete="off" type="text" value="">
 										</td>
 									</tr>		
 									<tr>
@@ -168,8 +169,8 @@ echo'<script>window.location="purchase_invoice_list.php"</script>';
 										</td>
 									<td>State</td><td>:</td>
 										<td>
-											<select name="state_id" id="state_id" class="select2me form-control input-large select_state">
-												<option value="">----------Choose State ----------</option>
+											<select name="state_id" id="state_id" class="select2me form-control input-large select_state" placeholder="----------Choose State ----------">
+												<option value=""></option>
 													<?php
 															$customer_data=mysql_query("SELECT DISTINCT state FROM city_states ");
 													
@@ -183,8 +184,8 @@ echo'<script>window.location="purchase_invoice_list.php"</script>';
 							<tr>
 								<td>City</td><td>:</td>
 									<td id="newcity">
-										<select name="city_id" id="city_id" class="select2me form-control input-large select_city">
-											<option value="">----------Choose City ----------</option>
+										<select name="city_id" id="city_id" class="select2me form-control input-large select_city" placeholder="----------Choose City ----------">
+											<option value=""></option>
 										</select>
 									</td>
 									<td>Mobile No</td><td>:</td>
@@ -373,11 +374,6 @@ echo'<script>window.location="purchase_invoice_list.php"</script>';
 
 	$(document).ready(function()
 	{  
-	/* 	$('.date-picker').datepicker();
-		$('.date-picker').datepicker().on('changeDate', function(){
-		$(this).blur();
-		$(this).datepicker('hide');
-		});  */
 		$("#state_id").live('change', function ()
 		{
 			var state=$(this, 'option:selected').val();	
@@ -385,6 +381,7 @@ echo'<script>window.location="purchase_invoice_list.php"</script>';
 				url: "state_city.php?reg_no="+state,
 				}).done(function(response) {
 					$("#newcity").html(response);
+					$(".select_city").select2();
 				});
 		});
 		$("#supplier_id").live('change', function () 
@@ -424,8 +421,6 @@ echo'<script>window.location="purchase_invoice_list.php"</script>';
 		{ 
 			var tr1=$("#sample_table1 tbody tr").clone();
 			$("#main_table1 tbody#main_tbody1").append(tr1);
-											
-
 			rename_rows();
 		}
 		$('body').on('click','.deleterow',function()
@@ -478,6 +473,7 @@ echo'<script>window.location="purchase_invoice_list.php"</script>';
 		}); 
 		$(document).on('change','.tax_per',function()
 		{
+			
 			calculate_total();
 		});
 
@@ -565,7 +561,8 @@ echo'<script>window.location="purchase_invoice_list.php"</script>';
 		var GrandTotal = TotTaxAmount+mainvalue;
  		$("#TotTaxAmount").val(TotTaxAmount.toFixed(2));	
  		$(".grand_total").val(GrandTotal.toFixed(2));	
-		
+		$(".tax_amount").attr( 'readonly', 'readonly' );
+
  		
 	}
 
@@ -604,8 +601,8 @@ echo'<script>window.location="purchase_invoice_list.php"</script>';
 				</td>
 			<td>State</td><td>:</td>
 				<td>
-					<select name="state_id" id="state_id" class="form-control input-large state_blank">
-						<option value="">----------Choose State ----------</option>
+					<select name="state_id" id="state_id" class="form-control input-large state_blank" placeholder="----------Choose State ----------">
+						<option value=""></option>
 							<?php
 									$customer_data=mysql_query("SELECT DISTINCT state FROM city_states ");
 									while($row=mysql_fetch_array($customer_data))
@@ -615,12 +612,12 @@ echo'<script>window.location="purchase_invoice_list.php"</script>';
 										<?php }?>
 					</select> 
 				</td>
-		</tr>
+		</tr>	
 			<tr>
 				<td>City</td><td>:</td>
 					<td id="newcity">
-						<select name="city_id" id="city_id" class="select2me form-control input-large city_blank">
-							<option value="">----------Choose City ----------</option>
+						<select name="city_id" id="city_id" class="select2me form-control input-large select_city" placeholder="----------Choose City ----------">
+							<option value=""></option>
 						</select>
 					</td>
 				<td>Mobile No</td><td>:</td>

@@ -11,7 +11,7 @@ $next_chk=$chk+1;
 
 										
 <select name="category" chk="<?php echo $next_chk; ?>" id="category_id" class="select2me form-control input-large srch">
-<option value="">----Select--Please----</option>
+<option value="">----Select--Sub Category----</option>
 <?php
 
 $set=mysql_query("select `id`,`category_name` from `master_category` where `parent_id`='$c_id'");

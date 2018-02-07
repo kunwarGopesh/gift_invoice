@@ -1,19 +1,15 @@
 <?php
 include("index_layout.php");
 ?>
+
 <html>
 <head>
   <style>
- 
 	.table_rows, .table_rows td {
 	    border: 1px solid  #000; 
 		border-collapse: collapse;
 		padding:px; 
-
 	}
-	
-	
-	
 	p.indent{ padding-lef:1.8em}
 	
 	</style>
