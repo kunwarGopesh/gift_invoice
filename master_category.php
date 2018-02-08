@@ -187,7 +187,7 @@ if(isset($_POST['sub_edit']))
 														
 														while($row=mysql_fetch_array($sql))
 														{?>		
-																<option  value="<?php echo $row['id'] ;?>" <?php if($cat_id==$row['id']){ echo "selected";}?>><?php echo $row['category_name']; ?></option>
+																<option  value="<?php echo $row['id'] ;?>" <?php if($cat_id==$row['id']){ echo "Selected";}?>><?php echo $row['category_name']; ?></option>
 															<?php }?>
 										</select>
 										</div>
