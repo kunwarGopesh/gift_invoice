@@ -5,6 +5,7 @@ include("database.php");
 <?php 
 if(isset($_POST['sub']))
 {
+	$sess_id=$_SESSION['id'];
 	$name=$_POST['name'];
 	$code=$_POST['code'];
 	$purchase_rate=$_POST['purchase_rate'];
@@ -14,8 +15,7 @@ if(isset($_POST['sub']))
 /*  	echo "<pre>";
 	print_r($_POST);
 	echo "</pre>"; EXIT;  */
-	mysql_query("insert into `master_items` SET `item_name`='$name',`item_code`='$code',`purchase_rate`='$purchase_rate',`sale_rate`='$sale_rate',`category_id`='$catid',`exp_date`='$exp_date'");
-		
+	mysql_query("insert into `master_items` SET `item_name`='$name',`item_code`='$code',`purchase_rate`='$purchase_rate',`sale_rate`='$sale_rate',`category_id`='$catid',`exp_date`='$exp_date',`created_by`='$sess_id'");	
 	echo '<script>window.location="item.php"</script>';
 }
 if(isset($_POST['sub_edit']))
@@ -29,14 +29,14 @@ if(isset($_POST['sub_edit']))
 	$exp_date=mysql_real_escape_string($_REQUEST["exp_date"]);
 
 	$r=mysql_query("update `master_items` SET `item_name`='$name',`item_code`='$code',
-		`purchase_rate`='$purchase_rate',`sale_rate`='$sale_rate',`category_id`='$catid',`exp_date`='$exp_date' where `id`='$edit'" );
+		`purchase_rate`='$purchase_rate',`sale_rate`='$sale_rate',`category_id`='$catid',`exp_date`='$exp_date',`created_by`='$sess_id' where `id`='$edit'" );
 	$r=mysql_query($r);
 	echo '<script text="javascript">alert(Class Added Successfully")</script>';	
 }
 if(isset($_POST['sub_del']))
 {
 	$delet_class=$_POST['delet_class'];
-	mysql_query("DELETE FROM master_items WHERE id='$delet_class'" );
+	mysql_query("DELETE FROM `master_items` WHERE `id`='$delet_class'" );
 }
 
 ?> 
@@ -77,7 +77,7 @@ if(isset($_POST['sub_del']))
 													
 													</select>
 													<span class="help-block">
-													<div id="chk_1">
+													<div id="chk_1" >
 													</div>
 										</td>
 										<td>Item Code</td><td>:</td>
@@ -299,7 +299,6 @@ if(isset($_POST['sub_del']))
 				$.ajax({
 					url: "category.php?c_id="+cat_id+"&chk="+chk,
 					}).done(function(response) {
-						
 						$("#chk_"+chk).html(response);
 					});
 			}	

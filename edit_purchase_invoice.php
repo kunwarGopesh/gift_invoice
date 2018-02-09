@@ -2,11 +2,11 @@
 include("index_layout.php");
 include("database.php");
 if(isset($_POST['sub_data']))
-{	
+{
+$sess_id=$_SESSION['id'];	
 $voucher_source="Purchase Invoice";
 $flag=1;
 $invoice_id=$_GET['invoice_id'];
-
 $supplier_id=$_POST['supplier_id'];
 $company_name=$_POST['company_name'];
 $company_gst=$_POST['company_gst'];
@@ -46,22 +46,22 @@ if(empty($supplier_id))
 				mysql_query("DELETE FROM `supplier` WHERE `id`='$supplier_id'");
 				mysql_query("DELETE FROM `companies` WHERE `supplier_id`='$supplier_id'");
 				mysql_query("insert into `supplier` SET `supplier_name`='$supplier_name',`address`='$address',
-				`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no'");
+				`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no',`created_by`='$sess_id'");
 				$supplier_id=mysql_insert_id();
 			mysql_query("insert into `companies` SET `supplier_id`='$supplier_id',`name`='$company_name',`address`='$company_address',
-				`phone_no`='$company_phone',`gst_no`='$company_gst'");
+				`phone_no`='$company_phone',`gst_no`='$company_gst',`created_by`='$sess_id'");
 		 
 }	 					
 if(!empty($supplier_id))
 {
 			 mysql_query("update `supplier` SET `supplier_name`='$supplier_name',`address`='$address',
-				`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no' where `id`='$supplier_id'");
+				`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no',`created_by`='$sess_id' where `id`='$supplier_id'");
 			mysql_query("update `companies` SET `supplier_id`='$supplier_id',`name`='$company_name',`address`='$company_address',
-				`phone_no`='$company_phone',`gst_no`='$company_gst' where `supplier_id`='$supplier_id'");
+				`phone_no`='$company_phone',`gst_no`='$company_gst',`created_by`='$sess_id' where `supplier_id`='$supplier_id'");
 	
 		
 			mysql_query("update `purchase_invoice` SET `supplier_id`='$supplier_id',`invoice_date`='$date',`total_qty`='$total_qty',`total_rate`='$total_rate',`total_amount_dis`='$total_amount_dis',
-				`discount_type`='$dis_type',`discount_amount`='$dis_amount',`total_tax`='$total_tax',`amount_after_discount`='$total_after_discount',`grand_total`='$grand_total' where `id`='$invoice_id'");
+				`discount_type`='$dis_type',`discount_amount`='$dis_amount',`total_tax`='$total_tax',`amount_after_discount`='$total_after_discount',`grand_total`='$grand_total',`edited_by`='$sess_id' where `id`='$invoice_id'");
 					mysql_query("DELETE FROM `purchase_invoice_details` WHERE `purchase_invoice_id`='$invoice_id'" );
 					mysql_query("DELETE FROM `item_ledgers` WHERE `voucher_id`='$invoice_id' && `status`='in'" );
 					$v=0;
@@ -74,7 +74,7 @@ if(!empty($supplier_id))
 				`qty`='$item_qty',`item_price`='$item_price',`row_total_amount`='$row_amount'";
 				echo "<br>"; */
 				mysql_query("insert into `purchase_invoice_details` SET `purchase_invoice_id`='$invoice_id',`item_id`='$item_id',
-				`qty`='$item_qty',`item_price`='$item_price',`row_total_amount`='$row_amount'");
+				`qty`='$item_qty',`item_price`='$item_price',`row_total_amount`='$row_amount',`edited_by`='$sess_id'");
 				mysql_query("insert into `item_ledgers` SET `item_id`='$item_id',
 				`qty`='$item_qty',`voucher_source`='$voucher_source',`voucher_id`='$invoice_id',`status`='in',`transaction_date`='$date'");
 				$v++;

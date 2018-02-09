@@ -5,6 +5,7 @@ include("database.php");
 <?php 
 if(isset($_POST['submit']))
 {
+	$sess_id=$_SESSION['id'];
 	$company_name=$_POST['company_name'];
 	$company_gst=$_POST['company_gst'];
 	$company_phone=$_POST['company_phone'];
@@ -16,12 +17,11 @@ if(isset($_POST['submit']))
 	$Aadhaar_no=$_POST['Aadhaar_no'];
 	$address=$_POST['customer_address'];
 	$mobile=$_POST['contact_no'];
-	//$date=$_POST['date'];
 	mysql_query("insert into `customer` SET `customer_name`='$customer_name',`address`='$address',
-		`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no'");
+		`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no',`created_by`='$sess_id'");
 		$customer_id=mysql_insert_id();
 	mysql_query("insert into `companies` SET `customer_id`='$customer_id',`name`='$company_name',`address`='$company_address',
-		`phone_no`='$company_phone',`gst_no`='$company_gst'");
+		`phone_no`='$company_phone',`gst_no`='$company_gst',`created_by`='$sess_id'");
 	echo '<script>window.location="customer.php"</script>';
 }
  if(isset($_POST['sub_del']))
@@ -33,6 +33,7 @@ if(isset($_POST['submit']))
 
 if(isset($_POST['sub_edit']))
 {
+	$sess_id=$_SESSION['id'];
 	$edit=$_REQUEST['edit_id'];  
 	$company_name=mysql_real_escape_string($_REQUEST['company_name']);
 	$company_gst=mysql_real_escape_string($_REQUEST['company_gst']);
@@ -46,11 +47,10 @@ if(isset($_POST['sub_edit']))
 	$address=mysql_real_escape_string($_REQUEST['customer_address']);
 	$mobile=mysql_real_escape_string($_REQUEST['contact_no']); 
 	 $r =mysql_query("update `customer` SET `customer_name`='$customer_name',`address`='$address',
-		`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no' where `id`='$edit'");
+		`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no',`created_by`='$sess_id' where `id`='$edit'");
 	$r=mysql_query($r);
 	$p=mysql_query("update `companies` SET `name`='$company_name',`address`='$company_address',
-		`phone_no`='$company_phone',`gst_no`='$company_gst',`customer_id`='$edit' where `customer_id`='$edit'");
-		
+		`phone_no`='$company_phone',`gst_no`='$company_gst',`customer_id`='$edit',`created_by`='$sess_id' where `customer_id`='$edit'");	
 		 $p=mysql_query($p);
 		echo '<script text="javascript">alert(Class Added Successfully")</script>';	
 	

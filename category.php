@@ -6,11 +6,10 @@ $count=mysql_num_rows($sets);
 if($count>0){
 $chk=$_GET['chk'];
 $next_chk=$chk+1;
-
 ?>
 
 										
-<select name="category" chk="<?php echo $next_chk; ?>" id="category_id" class="select2me form-control input-large srch">
+<select name="category" chk="<?php echo $next_chk; ?>" id="category_id" class=" form-control input-large srch">
 <option value="">----Select--Sub Category----</option>
 <?php
 
@@ -21,9 +20,9 @@ while($row=mysql_fetch_array($set))
 	<?php }?>
 </select> 
 			<span class="help-block"></div>						
-			<div id="chk_<?php echo $next_chk; ?>">	</div>	<span class="help-block"></div>			
+			<div id="chk_<?php echo $next_chk; ?>" >	</div>	<span class="help-block"></div>			
 <?php 
 } ?>
-																			
+																
 																			
 																			

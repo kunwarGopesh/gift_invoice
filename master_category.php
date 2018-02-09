@@ -4,18 +4,17 @@
  
 if(isset($_POST['sub']))
 {
+	$sess_id=$_SESSION['id'];
 	$class_name=$_POST['class_name'];
 	$cat_id=$_POST['category_id'];
-	
-	mysql_query("insert into `master_category` SET `category_name`='$class_name',`parent_id`='$cat_id'");	
+	mysql_query("insert into `master_category` SET `category_name`='$class_name',`parent_id`='$cat_id',`created_by`='$sess_id'");	
 	echo '<script >window.location="master_category.php"</script>';	
 }
  
 if(isset($_POST['sub_del']))
 {
 	$delet_class=$_POST['delet_class'];
-
-	mysql_query("update `master_category` SET `flag`='1' where id='$delet_class'" );
+	mysql_query("DELETE FROM `master_category` where `id`='$delet_class'" );
 }
 
 if(isset($_POST['sub_edit']))
@@ -23,7 +22,7 @@ if(isset($_POST['sub_edit']))
 	$edit=$_REQUEST['edit_id'];  
 	$class_name=mysql_real_escape_string($_REQUEST["class_name"]);
 	$cat_id=mysql_real_escape_string($_REQUEST["category_id"]);
-	$r=mysql_query("update `master_category` SET `category_name`='$class_name',`parent_id`='$cat_id' where id='$edit'" );
+	$r=mysql_query("update `master_category` SET `category_name`='$class_name',`parent_id`='$cat_id',`created_by`='$sess_id' where id='$edit'" );
 	$r=mysql_query($r);
 	echo '<script text="javascript">alert(Class Added Successfully")</script>';	
 }
@@ -51,7 +50,7 @@ if(isset($_POST['sub_edit']))
 				<form  class="form-horizontal" id="form_sample_2"  role="form" method="post"> 
 					<div class="form-body">
 						 <div class="form-group">
-							<label class="control-label col-md-3">Select Category</label>
+							<label class="control-label col-md-3">Parent Category</label>
 							<div class="col-md-6">
 								<div class="input-icon right">
 								<i class="fa"></i>
@@ -177,11 +176,12 @@ if(isset($_POST['sub_edit']))
 							
 								<div class="form-body">
 								<div class="form-group">
-									<label class="control-label col-md-3">Choose Category</label>
+									<label class="control-label col-md-3">Parent Category</label>
 									<div class="col-md-6">
 										<div class="input-icon right">
 										<i class="fa"></i>
 										<select name="category_id" class="select2me form-control input-large " >
+										<option><?php echo fetchcategoryname($id);?></option>
 													<?php
 														$sql=mysql_query("select id,category_name from master_category where flag='0'");
 														
