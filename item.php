@@ -53,7 +53,7 @@ if(isset($_POST['sub_del']))
 	<div class="page-content">
     <div class="row">
     <div class="col-md-12">
-			<div class="portlet box blue">
+		<div class="portlet box blue">
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="fa fa-gift"></i>Item Master
@@ -86,22 +86,39 @@ if(isset($_POST['sub_del']))
 										<tr>
 										<td>Item Name</td><td>:</td>
 										<td><input class="form-control input-large " placeholder="Enter Item Name" required name="name" autocomplete="off" type="text" value=""> </td>
-										<td>Purchase Rate</td><td>:</td>
-										<td colspan="4" >
-										<input  class="form-control input-large " placeholder="Enter Purchase Price" required name="purchase_rate" autocomplete="off" type="text" value="" > 
-										
-										</td>
-									
+										<td>Description</td><td>:</td>
+										<td><textarea class="form-control input-large " placeholder="Enter Description Here"  name="desc" autocomplete="off" type="text" value="" rows="2"></textarea> </td>
 										</tr>
-										<span class="help-block"> </span>
 										<tr>
+										<td>Purchase Rate</td><td>:</td>
+										<td>
+										<input  class="form-control input-large " placeholder="Enter Purchase Price" required name="purchase_rate" autocomplete="off" type="text" value="" > 
+										</td>									
+										<span class="help-block"> </span>
 										<td>Sale Rate</td><td>:</td>
-										<td  >
+										<td>
 										<input  class="form-control input-large " placeholder="Enter Sale Price" required name="sale_rate" autocomplete="off" type="text" value="" > 
+										</td>
+										</tr>
+										<tr>
+										<td>Tax Percentage</td><td>:</td>
+										<td>
+										<input  class="form-control input-large " placeholder="Enter Tax Percentage" required name="tax_per" autocomplete="off" type="text" value="" > 
+										</td>									
+										<span class="help-block"> </span>
+										<td>Tax Amount</td><td>:</td>
+										<td>
+										<input  class="form-control input-large " placeholder="Enter Tax Amount" required name="tax_amount" autocomplete="off" type="text" value="" > 
+										</td>
+										</tr>
+										<tr>
+										<td>Actual Purchase</td><td>:</td>
+										<td>
+										<input  class="form-control input-large " placeholder="Enter Actual Purchase" required name="actual_purchase" autocomplete="off" type="text" value="" > 
 										</td>
 										<td>Expiry date</td><td>:</td>
 										<td>
-										<input class="form-control form-control-inline input-large date-picker date" placeholder="yyyy-mm-dd" required data-date-format="yyyy-mm-dd" size="16" autocomplete="off" type="text" name="exp_date"> 
+										<input class="form-control form-control-inline input-large date-picker date" placeholder="dd-mm-yyyy" required data-date-format="dd-mm-yyyy" size="16" autocomplete="off" type="text" name="exp_date"> 
 										</td>
 										</td>
 						
@@ -113,12 +130,11 @@ if(isset($_POST['sub_del']))
 										</tr>
 								</table>
 				</form>
-			</div>
-				 
-				   
-			</div>
-            </div>
-            <!-------------------------- View------------>
+			</div>	   
+		</div>
+    </div>
+ </div>
+<!-------------------------- View------------>
            <div class="row">
 				<div class="col-md-12">
 			<div class="portlet box blue">
