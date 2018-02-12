@@ -531,13 +531,10 @@ echo'<script>window.location="purchase_invoice_list.php"</script>';
 			}
 			
 			//--- Taxation----//
-		var tax_amount=0;
-		
-		var mainvalue = parseFloat($('.taxable_value').val());
-		
+		var tax_amount=0;		
+		var mainvalue = parseFloat($('.taxable_value').val());		
 		var tax_count = $('#tax_count').val();
-		var TotTaxAmount=0;
-		
+		var TotTaxAmount=0;		
 		var GrandTotal=0;
 		for(var b=1; b<=tax_count; b++){
 			var percentage=$('#tex_per'+b+' option:selected').val();

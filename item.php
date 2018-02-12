@@ -10,26 +10,37 @@ if(isset($_POST['sub']))
 	$code=$_POST['code'];
 	$purchase_rate=$_POST['purchase_rate'];
 	$sale_rate=$_POST['sale_rate'];
+	$desc=$_POST['desc'];
+	$tax_per=$_POST['tax_per'];
+	$tax_amount=$_POST['tax_amount'];
+	$actual_purchase=$_POST['actual_purchase'];
 	$catid=$_POST['category'];
-	$exp_date=$_POST['exp_date'];
-/*  	echo "<pre>";
+	$exp_date=date('Y-m-d', strtotime($_POST['exp_date']));
+/* 	echo "<pre>";
 	print_r($_POST);
-	echo "</pre>"; EXIT;  */
-	mysql_query("insert into `master_items` SET `item_name`='$name',`item_code`='$code',`purchase_rate`='$purchase_rate',`sale_rate`='$sale_rate',`category_id`='$catid',`exp_date`='$exp_date',`created_by`='$sess_id'");	
+	echo "</pre>"; EXIT; */
+	mysql_query("insert into `master_items` SET `item_name`='$name',`description`='$desc',`item_code`='$code',`purchase_rate`='$purchase_rate',`sale_rate`='$sale_rate',`actual_amount`='$actual_purchase',`tax_per`='$tax_per',`tax_amount`='$tax_amount',`category_id`='$catid',`exp_date`='$exp_date',`created_by`='$sess_id'");	
 	echo '<script>window.location="item.php"</script>';
 }
 if(isset($_POST['sub_edit']))
 {
+	$sess_id=$_SESSION['id'];
 	$edit=$_REQUEST['edit_id'];  
 	$name=mysql_real_escape_string($_REQUEST["name"]);
 	$code=mysql_real_escape_string($_REQUEST["code"]);
+	$desc=mysql_real_escape_string($_REQUEST["desc"]);
 	$purchase_rate=mysql_real_escape_string($_REQUEST["purchase_rate"]);
 	$sale_rate=mysql_real_escape_string($_REQUEST["sale_rate"]);
+	$actual_purchase=mysql_real_escape_string($_REQUEST["actual_purchase"]);
+	$tax_per=mysql_real_escape_string($_REQUEST["tax_per"]);
+	$tax_amount=mysql_real_escape_string($_REQUEST["tax_amount"]);
 	$catid=mysql_real_escape_string($_REQUEST["category"]);
 	$exp_date=mysql_real_escape_string($_REQUEST["exp_date"]);
-
-	$r=mysql_query("update `master_items` SET `item_name`='$name',`item_code`='$code',
-		`purchase_rate`='$purchase_rate',`sale_rate`='$sale_rate',`category_id`='$catid',`exp_date`='$exp_date',`created_by`='$sess_id' where `id`='$edit'" );
+	$exp_date1=date('Y-m-d', strtotime($_REQUEST['exp_date']));
+/* 	echo "<pre>";
+	print_r($_post);
+	echo "</pre>"; exit; */
+	$r=mysql_query("update `master_items` SET `item_name`='$name',`description`='$desc',`item_code`='$code',`purchase_rate`='$purchase_rate',`sale_rate`='$sale_rate',`actual_amount`='$actual_purchase',`tax_per`='$tax_per',`tax_amount`='$tax_amount',`category_id`='$catid',`exp_date`='$exp_date1',`created_by`='$sess_id' where `id`='$edit'" );
 	$r=mysql_query($r);
 	echo '<script text="javascript">alert(Class Added Successfully")</script>';	
 }
@@ -38,9 +49,7 @@ if(isset($_POST['sub_del']))
 	$delet_class=$_POST['delet_class'];
 	mysql_query("DELETE FROM `master_items` WHERE `id`='$delet_class'" );
 }
-
 ?> 
-
 <html>
 <head>
 <?php css();?>
@@ -92,36 +101,35 @@ if(isset($_POST['sub_del']))
 										<tr>
 										<td>Purchase Rate</td><td>:</td>
 										<td>
-										<input  class="form-control input-large " placeholder="Enter Purchase Price" required name="purchase_rate" autocomplete="off" type="text" value="" > 
+										<input  class="form-control input-large p_rate" placeholder="Enter Purchase Price" required name="purchase_rate" autocomplete="off" type="text" value="" > 
 										</td>									
 										<span class="help-block"> </span>
 										<td>Sale Rate</td><td>:</td>
 										<td>
-										<input  class="form-control input-large " placeholder="Enter Sale Price" required name="sale_rate" autocomplete="off" type="text" value="" > 
+										<input  class="form-control input-large s_rate" placeholder="Enter Sale Price" required name="sale_rate" autocomplete="off" type="text" value="" > 
 										</td>
 										</tr>
 										<tr>
 										<td>Tax Percentage</td><td>:</td>
 										<td>
-										<input  class="form-control input-large " placeholder="Enter Tax Percentage" required name="tax_per" autocomplete="off" type="text" value="" > 
+										<input  class="form-control input-large tax_per" placeholder="Enter Tax Percentage" required name="tax_per" autocomplete="off" type="text" value="" > 
 										</td>									
 										<span class="help-block"> </span>
 										<td>Tax Amount</td><td>:</td>
 										<td>
-										<input  class="form-control input-large " placeholder="Enter Tax Amount" required name="tax_amount" autocomplete="off" type="text" value="" > 
+										<input  class="form-control input-large tax_amount" placeholder="Enter Tax Amount" required name="tax_amount" autocomplete="off" type="text" value="" > 
 										</td>
 										</tr>
 										<tr>
 										<td>Actual Purchase</td><td>:</td>
 										<td>
-										<input  class="form-control input-large " placeholder="Enter Actual Purchase" required name="actual_purchase" autocomplete="off" type="text" value="" > 
+										<input  class="form-control input-large actual_purchase" placeholder="Enter Actual Purchase" required name="actual_purchase" autocomplete="off" type="text" value="" > 
 										</td>
 										<td>Expiry date</td><td>:</td>
 										<td>
 										<input class="form-control form-control-inline input-large date-picker date" placeholder="dd-mm-yyyy" required data-date-format="dd-mm-yyyy" size="16" autocomplete="off" type="text" name="exp_date"> 
 										</td>
 										</td>
-						
 										</tr>
 										<tr>
 										<td colspan="6">
@@ -129,11 +137,11 @@ if(isset($_POST['sub_del']))
 										</td>
 										</tr>
 								</table>
-				</form>
-			</div>	   
-		</div>
-    </div>
- </div>
+							</form>
+						</div>	   
+					</div>
+				</div>
+			 </div>
 <!-------------------------- View------------>
            <div class="row">
 				<div class="col-md-12">
@@ -163,7 +171,7 @@ if(isset($_POST['sub_del']))
 								</tr>
 								</thead>
 							 <?php
-			  $r1=mysql_query("select * from master_items");		
+			  $r1=mysql_query("select * from `master_items`");		
 			 	
 					$i=0;
 					while($row1=mysql_fetch_array($r1))
@@ -172,6 +180,10 @@ if(isset($_POST['sub_del']))
 					$id=$row1['id'];
 					$name=$row1['item_name'];
 					$icode=$row1['item_code'];
+					$desc=$row1['description'];
+					$actual_amount=$row1['actual_amount'];
+					$tax_per=$row1['tax_per'];
+					$tax_amount=$row1['tax_amount'];
 					$purchase_rate=$row1['purchase_rate'];
 					$sale_rate=$row1['sale_rate'];
 					$catid=$row1['category_id'];					
@@ -237,20 +249,45 @@ if(isset($_POST['sub_del']))
 												<td><input class="form-control input-large " placeholder="Enter Item Code" required name="code" autocomplete="off" type="text" value="<?php echo $icode;?>"> </td>
 												</tr>
 												<tr>
-												<td>Item Name</td><td>:</td>
-												<td><input class="form-control input-large " placeholder="Enter Item Name" required name="name" autocomplete="off" type="text" value="<?php echo $name;?>"> </td>
-												<td>Purchase Rate</td><td>:</td>
-												<td colspan="4" ><input class="form-control input-large " required name="purchase_rate" autocomplete="off" type="text" value="<?php echo $purchase_rate;?>"> </td>
-												</tr>
-												<span class="help-block"> </span>	
-												<tr>
-												<td>Sale Rate</td><td>:</td>
-												<td ><input class="form-control input-large " required name="sale_rate" autocomplete="off" type="text" value="<?php echo $sale_rate;?>"> </td>
-												<td>Expiry date</td><td>:</td>
-												<td>
-												<input class="form-control form-control-inline input-large date-picker date" placeholder="yyyy-mm-dd" required data-date-format="yyyy-mm-dd" size="16" autocomplete="off" type="text" name="exp_date" value="<?php echo $exp_date;?>"> 
-												</td>
-												</tr>
+										<td>Item Name</td><td>:</td>
+										<td><input class="form-control input-large " placeholder="Enter Item Name" required name="name" autocomplete="off" type="text" value="<?php echo $name;?>"> </td>
+										<td>Description</td><td>:</td>
+										<td><textarea class="form-control input-large " placeholder="Enter Description Here"  name="desc" autocomplete="off" type="text" value="<?php echo $desc;?>" rows="2"></textarea> </td>
+										</tr>
+										<tr>
+										<td>Purchase Rate</td><td>:</td>
+										<td>
+										<input  class="form-control input-large " placeholder="Enter Purchase Price" required name="purchase_rate" autocomplete="off" type="text" value="<?php echo $purchase_rate;?>" > 
+										</td>									
+										<span class="help-block"> </span>
+										<td>Sale Rate</td><td>:</td>
+										<td>
+										<input  class="form-control input-large " placeholder="Enter Sale Price" required name="sale_rate" autocomplete="off" type="text" value="<?php echo $sale_rate;?>" > 
+										</td>
+										</tr>
+										<tr>
+										<td>Tax Percentage</td><td>:</td>
+										<td>
+										<input  class="form-control input-large " placeholder="Enter Tax Percentage" required name="tax_per" autocomplete="off" type="text" value="<?php echo $tax_per;?>" > 
+										</td>									
+										<span class="help-block"> </span>
+										<td>Tax Amount</td><td>:</td>
+										<td>
+										<input  class="form-control input-large " placeholder="Enter Tax Amount" required name="tax_amount" autocomplete="off" type="text" value="<?php echo $tax_amount;?>" > 
+										</td>
+										</tr>
+										<tr>
+										<td>Actual Purchase</td><td>:</td>
+										<td>
+										<input  class="form-control input-large " placeholder="Enter Actual Purchase" required name="actual_purchase" autocomplete="off" type="text" value="<?php echo $actual_amount;?>" > 
+										</td>
+										<td>Expiry date</td><td>:</td>
+										<td>
+										<input class="form-control form-control-inline input-large date-picker date" placeholder="dd-mm-yyyy" required data-date-format="dd-mm-yyyy" size="16" autocomplete="off" type="text" name="exp_date" value="<?php echo $exp_date;?>"> 
+										</td>
+										</td>
+						
+										</tr>
 												<tr>
 												<td colspan="8">
 												<center><button type="submit" class="btn green" name="sub_edit">Update</button></center>
@@ -318,7 +355,27 @@ if(isset($_POST['sub_del']))
 						$("#chk_"+chk).html(response);
 					});
 			}	
-		 });
+			});
+		$(document).on('keyup','.tax_per',function()
+		{
+			calculate_total();
+		});
+			function calculate_total()
+			{
+				var p_rate=0;var s_rate=0; var tax_amount=0;tax_per=0;actual_purchase=0;
+				p_rate=$("input.p_rate").val();			
+				s_rate=$("input.s_rate").val();			
+				tax_per=$("input.tax_per").val();
+				tax_amount=(s_rate*tax_per)/100;
+				$("input.tax_amount").val(tax_amount.toFixed(2));
+				actual_purchase=s_rate-tax_amount;
+				$("input.actual_purchase").val(actual_purchase.toFixed(2));
+				$(".tax_amount").attr( 'readonly', 'readonly' );
+				$(".actual_purchase").attr( 'readonly', 'readonly' );
+
+
+			}
+			
 		
 		 });
 	</script>
