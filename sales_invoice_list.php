@@ -87,7 +87,7 @@ if(isset($_POST['sub_del']))
 										<a class="btn blue-madison blue-stripe btn-sm" rel="tooltip" title="View" data-toggle="modal" href="view_sales.php?invoice_id=<?php echo $sale_invoice_id;?>"><i class="fa fa-list"></i></a>
 										<a class="btn blue-madison green btn-sm" rel="tooltip" title="View" data-toggle="modal" href="edit_sales_invoice.php?invoice_id=<?php echo $sale_invoice_id;?>"><i class="fa fa-edit"></i></a>
 										<a class="btn blue-madison red btn-sm" rel="tooltip" title="delete" data-toggle="modal" href="#delete<?php echo $sale_invoice_id;?>"><i class="fa fa-trash"></i></a>
-										<a class="btn blue-madison gray btn-sm" rel="tooltip" title="delete" data-toggle="modal" href="pdf11.php?invoice_id=<?php echo $sale_invoice_id;?>"><i class="fa fa-file"></i></a>							
+																	
 			  <div class="modal fade" id="delete<?php echo $sale_invoice_id;?>" tabindex="-1" aria-hidden="true" style="padding-top:35px">
                 <div class="modal-dialog modal-md">
                     <div class="modal-content">

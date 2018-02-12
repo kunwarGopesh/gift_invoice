@@ -55,7 +55,7 @@ if(!empty($customer_id))
 {
 			
 			mysql_query("update `sales_invoice` SET `customer_id`='$customer_id',`invoice_date`='$date',`total_qty`='$total_qty',`total_rate`='$total_rate',`total_amount_dis`='$total_amount_dis',
-				`discount_type`='$dis_type',`discount_amount`='$dis_amount',`total_tax`='$total_tax',`amount_after_discount`='$total_after_discount',`grand_total`='$grand_total',`edited_by`='$sess_id' where `id`='$invoice_id'");
+				`discount_type`='$dis_type',`discount_amount`='$dis_amount',`total_tax`='$total_tax',`amount_after_discount`='$total_after_discount',`grand_total`='$grand_total',`created_by`='$sess_id',`edited_by`='$sess_id' where `id`='$invoice_id'");
 			mysql_query("DELETE FROM `sales_invoice_details` WHERE `sales_invoice_id`='$invoice_id'" );
 			mysql_query("DELETE FROM `item_ledgers` WHERE `voucher_id`='$invoice_id' && `status`='out'" );
 			$v=0;
@@ -65,7 +65,7 @@ if(!empty($customer_id))
 				$item_price=$item_prices[$v];
 				$row_amount=$row_amounts[$v];
 				mysql_query("insert into `sales_invoice_details` SET `sales_invoice_id`='$invoice_id',`item_id`='$item_id',
-				`qty`='$item_qty',`item_price`='$item_price',`row_total_amount`='$row_amount',`edited_by`='$sess_id'");
+				`qty`='$item_qty',`item_price`='$item_price',`row_total_amount`='$row_amount',`created_by`='$sess_id',`edited_by`='$sess_id'");
 				mysql_query("insert into `item_ledgers` SET `item_id`='$item_id',
 				`qty`='$item_qty',`voucher_source`='$voucher_source',`voucher_id`='$invoice_id',`status`='out',`transaction_date`='$date'");
 				$v++;

@@ -1,4 +1,4 @@
-<?php
+\<?php
 include("index_layout.php");
 include("database.php");
 if(isset($_POST['sub_data']))
@@ -60,10 +60,12 @@ if(!empty($customer_id))
 				$item_qty=$item_qtys[$v];
 				$item_price=$item_prices[$v];
 				$row_amount=$row_amounts[$v];
+				
 				mysql_query("insert into `sales_invoice_details` SET `sales_invoice_id`='$sales_invoice_id',`item_id`='$item_id',
-				`qty`='$item_qty',`item_price`='$item_price',`row_total_amount`='$row_amount',`created_by`='$sess_id'");
+				`qty`='$item_qty',`item_price`='$item_price',`row_total_amount`='$row_amount',`created_by`='$sess_id',`edited_by`='$sess_id'");
+				
 				mysql_query("insert into `item_ledgers` SET `item_id`='$item_id',
-				`qty`='$item_qty',`voucher_source`='$voucher_source',`voucher_id`='$sales_invoice_id',`status`='out',`transaction_date`='$date',");
+				`qty`='$item_qty',`voucher_source`='$voucher_source',`voucher_id`='$sales_invoice_id',`status`='out',`transaction_date`='$date'");
 				$v++;
 			}
 				$j=0; 

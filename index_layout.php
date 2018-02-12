@@ -6,8 +6,7 @@ if(empty($id))
 {
 	header("location:login.php");
 }
-
- function css() { ?>
+function css() { ?>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -93,8 +92,8 @@ function contant_start()
 	<div class="page-header-inner">
 		<div class="page-logo" >
 			<a href="index.php" style="text-decoration:none;" >
-				 
-			</a>
+					<h1 style="color:#D6D2D1;font-family:Sakkal Majalla;margin:6px;">Gift Invoice</h1>		
+					</a>
 			<div class="menu-toggler sidebar-toggler hide">
 			</div>
 		</div>

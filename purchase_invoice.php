@@ -53,7 +53,7 @@ if(!empty($supplier_id))
 {
 			
 			mysql_query("insert into `purchase_invoice` SET `supplier_id`='$supplier_id',`invoice_date`='$date',`total_qty`='$total_qty',`total_rate`='$total_rate',`total_amount_dis`='$total_amount_dis',
-				`discount_type`='$dis_type',`discount_amount`='$dis_amount',`total_tax`='$total_tax',`amount_after_discount`='$total_after_discount',`grand_total`='$grand_total',`created_by`='$sess_id'");
+				`discount_type`='$dis_type',`discount_amount`='$dis_amount',`total_tax`='$total_tax',`amount_after_discount`='$total_after_discount',`grand_total`='$grand_total',`edited_by`='$sess_id'");
 					$purchase_invoice_id=mysql_insert_id();
 					
 					$v=0;
@@ -63,7 +63,7 @@ if(!empty($supplier_id))
 				$item_price=$item_prices[$v];
 				$row_amount=$row_amounts[$v];
 				mysql_query("insert into `purchase_invoice_details` SET `purchase_invoice_id`='$purchase_invoice_id',`item_id`='$item_id',
-				`qty`='$item_qty',`item_price`='$item_price',`row_total_amount`='$row_amount',`created_by`='$sess_id'");
+				`qty`='$item_qty',`item_price`='$item_price',`row_total_amount`='$row_amount',`created_by`='$sess_id',`edited_by`='$sess_id'");
 				
 		/* 		echo "insert into `item_ledgers` SET `item_id`='$item_id',
 				`qty`='$item_qty',`voucher_source`='$voucher_source',`voucher_id`='$purchase_invoice_id',`status`='in'";
