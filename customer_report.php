@@ -245,12 +245,13 @@ if(isset($_POST['submit']))
 					function calculate_total()
 						{
 							var new_due_amt=0;
-								var new_amt=eval($(".new_amt").val());
-								var att_value=eval($(".new_amt").attr('org_price'));
+							var new_amt=0;
+							var new_amt=eval($(".new_amt").val());
+							var att_value=eval($(".new_amt").attr('org_price'));
 								if(new_amt>att_value)
 								{
 									$(".new_amt").val(0);							
-									$(".new_due_amt").val(att_value);
+									$(".new_due_amt").val(att_value.toFixed(2));
 								}
 								else
 								{

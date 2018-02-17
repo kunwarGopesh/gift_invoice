@@ -363,7 +363,11 @@ if(isset($_POST['sub_del']))
 					});
 				$(document).on('keyup','.tax_per_modal',function()
 					{
-						calculate_total_modal();
+						var item_data=$(this).val();
+						var s_rate=$(this).closest('tr').find("td .tax_amount_modal").val();
+						alert(item_data);
+						alert(s_rate);
+						//calculate_total_modal(item_data);
 					});
 						function calculate_total()
 						{
@@ -382,9 +386,9 @@ if(isset($_POST['sub_del']))
 			{
 				var new1=$(this).closest('tr'); 
 				var p_rate_modal=0;
-				
+				//console.log(new1)
 				//var s_rate_modal=0; var tax_amount_modal=0;tax_per_modal=0;actual_purchase_modal=0;
-				p_rate_modal=new1.find("td#newtable input.p_rate_modal").val();
+				p_rate_modal=item_data.find("td input.p_rate_modal").val();
 				alert(p_rate_modal);
 				/* s_rate_modal=$(this).closest('tr').find("td input.s_rate_modal").val();	
 				tax_per_modal=$(this).closest('tr').find("td input.tax_per_modal").val();
