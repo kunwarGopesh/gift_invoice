@@ -29,6 +29,8 @@ include("database.php");
 											<tr>
 												<th>Sr.No</th>
 												<th>Item Name</th>
+												<th>Customer Name</th>
+												<th>Supplier Name</th>
 												<th>Qty</th>
 												<th>Vendor Source</th>
 												<th>Vendor Id</th>
@@ -39,19 +41,21 @@ include("database.php");
 										</thead>
 		<?php 
 		$i=0;
-		$ledger=mysql_query("select * from `item_ledgers` group by `item_id`,`status`");
+		$ledger=mysql_query("select * from `item_ledgers` group by `item_id`,`status`,`customer_id`,`supplier_id`");
 		while($row=mysql_fetch_array($ledger))
 		{
 			$i++;
 			$id=$row['id'];	
 			$item_id=$row['item_id'];
+			$customer_id=$row['customer_id'];
+			$supplier_id=$row['supplier_id'];
 			$qty=$row['qty'];
 			$source=$row['voucher_source'];
 			$voucher_id=$row['voucher_id'];
 			$status=$row['status'];
 			$date=$row['transaction_date'];
 			$tot_qty=0;
-			$set=mysql_query("select `qty` from `item_ledgers` where `item_id`='$item_id' && `status`='$status'");
+			$set=mysql_query("select `qty` from `item_ledgers` where `item_id`='$item_id' && `status`='$status' && `customer_id`='$customer_id' OR `supplier_id`='$supplier_id'");
 			while($fet=mysql_fetch_array($set))
 			{
 			$fet_qty=$fet['qty'];	
@@ -62,6 +66,8 @@ include("database.php");
 											<tr>
 												<td><?php echo $i;?></td>
 												<td><?php echo fetchitemname($item_id);?></td>
+												<td><?php echo fetchcustomername($customer_id);?></td>
+												<td><?php echo fetchsuppliername($supplier_id);?></td>
 												<td><?php echo $tot_qty;?></td>
 												<td><?php echo $source;?></td>
 												<td><?php echo $voucher_id;?></td>

@@ -6,6 +6,7 @@ if(isset($_POST['sub_data']))
 $sess_id=$_SESSION['id'];		
 $voucher_source="Sales Invoice";
 $flag=2;
+$company_id=$_POST['company_id'];
 $invoice_id=$_GET['invoice_id'];
 $customer_id=$_POST['customer_id'];
 $company_name=$_POST['company_name'];
@@ -21,26 +22,30 @@ $address=$_POST['address'];
 $mobile=$_POST['contact_no'];
 $date=date('Y-m-d',strtotime($_POST['date']));
 $item_ids=$_POST['item_id'];
-$item_codes=$_POST['item_code'];
+$item_code=$_POST['item_code'];
 $item_qtys=$_POST['item_qty'];
 $item_prices=$_POST['item_price'];
+$item_taxs=$_POST['item_tax'];
 $row_amounts=$_POST['row_amount'];
+$row_total_taxs=$_POST['item_row_taxTotal'];
 $total_amount=$_POST['total_amount'];
 $total_qty=$_POST['total_qty'];
 $total_rate=$_POST['total_rate'];
+$total_item_tax=$_POST['total_item_tax'];
 $total_amount_dis=$_POST['total_amount_dis'];
+$total_amt_tax=$_POST['total_amt_tax'];
 $dis_type=$_POST['r1'];
 $dis_amount=$_POST['dis_amount'];
 $total_after_discount=$_POST['total_after_discount'];
-$tax_ids=$_POST['tax_id'];
-$tax_pers=$_POST['per'];
-$tax_amounts=$_POST['Tamount'];
-$total_tax=$_POST['total_tax'];
+//$tax_ids=$_POST['tax_id'];
+//$tax_pers=$_POST['per'];
+///$tax_amounts=$_POST['Tamount'];
 $grand_total=$_POST['grand_total'];
-
-/* echo "<pre>";
+$cash_amount=$_POST['cash_amount'];
+$Remaining_amount=$_POST['Remaining_amount'];
+/*  echo "<pre>";
 print_r($_POST);
-echo "</pre>"; EXIT; */
+echo "</pre>"; EXIT;  */
 if(empty($customer_id))
 {			
 			mysql_query("DELETE FROM `customer` WHERE `id`='$customer_id'");
@@ -53,9 +58,19 @@ if(empty($customer_id))
 }
 if(!empty($customer_id))
 {
-			
-			mysql_query("update `sales_invoice` SET `customer_id`='$customer_id',`invoice_date`='$date',`total_qty`='$total_qty',`total_rate`='$total_rate',`total_amount_dis`='$total_amount_dis',
-				`discount_type`='$dis_type',`discount_amount`='$dis_amount',`total_tax`='$total_tax',`amount_after_discount`='$total_after_discount',`grand_total`='$grand_total',`created_by`='$sess_id',`edited_by`='$sess_id' where `id`='$invoice_id'");
+	mysql_query("update `customer` SET `customer_name`='$customer_name',`address`='$address',
+				`city`='$city',`state`='$state',`contact_no`='$mobile',`pan_no`='$pan_no',`Aadhaar_no`='$Aadhaar_no',`created_by`='$sess_id' where `customer_id`='$customer_id'");
+			mysql_query("update `companies` SET `customer_id`='$customer_id',`name`='$company_name',`address`='$company_address',
+				`phone_no`='$company_phone',`gst_no`='$company_gst',`created_by`='$sess_id' where `customer_id`='$customer_id'");
+		if($company_id==1)
+	{		
+			mysql_query("update `sales_invoice` SET `customer_id`='$customer_id',`invoice_date`='$date',`total_qty`='$total_qty',`total_rate`='$total_rate',`total_item_tax`='$total_item_tax',`total_amount_dis`='$total_amount_dis',`total_tax`='$total_amt_tax',`discount_type`='$dis_type',`discount_amount`='$dis_amount',`amount_after_discount`='$total_after_discount',`grand_total`='$grand_total',`cash_amount`='$cash_amount',`due_amount`='$Remaining_amount',`edited_by`='$sess_id',`flag`='1',`company_id`='$company_id'  where `id`='$invoice_id'");
+	}
+	else
+	{
+				mysql_query("update `sales_invoice` SET `customer_id`='$customer_id',`invoice_date`='$date',`total_qty`='$total_qty',`total_rate`='$total_rate',`total_item_tax`='$total_item_tax',`total_amount_dis`='$total_amount_dis',`total_tax`='$total_amt_tax',`discount_type`='$dis_type',`discount_amount`='$dis_amount',`amount_after_discount`='$total_after_discount',`grand_total`='$grand_total',`cash_amount`='$cash_amount',`due_amount`='$Remaining_amount',`edited_by`='$sess_id',`flag`='2',`company_id`='$company_id' where `id`='$invoice_id'");
+		
+	}	
 			mysql_query("DELETE FROM `sales_invoice_details` WHERE `sales_invoice_id`='$invoice_id'" );
 			mysql_query("DELETE FROM `item_ledgers` WHERE `voucher_id`='$invoice_id' && `status`='out'" );
 			$v=0;
@@ -64,25 +79,28 @@ if(!empty($customer_id))
 				$item_qty=$item_qtys[$v];
 				$item_price=$item_prices[$v];
 				$row_amount=$row_amounts[$v];
+				$item_tax=$item_taxs[$v];
+				$row_total_tax=$row_total_taxs[$v];	
 				mysql_query("insert into `sales_invoice_details` SET `sales_invoice_id`='$invoice_id',`item_id`='$item_id',
-				`qty`='$item_qty',`item_price`='$item_price',`row_total_amount`='$row_amount',`created_by`='$sess_id',`edited_by`='$sess_id'");
-				mysql_query("insert into `item_ledgers` SET `item_id`='$item_id',
+				`qty`='$item_qty',`item_price`='$item_price',`item_tax`='$item_tax',`total_tax`='$row_total_tax',`row_total_amount`='$row_amount',`created_by`='$sess_id',`edited_by`='$sess_id'");
+				
+				mysql_query("insert into `item_ledgers` SET `item_id`='$item_id',`customer_id`='$customer_id',
 				`qty`='$item_qty',`voucher_source`='$voucher_source',`voucher_id`='$invoice_id',`status`='out',`transaction_date`='$date'");
 				$v++;
 			}
-			mysql_query("DELETE FROM `invoice_taxations` WHERE `invoice_id`='$invoice_id' && `flag`='$flag'" );
-				$j=0; 
+			/* mysql_query("DELETE FROM `invoice_taxations` WHERE `invoice_id`='$invoice_id' && `flag`='$flag'" );
+		 	$j=0; 
 			foreach($tax_ids as $tax_id)
 			{
 				$tax_per=$tax_pers[$j];	
 				$tax_amount=$tax_amounts[$j];
 				/* echo "insert into `invoice_taxations` SET `invoice_id`='$invoice_id',`taxation_id`='$tax_id',
 				`percentage`='$tax_per',`amount`='$tax_amount'";
-				echo "<br>"; */
+				echo "<br>"; 
 				mysql_query("insert into `invoice_taxations` SET `invoice_id`='$invoice_id',`taxation_id`='$tax_id',
 				`percentage`='$tax_per',`amount`='$tax_amount',`flag`='$flag'");
 				$j++;
-			}		
+			}		 */
 }
 echo'<script>window.location="sales_invoice_list.php"</script>';
 }
@@ -116,6 +134,12 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 									$invoices=mysql_query("select * from `sales_invoice` where `id`='$invoice_id'");
 										 $invoice_data=mysql_fetch_array($invoices);
 										 $customer_id=$invoice_data['customer_id'];
+										 $company_id=$invoice_data['company_id'];
+										 $curr_date=$invoice_data['invoice_date'];
+										 $edit_date= date('d-m-Y',strtotime($curr_date));
+										 $company_name=mysql_query("select * from `master_company` where `id`='$company_id'");
+										$company_name1=mysql_fetch_array($company_name);
+
 									  $company=mysql_query("select * from `companies` where `customer_id`='$customer_id'");
 									  $company_data=mysql_fetch_array($company);
 									  $customer=mysql_query("select * from `customer` where `id`='$customer_id'");
@@ -128,7 +152,7 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 										<h4 class="box-title bold">Place of Supply:</h4>
 										<p>
 										<?php 
-										$company_info=mysql_query("select * from `companies` where `id`='8'");
+										$company_info=mysql_query("select * from `master_company` where `id`='$company_id'");
 									  $company_details=mysql_fetch_array($company_info);
 									  ?>
 										<?php echo $company_details['name'];?><br>
@@ -140,6 +164,20 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 								</td>
 							</tr> 
 							<tr>
+							<td>Select Company</td><td >:</td>
+									<td>
+										<select name="company_id" id="company_id" class="select2me form-control input-large " required>
+											<option value="">----------Choose Company ----------</option>
+												<?php
+														$c_data=mysql_query("select * from `master_company`");
+																
+														while($c_data1=mysql_fetch_array($c_data))
+														{?>		
+															<option value="<?php echo $c_data1['id'] ;?>" <?php if($company_name1['name']==$c_data1['name']){ echo "selected";}?> ><?php echo $c_data1['name']; ?>
+															</option>
+												<?php 	}?>
+										</select> 
+									</td>
 								<td>Select Customer</td><td >:</td>
 									<td>
 										<select name="customer_id" id="customer_id" class="select2me form-control input-large select_customer">
@@ -165,17 +203,17 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 										</td>
 										<td>GST No</td><td>:</td>
 										<td>
-											<input class="form-control company_gst" placeholder="Enter GST No" required name="company_gst" autocomplete="off" type="text" value="<?php echo $company_data['gst_no'];?>">
+											<input class="form-control company_gst" placeholder="Enter GST No"  name="company_gst" autocomplete="off" type="text" value="<?php echo $company_data['gst_no'];?>">
 										</td>
 									</tr>
 									<tr>
 										<td>Company Phone</td><td>:</td>
 										<td>
-											<input class="form-control input-large company_mobile" placeholder="Enter Phone No" required name="company_phone" autocomplete="off" type="text" value="<?php echo $company_data['phone_no'];?>">
+											<input class="form-control input-large company_mobile" placeholder="Enter Phone No"  name="company_phone" autocomplete="off" type="text" value="<?php echo $company_data['phone_no'];?>">
 										</td>
 										<td>Address</td><td>:</td>
 										<td>
-											<input class="form-control company_address" placeholder="Enter Address" required name="company_address" autocomplete="off" type="text" value="<?php echo $company_data['address'];?>">
+											<input class="form-control company_address" placeholder="Enter Address"  name="company_address" autocomplete="off" type="text" value="<?php echo $company_data['address'];?>">
 										</td>
 									</tr>		
 									<tr>
@@ -206,58 +244,62 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 									</td>
 									<td>Mobile No</td><td>:</td>
 										<td>
-											<input class="form-control input-large customer_mobile" placeholder="Enter Contact No" required name="contact_no" autocomplete="off" type="text" value="<?php echo $customer_data['contact_no'];?>">
+											<input class="form-control input-large customer_mobile" placeholder="Enter Contact No"  name="contact_no" autocomplete="off" type="text" value="<?php echo $customer_data['contact_no'];?>">
 										</td>
 							</tr>
 							<tr>
 								<td>Pan No</td><td>:</td>
 								<td>
-									<input class="form-control input-large customer_pan" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" value="<?php echo $customer_data['pan_no'];?>">
+									<input class="form-control input-large customer_pan" placeholder="Enter Pan No"  name="pan_no" autocomplete="off" type="text" value="<?php echo $customer_data['pan_no'];?>">
 								</td>
 								<td>Aadhaar No</td><td>:</td>
 								<td>
-									<input class="form-control input-large customer_aadhaar" placeholder="Enter Aadhaar No" required name="Aadhaar_no" autocomplete="off" type="text" value="<?php echo $customer_data['Aadhaar_no'];?>">
+									<input class="form-control input-large customer_aadhaar" placeholder="Enter Aadhaar No"  name="Aadhaar_no" autocomplete="off" type="text" value="<?php echo $customer_data['Aadhaar_no'];?>">
 								</td>
 							</tr>
 							<tr>
 								<td>Address</td><td>:</td>
 								<td>
-									<input class="form-control input-large customer_address" placeholder="Enter Address" required name="address" autocomplete="off" type="text" value="<?php echo $customer_data['address'];?>"> 
+									<input class="form-control input-large customer_address" placeholder="Enter Address"  name="address" autocomplete="off" type="text" value="<?php echo $customer_data['address'];?>"> 
 								</td>
 								<td>Invoice date</td><td>:</td>
 								<td>
-									<input class="form-control form-control-inline input-large date-picker date" placeholder="dd-mm-yyyy" required data-date-format="dd-mm-yyyy" size="16" autocomplete="off" type="text" name="date"value="<?php echo $invoice_data['invoice_date'];?>"> 
+									<input class="form-control form-control-inline input-large date-picker date" placeholder="dd-mm-yyyy" required data-date-format="dd-mm-yyyy" size="16" autocomplete="off" type="text" name="date"value="<?php echo $edit_date;?>"> 
 								</td>
 							</tr>
 					</table>
 			</div>
 					<table class="table" id="main_table1">
 						<thead>
-							 <tr style="background-color:#DCD9D8;">
+							<tr style="background-color:#DCD9D8;">
 								 <th style="border:1px;border-style:solid;">Sr.No</th>
-								 <th style="border:1px;border-style:solid;white-space: nowrap;">ITEM NAME</th>
-								 <th style="border:1px;border-style:solid;white-space: nowrap;width:%;">ITEM CODE</th>
+								 <th style="border:1px;border-style:solid;white-space: nowrap;">ITEM CODE</th>
+								 <th style="border:1px;border-style:solid;white-space: nowrap;width:%;">ITEM NAME</th>
 								 <th style="border:1px;border-style:solid;">QTY</th>
 								 <th style="border:1px;border-style:solid;">RATE</th>
+								 <th  style="border:1px;border-style:solid;white-space: nowrap;">TAX</th>
 								 <th style="border:1px;border-style:solid;white-space: nowrap;">AMOUNT</th>
-								 <th style="border:1px;border-style:solid;width:5%;">*</th>
+								 <th colspan="2" style="border:1px;border-style:solid;white-space: nowrap;">Total Tax Amount</th>
+								 <th colspan="2" style="border:1px;border-style:solid;">*</th>
 							</tr>
 						</thead>
 					<tbody id="main_tbody1"> 
 					<?php
 					$i=0;
+					$item_tax_total=0;
 		$invoice_sales=mysql_query("select * from `sales_invoice_details` where `sales_invoice_id`='$invoice_id'");
 		 while($sales_data=mysql_fetch_array($invoice_sales))
 		 {
 			 $i++;
 			 $item_id=$sales_data['item_id'];
+			 $item_tax_total+=$sales_data['item_tax'];
 			 $s=mysql_query("select `id`,`item_code`,`item_name` from `master_items` where `id`='$item_id'");
 			 $f=mysql_fetch_array($s);
 			 $it_code=$f['item_code'];
 			 $it_id=$f['id'];
 			 $it_name=$f['item_name'];
 							?>
-		  
+							
 							<tr class="main_tr1" style="border:1px;border-style:solid;">
 							<td style="border:1px;border-style:solid;"><?php echo $i;?> </td>
 								<td style="border:1px;border-style:solid;">
@@ -273,8 +315,14 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 							<td style="border:1px;border-style:solid;">
 								<input class="form-control rate" placeholder="Item Rate" required name="item_price[]" autocomplete="off" type="text" value="<?php echo $sales_data['item_price'];?>">
 							</td>
+							<td style="border:1px;border-style:solid;">
+								<input class="form-control item_tax " placeholder="Item Tax" required name="item_tax[]" autocomplete="off" type="text" value="<?php echo $sales_data['item_tax'];?>">
+							</td>
 							<td colspan="" style="border:1px;border-style:solid;width:50%;">
 								<input class="form-control row_amount" placeholder="Amount" required name="row_amount[]" autocomplete="off" type="text" value="<?php echo $sales_data['row_total_amount'];?>">
+							</td>
+							<td colspan="2" style="border:1px;border-style:solid;">
+								<input class="form-control  row_tax" placeholder="Total Tax" required name="item_row_taxTotal[]" autocomplete="off" type="text" value="<?php echo $sales_data['total_tax'];?>">
 							</td>
 								<td style="border:1px;border-style:solid;width:30%;">
 								<button type="button" class="btn btn-xs btn-default addrow"  href="#" role='button'>
@@ -289,17 +337,24 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 		 <?php }?>
 					</tbody>
 					<tfoot>
+						
 						<tr style="border:1px;border-style:solid;" id="subtotal_row">
 							<td style="border:1px;border-style:solid;text-align:right;" colspan="3">Subtotal</td>
 							<td style="border:1px;border-style:solid;width:20%;"><input class="form-control total_qty" placeholder="Total Qty" required name="total_qty" autocomplete="off" type="text" value="<?php echo $invoice_data['total_qty'];?>"></td>
 							<td style="border:1px;border-style:solid;width:20%;"><input class="form-control total_rate" placeholder="Total rate" required name="total_rate" autocomplete="off" type="text" value="<?php echo $invoice_data['total_rate'];?>"></td>
-							<td colspan="1" style="border:1px;border-style:solid;width:20%;"><input class="form-control total_amount" placeholder="Total Amount" required name="total_amount_dis" autocomplete="off" type="text" value="<?php echo $invoice_data['total_amount_dis'];?>"></td>
-							<td style="border:1px;border-style:solid;"></td>
+							<td style="border:1px;border-style:solid;width:20%;"><input class="form-control total_tax" placeholder="Total Tax" required name="total_item_tax" autocomplete="off" type="text" value="<?php echo number_format($item_tax_total,2);?>"></td>
+							<td style="border:1px;border-style:solid;">
+							<input class="form-control total_amount" placeholder="Total Amount" required name="total_amount_dis" autocomplete="off" type="text" value="<?php echo $invoice_data['total_amount_dis'];?>">
+							</td>
+							<td style="border:1px;border-style:solid;" colspan="2">
+							<input class="form-control total_tax_amount" placeholder="Total Tax  Amt" required name="total_amt_tax" autocomplete="off" type="text" value="<?php echo $invoice_data['total_tax'];?>">
+							</td>
+							<td colspan="0" style="border:1px;border-style:solid;"></td>
 						</tr>
 						<tr style="border:1px;border-style:solid;">
 							<td style="border:1px;border-style:solid;text-align:right;" colspan="3">Discount</td>
 							
-							<td style="border:1px;border-style:solid;">
+							<td style="border:1px;border-style:solid;" colspan="2">
 								<?php if ($invoice_data['discount_type']=='1')
 								{
 									
@@ -325,66 +380,41 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 							<td style="border:1px;border-style:solid;">
 								<input class="form-control dis_amount" placeholder="Enter Value" required name="dis_amount" autocomplete="off" type="text" value="<?php echo $invoice_data['discount_amount'];?>">									
 							</td>
-							<td colspan="1" style="border:1px;border-style:solid;">
+							<td colspan="2" style="border:1px;border-style:solid;">
 								<input class="form-control taxable_value" placeholder="Total Amount" required name="total_after_discount" autocomplete="off" type="text" value="<?php echo $invoice_data['amount_after_discount'];?>">
 																
 							</td>
+							<td style="border:1px;border-style:solid;">
+								<input class="form-control total_tax_amount1" placeholder="Total Amount" required name="total_amount_tax" autocomplete="off" type="text" value="<?php echo $invoice_data['total_tax'];?>">
+							</td>
 						<td style="border:1px;border-style:solid;"></td>
 						</tr>
-						<?php
-						$x=0;
-						
-							$taxation_name=mysql_query("select * from taxations");				
-							while($row=mysql_fetch_array($taxation_name)){						
-								$Tid=$row['id'];
-								$name=$row['name'];
-								$x++;
-						?>	
 						<tr style="border:1px;border-style:solid;">
-							<td style="border:1px;border-style:solid;text-align:right;" colspan="4">
-									<?php echo $name;?>
-									<input type="hidden" name="tax_id[]" value="<?php echo $Tid?>"/>
-									
-									
-							</td>
-							<?php 
-										$invoice_tax=mysql_query("select * from `invoice_taxations` where `invoice_id`='$invoice_id' && `flag`='2'");
-										 $invoice_per=mysql_fetch_array($invoice_tax);
-										 ?>
-							<td style="border:1px;border-style:solid;text-align:right;">
-								<select class="select form-control input-small tax_per" id="tex_per<?php echo $x;?>"  name="per[]">
-									<option value="<?php echo $invoice_per['percentage'];?>"><?php echo $invoice_per['percentage'];?></option>
-										<?php
-												$cgst_data=mysql_query("select percentage from taxation_rates where taxation_id='$Tid'");				
-												while($row=mysql_fetch_array($cgst_data))
-												{?>		
-												<option value="<?php echo $row['percentage'] ;?>">
-												<?php echo $row['percentage']; ?>
-											</option>
-										<?php }?>
-								</select>
-							</td>
-							<td style="border:1px;border-style:solid;">
-									<input class="form-control tax_amount " placeholder="Amount" id="tax_amount<?php echo $x;?>" required name="Tamount[]" autocomplete="off" type="text" value="<?php echo $invoice_per['amount'];?>">
-							</td>
-							
-							<td style="border:1px;border-style:solid;">
-								
-							</td>
-						</tr>
-						<?php
-						}
-						?>
-					<input type="hidden" id="tax_count" value="<?php echo $x?>"/>
-						<tr style="border:1px;border-style:solid;">
-							<td style="border:1px;border-style:solid;text-align:right;" colspan="4">
+							<td style="border:1px;border-style:solid;text-align:right;" colspan="6">
 								Grand Total
 							</td>
-							<td style="border:1px;border-style:solid;text-align:right;" colspan="2">
+							<td style="border:1px;border-style:solid;text-align:right;" colspan="3">
 								<input  class="form-control grand_total" placeholder="Grand Total" required name="grand_total" autocomplete="off" type="text" value="<?php echo $invoice_data['grand_total'];?>">
 							</td>
 							<td style="border:1px;border-style:solid;"></td>
-						<input type="hidden" name="total_tax" id="TotTaxAmount" value="0">
+						</tr>
+						<tr style="border:1px;border-style:solid;">
+							<td style="border:1px;border-style:solid;text-align:right;" colspan="6">
+								 Cash Deposit
+							</td>
+							<td style="border:1px;border-style:solid;text-align:right;" colspan="3">
+								<input  class="form-control cash_amount" placeholder="Cash Amount" required name="cash_amount" autocomplete="off" type="text" value="<?php echo $invoice_data['cash_amount'];?>">
+							</td>
+							<td colspan="2" style="border:1px;border-style:solid;"></td>
+						</tr>
+						<tr style="border:1px;border-style:solid;">
+							<td style="border:1px;border-style:solid;text-align:right;" colspan="6">
+								 Remaining Amount
+							</td>
+							<td style="border:1px;border-style:solid;text-align:right;" colspan="3">
+								<input  class="form-control Remaining_amount" placeholder="Due Amount" required name="Remaining_amount" autocomplete="off" type="text" value="<?php echo $invoice_data['due_amount'];?>">
+							</td>
+							<td colspan="2" style="border:1px;border-style:solid;"></td>
 						</tr>
 						<tr>
 							<td colspan="8">
@@ -398,23 +428,29 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 </form>
 				<table id="sample_table1" style="display:none;">
 						<tbody>
-							<tr class="main_tr1" style="border:1px;border-style:solid;">
+						<tr class="main_tr1" style="border:1px;border-style:solid;">
 								<td style="border:1px;border-style:solid;">1 </td>
 								<td style="border:1px;border-style:solid;">
-								<input class="form-control icode" placeholder="Item Code" required name="item_code[]" autocomplete="off" type="text" value="">
+								<input class="form-control input-small icode" placeholder="Item Code" required name="item_code[]" autocomplete="off" type="text" value="">
 								</td>
 								<td style="border:1px;border-style:solid;width:20%;">
 									<input class="form-control input-medium iname" placeholder="Item Name" required name="item_name[]" autocomplete="off" type="text" value="">
 									<input class="item_id" name="item_id[]" autocomplete="off" type="hidden" value="">
 								</td>
 							<td style="border:1px;border-style:solid;">
-								<input class="form-control qty " placeholder="Item Qty" required name="item_qty[]" autocomplete="off" type="text" value="">
+								<input class="form-control qty atqty " placeholder="Item Qty" required name="item_qty[]" autocomplete="off" type="text" >
 							</td>
 							<td style="border:1px;border-style:solid;">
 								<input class="form-control rate" placeholder="Item Rate" required name="item_price[]" autocomplete="off" type="text" value="">
 							</td>
-							<td colspan="" style="border:1px;border-style:solid;width:50%;">
+							<td style="border:1px;border-style:solid;">
+								<input class="form-control item_tax " placeholder="Item Tax" required name="item_tax[]" autocomplete="off" type="text" value="">
+							</td>
+							<td style="border:1px;border-style:solid;width:50%;">
 								<input class="form-control row_amount" placeholder="Amount" required name="row_amount[]" autocomplete="off" type="text" value="">
+							</td>
+							<td colspan="2" style="border:1px;border-style:solid;">
+								<input class="form-control  row_tax" placeholder="Total Tax" required name="item_row_taxTotal[]" autocomplete="off" type="text" value="">
 							</td>
 								<td style="border:1px;border-style:solid;width:30%;">
 								<button type="button" class="btn btn-xs btn-default addrow"  href="#" role='button'>
@@ -436,13 +472,8 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 <script>
 
-	$(document).ready(function()
+$(document).ready(function()
 	{  
-		$('.date-picker').datepicker();
-		$('.date-picker').datepicker().on('changeDate', function(){
-		$(this).blur();
-		$(this).datepicker('hide');
-		}); 
 		$("#state_id").live('change', function ()
 		{
 			var state=$(this, 'option:selected').val();	
@@ -450,30 +481,8 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 				url: "state_city.php?reg_no="+state,
 				}).done(function(response) {
 					$("#newcity").html(response);
+					$(".select_city").select2();
 				});
-		});
-		$("#customer_id").live('change', function () 
-		{
-		 
-			var customer_id=$(this, 'option:selected').val();
-			var old=$("#old").html();
-				if(customer_id>0)
-					{
-						$.ajax({
-							url: "customer_data.php?reg_no="+customer_id,
-							}).done(function(response) 
-							{
-								$("#newtable").html(response);
-								$('.date-picker').datepicker();
-							});
-					}
-				 else if((customer_id==0) || (customer_id==''))
-					{
-						
-						$("#newtable").html(old);
-						$('.date-picker').datepicker();
-						$('.state_blank').select2();
-					}  
 		});
 		$(".icode").live('blur', function ()
 		{
@@ -493,6 +502,7 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 							a.closest('tr').find('.iname').val(user_array[1]);
 							a.closest('tr').find('.rate').val(user_array[2]);
 							a.closest('tr').find('.atqty').attr('max',user_array[3]);
+							a.closest('tr').find('.item_tax').val(user_array[4]);
 							a.closest('tr').find('.qty').val(1);
 							calculate_total();
 						}
@@ -502,11 +512,41 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 							a.closest('tr').find('.qty').val(0);
 							a.closest('tr').find('.rate').val(0);
 							a.closest('tr').find('.item_id').val(0);
+							a.closest('tr').find('.item_tax').val(0);
 							
 						}
 				});
 		});
+		
+	
+		$("#customer_id").live('change', function () 
+		{
 		 
+			var customer_id=$(this, 'option:selected').val();
+			var old=$("#old").html();
+				if(customer_id>0)
+					{
+						$.ajax({
+							url: "customer_data.php?reg_no="+customer_id,
+							}).done(function(response) 
+							{
+								
+								$("#newtable").html(response);
+								$('.date-picker').datepicker();
+							});
+					}
+				 else if((customer_id==0) || (customer_id==''))
+					{
+						
+						$("#newtable").html(old);
+						$('.date-picker').datepicker();
+						$('.date-picker').datepicker().on('changeDate', function(){
+						$(this).blur();
+						$(this).datepicker('hide');
+						})
+						$('.state_blank').select2();
+					}  
+		});
 		$('body').on('click','.addrow',function()
 		{
 			add_row(); rename_rows();
@@ -516,8 +556,6 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 		{ 
 			var tr1=$("#sample_table1 tbody tr").clone();
 			$("#main_table1 tbody#main_tbody1").append(tr1);
-											
-
 			rename_rows();
 		}
 		$('body').on('click','.deleterow',function()
@@ -533,7 +571,7 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 					} 
 				}
 		});
-
+	
 		function rename_rows()
 		{
 			var i=0;
@@ -544,7 +582,7 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 						
 					});
 		}
-		$(document).on('keyup','.qty,.rate,.dis_amount',function()
+		$(document).on('keyup','.qty,.rate,.dis_amount,.cash_amount',function()
 		{
 			calculate_total();
 		});
@@ -556,39 +594,55 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 		{
 			calculate_total();
 		});
+
 	function calculate_total()
 	{ 
 		var i=0;
 		var total_qty=0;
 		var total_rate=0;
 		var total_amount=0;
+		var total_tax_amount=0;
+		var total_tax111=0;
+		var cash_amount=0;
+		var due_amount=0;
 		$("#main_table1 tbody tr.main_tr1").each(function()
 		{
-			var qty=0;var rate=0; var amount=0;
-			var qty=parseFloat($(this).find("td:nth-child(4) input.qty").val());
-			var rate=parseFloat($(this).find("td:nth-child(5) input.rate").val());
-
+			var qty=0;var rate=0; var amount=0;var Taxx_amount=0;tax=0;
+			 qty=parseFloat($(this).find("td:nth-child(4) input.qty").val());
+			 rate=parseFloat($(this).find("td:nth-child(5) input.rate").val());
+			 tax=parseFloat($(this).find("td:nth-child(6) input.item_tax").val());
 			if(isNaN(rate))
 				{
 					rate =0;
+				}
+				if(isNaN(tax))
+				{
+					tax =0;
 				}
 			if(isNaN(qty))
 				{
 					qty =0;
 				}
+				
+			total_tax111=total_tax111+tax;
 			total_qty=total_qty+qty;
 			total_rate=total_rate+rate;
 			amount=qty*rate;
+			Taxx_amount=qty*tax;
+			total_tax_amount=total_tax_amount+Taxx_amount;
 			total_amount=total_amount+amount;
-			$(this).find("td:nth-child(6) input.row_amount").val(amount.toFixed(2));
-				
+			$(this).find("td:nth-child(7) input.row_amount").val(amount.toFixed(2));
+			$(this).find("td:nth-child(8) input.row_tax").val(Taxx_amount.toFixed(2));
 		});
 		$("tfoot tr input.total_qty").val(total_qty.toFixed(2));
 		$("tfoot tr input.total_rate").val(total_rate.toFixed(2));
+		$("tfoot tr input.total_tax").val(total_tax111.toFixed(2));
+		$("tfoot tr input.total_tax_amount1").val(total_tax_amount.toFixed(2));
 		$("tfoot tr input.total_amount").val(total_amount.toFixed(2));
+		$("tfoot tr input.total_tax_amount").val(total_tax_amount.toFixed(2));
 		$("tfoot tr input.taxable_value").val(total_amount.toFixed(2));
-		$("tfoot tr input.amount_after_sgst").val(total_amount.toFixed(2));
-		$("tfoot tr input.amount_after_cgst").val(total_amount.toFixed(2));
+		//$("tfoot tr input.cash_amount").val(cash_amount.toFixed(2));
+		//$("tfoot tr input.amount_after_cgst").val(total_amount.toFixed(2));
 		$("tfoot tr input.grand_total").val(total_amount.toFixed(2));
 		//--- discount ---//
 		var dis_id=$("input[name='r1']:checked").val();		
@@ -607,17 +661,18 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 				var temp=total_amount-dis_amount;
 				$("tfoot tr input.taxable_value").val(temp.toFixed(2));
 			}
-			
+			/* 
 			//--- Taxation----//
 		var tax_amount=0;
 		
 		var mainvalue = parseFloat($('.taxable_value').val());
 		
-		var tax_count = $('#tax_count').val();
-		var TotTaxAmount=0;
-		
+		/* var tax_count = $('#tax_count').val(); */
+		//var TotTaxAmount=0;
+	/* 	
 		var GrandTotal=0;
-		for(var b=1; b<=tax_count; b++){
+		for(var b=1; b<=tax_count; b++)
+		{
 			var percentage=$('#tex_per'+b+' option:selected').val();
 			if(isNaN(percentage))
 			{ 
@@ -627,21 +682,43 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 			{
 				var tax_amount=(percentage*mainvalue)/100;
 				$('#tax_amount'+b).val(tax_amount.toFixed(2));
-			}
-				var tax_amt = tax_amount;
+			} */
+				/* var tax_amt = tax_amount;
 				if(tax_amt>0){
 					TotTaxAmount = TotTaxAmount+tax_amt;
 				}
 				else {
 					TotTaxAmount = TotTaxAmount+0;
-				}
- 		}
- 		
-		var GrandTotal = TotTaxAmount+mainvalue;
- 		$("#TotTaxAmount").val(TotTaxAmount.toFixed(2));	
+				} }*/
+ 		var mainvalue = parseFloat($('.taxable_value').val());
+		var GrandTotal =mainvalue+total_tax_amount;
+ 		//$("#TotTaxAmount").val(TotTaxAmount.toFixed(2));	
  		$(".grand_total").val(GrandTotal.toFixed(2));	
- 		
+		var g_amt = parseFloat($('.grand_total').val());
+		 cash_amount = parseFloat($('.cash_amount').val());
+		 if(isNaN(cash_amount))
+				{
+					cash_amount =0;
+				}
+				if(isNaN(due_amount))
+				{
+					due_amount =0;
+				}
+		due_amount=g_amt-cash_amount;
+ 		$(".Remaining_amount").val(due_amount.toFixed(2));			
 	}
+	$(".atqty").live('keyup',function()
+		{
+			var quant=eval($(this).val());
+			var quant_max=eval($(this).attr('max'));
+			 
+			 if(quant>quant_max){
+				 alert("Quantity exceed",quant_max);
+				 $(this).val(0);
+				 calculate_total();
+			 } 
+		}); 
+	
 	});
     </script>
 <?php scripts();?>
@@ -654,17 +731,17 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 				</td>
 			<td>GST No</td><td>:</td>
 				<td>
-					<input class="form-control input-large " placeholder="Enter GST No" required name="company_gst" autocomplete="off" type="text" value="">
+					<input class="form-control input-large " placeholder="Enter GST No"  name="company_gst" autocomplete="off" type="text" value="">
 				</td>
 		</tr>
 		<tr>
 			<td>Company Phone</td><td>:</td>
 				<td>
-					<input class="form-control input-large " placeholder="Enter Phone No" required name="company_phone" autocomplete="off" type="text" value="">
+					<input class="form-control input-large " placeholder="Enter Phone No"  name="company_phone" autocomplete="off" type="text" value="">
 				</td>
 			<td>Address</td><td>:</td>
 				<td>
-					<input class="form-control input-large" placeholder="Enter Address" required name="company_address" autocomplete="off" type="text" value="">
+					<input class="form-control input-large" placeholder="Enter Address"  name="company_address" autocomplete="off" type="text" value="">
 				</td>
 		</tr>		
 		<tr>
@@ -695,23 +772,23 @@ echo'<script>window.location="sales_invoice_list.php"</script>';
 					</td>
 				<td>Mobile No</td><td>:</td>
 					<td>
-							<input class="form-control input-large " placeholder="Enter Contact No" required name="contact_no" autocomplete="off" type="text" value="">
+							<input class="form-control input-large " placeholder="Enter Contact No"  name="contact_no" autocomplete="off" type="text" value="">
 					</td>
 			</tr>
 			<tr>
 				<td>Pan No</td><td>:</td>
 					<td>
-						<input class="form-control input-large" placeholder="Enter Pan No" required name="pan_no" autocomplete="off" type="text" value=""> 
+						<input class="form-control input-large" placeholder="Enter Pan No"  name="pan_no" autocomplete="off" type="text" value=""> 
 					</td>
 				<td>Aadhaar No</td><td>:</td>
 					<td>
-						<input class="form-control input-large " placeholder="Enter Aadhaar No" required name="Aadhaar_no" autocomplete="off" type="text" value="">
+						<input class="form-control input-large " placeholder="Enter Aadhaar No"  name="Aadhaar_no" autocomplete="off" type="text" value="">
 					</td>
 			</tr>
 			<tr>
 				<td>Address</td><td>:</td>
 					<td>
-						<input class="form-control input-large " placeholder="Enter Address" required name="address" autocomplete="off" type="text" value=""> 
+						<input class="form-control input-large " placeholder="Enter Address"  name="address" autocomplete="off" type="text" value=""> 
 					</td>
 				<td>Invoice date</td><td>:</td>
 					<td>

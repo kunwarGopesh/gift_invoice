@@ -74,7 +74,7 @@ if(isset($_POST['submit']))
 		$date_from=date('Y-m-d', strtotime($_POST['start_date']));
 		$date_to=date('Y-m-d', strtotime($_POST['end_date']));
 		$a=0;$b=0;$c=0;$d=0; $tot_dummy_dis_amount=0;
-		$purchase=mysql_query("select * from `purchase_invoice` where `flag`='0' && `invoice_date` between '$date_from' and '$date_to'");
+		$purchase=mysql_query("select * from `purchase_invoice` where `invoice_date` between '$date_from' and '$date_to'");
 		/* $count=mysql_num_rows($purchase);
 		if($count>0)
 		{
@@ -83,8 +83,8 @@ if(isset($_POST['submit']))
 		{
 			$dis=$row['discount_amount'];	
 			$net_amt=$row['amount_after_discount'];	
-			$tot_tax=$row['total_tax'];	
-			$amt_bef_dis=$row['total_amount_dis'];	
+			$tot_tax=$row['total_tax_amount'];	
+			$amt_bef_dis=$row['total_actual_amount'];	
 			$tot_amt=$row['grand_total'];	
 			$dummy=$amt_bef_dis-$net_amt; 
 			$tot_dummy_dis_amount+=$dummy;
@@ -139,7 +139,7 @@ if(isset($_POST['submit']))
 		$date_from=date('Y-m-d', strtotime($_POST['start_date']));
 		$date_to=date('Y-m-d', strtotime($_POST['end_date']));
 		$a1=0;$b1=0;$c1=0;$d1=0;$total_dis=0;
-		$purchase=mysql_query("select * from `sales_invoice` where `flag`='0' &&  `invoice_date` between '$date_from' and '$date_to'");
+		$purchase=mysql_query("select * from `sales_invoice` where `invoice_date` between '$date_from' and '$date_to'");
 		while($row=mysql_fetch_array($purchase))
 		{
 			$dis=$row['discount_amount'];	

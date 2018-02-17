@@ -37,7 +37,7 @@ if(isset($_POST['submit']))
 										<select name="item_id" class=" form-control input-large select2me" >
 										<option value="">----------Choose Item ----------</option>
 											<?php
-												$item_data=mysql_query("select `id`,`item_name` from master_items ");
+												$item_data=mysql_query("select `id`,`item_name` from `master_items`");
 												while($row=mysql_fetch_array($item_data))	
 												{
 													?>		

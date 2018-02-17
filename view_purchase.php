@@ -20,18 +20,17 @@ include("database.php");
 			  $invoice_id=$_GET['invoice_id'];
 			  $invoices=mysql_query("select * from `purchase_invoice` where `id`='$invoice_id'");
 			  $invoice_data=mysql_fetch_array($invoices);
-			  $invoice_tax=mysql_query("select * from invoice_taxations where `invoice_id`='$invoice_id'");
-			  $tax_data=mysql_fetch_array($invoice_tax); 
 			  $supplier_id=$invoice_data['supplier_id'];
-			  $company=mysql_query("select * from companies where `supplier_id`='$supplier_id'");
-			  $customer=mysql_query("select * from supplier where `id`='$supplier_id'");
+			  $flag=$invoice_data['flag'];
+			  $company=mysql_query("select * from `companies` where `supplier_id`='$supplier_id'");
+			  $customer=mysql_query("select * from `supplier` where `id`='$supplier_id'");
 				$row1=mysql_fetch_array($customer);
-				$row=mysql_fetch_array($company);
+				$company_data=mysql_fetch_array($company);
 				?>
 				
-				<table  width="100%">
+				<table style="border:1px;border-style:solid;height:10%;" width="100%">
 				<tr>
-				<td  style="border:1px;border-style:solid;" width="50%">
+				<td  width="50%">
 					<table class="table" width="100%">
 					<tr>
 					<th style="background-color:#DCD9D8;text-align:center;font-size:18px;">Purchase Invoice</th>
@@ -39,23 +38,26 @@ include("database.php");
 				<tr>	
 				<td>
 				<span style="height:30px;width:350px;font-size:15px;">From,<br>
-				<?php echo $row['name'];?><br>
-				<?php echo $row['address'];?><br>
-				 <p>Phone No : <?php echo $row['phone_no'];?></p>
-				 <p>GST Number :<?php echo $row['gst_no'];?></p>
+				<?php echo $company_data['name'];?><br>
+				<?php echo $company_data['address'];?><br>
+				 <p>Phone No : <?php echo $company_data['phone_no'];?></p>
+				 <b>GST Number :<?php echo $company_data['gst_no'];?></b>
 				 </span>
 				 </td>
 				 </tr></table>
 				 
-				 <td style="border:1px;border-style:solid;" width="50%">
+				 <td style="border:1px;border-style:solid;height:10%;" width="50%">
 				 <table width="100%">
 					<tr>
 					<td width="30%"><img src="\gift_invoice\img\logo123.jpg" height="100px" width="150px"/></td>
-					<td width="70%"><h4 class="box-title">PHP Poets , Udaipur</h4></td>
+						<td width="70%"><h4 class="box-title">
+							Unique Collection , Mavli</h4>
+						</td>
+					</td>	
 					</tr>
 					<tr>
-					<td width="30%"><h4 class="box-title"></h4></td>
-					<td width="70%"><h4 class="box-title">
+					<td width="30%" height="5%"></td>
+					<td width="70%" height="5%"><h4 >
 							(An ISO 9001:2008 Certified Company)
 							</h4>
 					</td>
@@ -64,7 +66,7 @@ include("database.php");
 				 </td>
 				 </tr>
 				 </table>
-			<table style="border:1px;border-style:solid;width:100%;height:30%;">
+			<table style="border:1px;border-style:solid;width:100%;height:20%;">
 			<tr>
 		    <td >Customer Name</td><td >:</td>
 			 <td ><?php echo $row1['supplier_name'];?></td>
@@ -95,14 +97,16 @@ include("database.php");
 			<table class="table" >
 				<thead>
 				 <tr style="background-color:#DCD9D8;">
-					 <th style="border:1px;border-style:solid;">SL.NO</th>
-					 <th colspan="2" style="border:1px;border-style:solid;white-space: nowrap;">ITEM NAME</th>
-					 <th style="border:1px;border-style:solid;white-space: nowrap;width:12%;">ITEM CODE</th>
-					 <th style="border:1px;border-style:solid;">QTY</th>
-					 <th style="border:1px;border-style:solid;">RATE  (&#8377;)</th>
-					 <th style="border:1px;border-style:solid;white-space: nowrap;">AMOUNT  (&#8377;)</th>
-					 
-					 </tr>
+								 <th style="border:1px;border-style:solid;width:10%;">Sr.No</th>
+								 <th style="border:1px;border-style:solid;white-space: nowrap;width:10%;">ITEM NAME</th>
+								 <th style="border:1px;border-style:solid;white-space: nowrap;width:10%;">ITEM CODE</th>
+								 <th style="border:1px;border-style:solid;width:10%;">QTY</th>
+								 <th style="border:1px;border-style:solid;width:10%;">ACTUAL PRICE</th>
+								 <th style="border:1px;border-style:solid;white-space: nowrap;width:10%;">TAX PER (%)</th>
+								 <th style="border:1px;border-style:solid;white-space: nowrap;width:10%;">FINAL PRICE</th>
+								 <th style="border:1px;border-style:solid;white-space: nowrap;width:10%;">TOTAL AMOUNT</th>
+								 <th style="border:1px;border-style:solid;white-space: nowrap;width:10%;">TAX AMOUNT</th>	
+				</tr>
 				</thead>
 				<tbody > 
 				<?php 
@@ -119,23 +123,30 @@ include("database.php");
 							?>
 				<tr class="main_tr1" style="border:1px;border-style:solid;">
 				<td style="border:1px;border-style:solid;"><?php echo $j;?></td>
-				<td colspan="2" style="border:1px;border-style:solid;width:20%;"><?php echo $cat_data['item_name']; ?></td>
+				<td colspan="" style="border:1px;border-style:solid;width:20%;white-space:nowrap;"><?php echo $cat_data['item_name']; ?></td>
 				<td style="border:1px;border-style:solid;width:20%;"><?php echo $cat_data['item_code']; ?></td>
 				<td style="border:1px;border-style:solid;width:20%;"><?php echo $item_data['qty']; ?> </td>
-				<td style="border:1px;border-style:solid;width:20%;"><?php echo number_format($item_data['item_price'],2); ?> </td>
+				<td style="border:1px;border-style:solid;width:20%;"><?php echo number_format($item_data['actual_price'],2); ?> </td>
+				<td style="border:1px;border-style:solid;width:20%;"><?php echo number_format($item_data['item_tax'],2); ?> </td>
+				<td style="border:1px;border-style:solid;width:20%;"><?php echo number_format($item_data['final_price'],2); ?> </td>
+			
 				<td style="border:1px;border-style:solid;width:20%;"><?php echo number_format($item_data['row_total_amount'],2); ?> </td>
+				<td style="border:1px;border-style:solid;width:20%;"><?php echo number_format($item_data['row_total_tax'],2); ?> </td>
 				</tr> 
 				<?php  }?>
 			
 				<tr style="border:1px;border-style:solid;" >
-					<td style="border:1px;border-style:solid;text-align:right;" colspan="4">Subtotal</td>
+					<td style="border:1px;border-style:solid;text-align:right;" colspan="3">Subtotal</td>
 					<td style="border:1px;border-style:solid;width:20%;"><?php echo $invoice_data['total_qty']; ?> </td>
-					<td style="border:1px;border-style:solid;width:20%;"><?php echo $invoice_data['total_rate']; ?></td>
-					<td style="border:1px;border-style:solid;width:20%;"><?php echo number_format($invoice_data['total_amount_dis'],2); ?> </td>
+					<td style="border:1px;border-style:solid;width:20%;"><?php echo $invoice_data['total_actual_price']; ?></td>
+					<td style="border:1px;border-style:solid;width:20%;"><?php echo number_format($invoice_data['total_item_tax'],2); ?> </td>
+					<td style="border:1px;border-style:solid;width:20%;"><?php echo number_format($invoice_data['total_final_price'],2); ?> </td>
+					<td style="border:1px;border-style:solid;width:20%;"><?php echo number_format($invoice_data['total_actual_amount'],2); ?> </td>
+					<td style="border:1px;border-style:solid;width:20%;"><?php echo number_format($invoice_data['total_tax_amount'],2); ?> </td>
 					
 				</tr>
 				<tr style="border:1px;border-style:solid;" >
-					<td style="border:1px;border-style:solid;text-align:right;" colspan="4">Discount</td>
+					<td style="border:1px;border-style:solid;text-align:right;" colspan="5">Discount</td>
 					<td colspan="2" style="border:1px;border-style:solid;width:20%;text-align:center;">
 					<?php
 						$dis=$invoice_data['discount_type'];
@@ -150,50 +161,32 @@ include("database.php");
 					?> 
 					</td>
 					<td style="border:1px;border-style:solid;width:20%;"><?php echo number_format($invoice_data['amount_after_discount'],2); ?> </td>
-					
+					<td style="border:1px;border-style:solid;width:20%;"><?php echo number_format($invoice_data['total_tax_amount'],2); ?> </td>
 				</tr>
-				<?php
-				$Z=$invoice_data['amount_after_discount'];	
-				$invoice_tax=mysql_query("select * from `invoice_taxations` where `invoice_id`='$invoice_id' && `flag`='1'");
-				while($tax_data=mysql_fetch_array($invoice_tax))
-				{
-					$t_id=$tax_data['taxation_id'];
-				  $per=$tax_data['percentage'];
-				  $amt=$tax_data['amount'];
-
-				$taxation_name=mysql_query("select `name` from `taxations` where `id`='$t_id'");
-						
-				while($row=mysql_fetch_array($taxation_name))
-				{						
-					$name=$row['name'];	
-					?>	
+				
 				<tr style="border:1px;border-style:solid;">
-					<td style="border:1px;border-style:solid;text-align:right;" colspan="4">
-					<?php echo $name;?>			
-					</td>
-					<td style="border:1px;border-style:solid;text-align:right;">
-							<?php echo $per; ?>%
-					</td>
-					<td style="border:1px;border-style:solid;">
-							<?php echo number_format($amt,2); ?>	
-					</td>
-					<td style="border:1px;border-style:solid;"><?php 
-					$Z+=$amt;
-					echo number_format($Z,2); ?></td>
-				</tr>
-				<?php
-				}}
-						?>
-				<tr style="border:1px;border-style:solid;">
-					<td  style="border:1px;border-style:solid;text-align:right;" colspan="4"> Grand Total </td>
+					<td  style="border:1px;border-style:solid;text-align:right;" colspan="6"> Grand Total </td>
 					<td colspan="2" style="border:1px;border-style:solid;width:20%;text-align:center;border-right-color:white;"> </td>
 					<td style="border:1px;border-style:solid;width:20%;">
 					<?php echo number_format(round($invoice_data['grand_total'],2)); ?> </td>
 					
 				</tr>
-				
+				<tr style="border:1px;border-style:solid;">
+					<td  style="border:1px;border-style:solid;text-align:right;" colspan="6"> Cash Deposit </td>
+					<td colspan="2" style="border:1px;border-style:solid;width:20%;text-align:center;border-right-color:white;"> </td>
+					<td style="border:1px;border-style:solid;width:20%;">
+					<?php echo number_format(round($invoice_data['cash_amount'],2)); ?> </td>
+					
+				</tr>
+				<tr style="border:1px;border-style:solid;">
+					<td  style="border:1px;border-style:solid;text-align:right;" colspan="6">Due Amount</td>
+					<td colspan="2" style="border:1px;border-style:solid;width:20%;text-align:center;border-right-color:white;"> </td>
+					<td style="border:1px;border-style:solid;width:20%;">
+					<?php echo number_format(round($invoice_data['due_amount'],2)); ?> </td>
+					
+				</tr>
 				<tr style="border:1px;border-style:solid;" rowspan="2">
-					<td colspan="3">
+					<td colspan="5">
 					<b>TERMS & CONDITIONS:</b><br>                                                
 					* Interest @ 18% PA will be charged if payment not
 					recevied within 15 days from the date of Invoice.<br>
@@ -206,12 +199,12 @@ include("database.php");
 					
 					</td>
 					<td colspan="3" style="border:1px;border-style:solid;border-left-color:white;">
-					For PHP Poets  Pvt. Ltd.
+					For Unique Collection 
 					</td>
 					
 				</tr>
 				<tr style="border:1px;border-style:solid;">
-					<td colspan="3" style="border:1px;border-style:solid;border-right-color:white;">
+					<td colspan="5" style="border:1px;border-style:solid;border-right-color:white;">
 					<b>Customer's Signature </b><br>                                                
 				
 					</td>
@@ -220,7 +213,7 @@ include("database.php");
 					</td>
 				</tr>
 				<tr >
-					<td colspan="7" style="border:1px;border-style:solid;" >
+					<td colspan="100" style="border:1px;border-style:solid;" >
 						<span style="height:50px;width:350px;font-size:15px;">
 						Mavli ,Udaipur<br>
 						Phone : 91 - 294 - 2484181, 2981222, 6450333,
