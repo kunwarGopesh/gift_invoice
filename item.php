@@ -91,7 +91,10 @@ if(isset($_POST['sub_del']))
 													</div>
 										</td>
 										<td>Item Code</td><td>:</td>
-										<td><input class="form-control input-large " placeholder="Enter Item Code" required name="code" autocomplete="off" type="text" value=""> </td>
+										<td id="new_code">
+										<input class="form-control input-large icode" placeholder="Enter Item Code" required name="code" autocomplete="off" type="text" value=""> 
+										
+										</td>
 										</tr>
 										<tr>
 										<td>Item Name</td><td>:</td>
@@ -354,6 +357,18 @@ if(isset($_POST['sub_del']))
 								url: "category.php?c_id="+cat_id+"&chk="+chk,
 								}).done(function(response) {
 									$("#chk_"+chk).html(response);
+								});
+						}	
+				});
+				 $(".icode").on('blur', function () 
+				 {
+					var icode=$(this).val();
+					if(icode>0)
+						{
+							$.ajax({
+								url: "item_code_match.php?i_code="+icode,
+								}).done(function(response) {
+									$("#new_code").html(response);
 								});
 						}	
 				});

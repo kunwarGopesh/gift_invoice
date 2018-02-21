@@ -11,6 +11,9 @@ if(isset($_POST['submit']))
 		{	
 			$cust_id=$_POST['cust_id'];
 			$new_amount=$_POST['new_amount'];
+			$date1=$_POST['date'];
+			$payment_date=date('Y-m-d',strtotime($date1));
+			mysql_query("insert into `payment_transaction_ledgers` SET `customer_id`='$cust_id',`amount`='$new_amount',`transaction_date`='$payment_date'");
 			$final_amount=$new_amount;
 			$set=mysql_query("select * from `sales_invoice` where `due_amount`>'0' && `customer_id`='$cust_id'");
 			while($fet=mysql_fetch_array($set))
@@ -154,7 +157,7 @@ if(isset($_POST['submit']))
 													<tr>
 														<td><?php echo $i;?></td>
 														<td><?php echo fetchcustomername($customer_ids);?></td>
-														<td><?php echo $invoice_id;?></td>
+														<td><a href="view_sales.php?invoice_id=<?php echo $invoice_id;?>" ><?php echo $invoice_id;?></a></td>
 														<td><?php echo $date_of_sale;?></td>
 														<td><?php echo number_format($grand_total,2);?></td>
 														<td ><?php echo number_format($cash_amount,2)?></td>
@@ -169,7 +172,7 @@ if(isset($_POST['submit']))
 												<tr style="background-color:#BB968E;">
 													<th colspan="4" style="text-align:center">Grand Total</th>
 													<th><?php echo number_format($final_grand_total,2);?></th>
-													<th><?php echo number_format($total_cash,2);?></th>
+													<th><a style="color:white;" href="customer_payment_ledger.php?cust_id=<?php echo $customer_ids;?>" ><?php echo number_format($total_cash,2);?></a></th>
 													<th ><?php echo number_format($total_due,2);?></th>
 						
 												</tr>
@@ -187,6 +190,13 @@ if(isset($_POST['submit']))
 												<td>
 												<input class="form-control input-small new_due_amt"type="text" name="new_due_amt" value=""/>
 												<input type="hidden" name="cust_id" value="<?php echo $customer_id; ?>">
+												</td>
+												</tr>
+												<tr style="background-color:#E6B0AA	;">
+												<td colspan="4"></td>
+												<td>Transaction Date</td><td>:</td>
+												<td>
+												<input class="form-control form-control-inline input-small date-picker" placeholder="dd-mm-yyyy"  data-date-format="dd-mm-yyyy" size="16" type="text" name="date" value=""> 
 												</td>
 												</tr>
 												<tr>
@@ -237,13 +247,14 @@ if(isset($_POST['submit']))
 <script>
 			$(document).ready(function()
 			{   
-					
+			$(".new_due_amt").attr( 'readonly', 'readonly' );
 					$(document).on('keyup','.new_amt',function()
 						{
 							calculate_total();
 						});
 					function calculate_total()
 						{
+								
 							var new_due_amt=0;
 							var new_amt=0;
 							var new_amt=eval($(".new_amt").val());
@@ -257,10 +268,10 @@ if(isset($_POST['submit']))
 								{
 									new_due_amt=att_value-new_amt;
 									$(".new_due_amt").val(new_due_amt.toFixed(2));							
-									$(".new_due_amt").attr( 'readonly', 'readonly' );
+									
 								}							
 						}					
-			
+					$(".date-picker").datepicker();	
 			 });
 
 </script>

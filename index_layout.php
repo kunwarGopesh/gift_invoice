@@ -92,7 +92,7 @@ function contant_start()
 	<div class="page-header-inner">
 		<div class="page-logo" >
 			<a href="index.php" style="text-decoration:none;" >
-					<h1 style="color:#D6D2D1;font-family:Sakkal Majalla;margin:6px;">Gift Invoice</h1>		
+					<h1 style="color:#D6D2D1;font-family:Sakkal Majalla;margin-top:5px;">Uniquee Store</h1>		
 					</a>
 			<div class="menu-toggler sidebar-toggler hide">
 			</div>
